@@ -55,6 +55,14 @@ export default function Home({
 		return value.replace('ASIN#', '')
 	}
 
+	const trackClick = (asindata) => {
+		// Google Analytics イベントを送信
+		window.gtag('event', 'imp_Click', {
+			event_category: `${asindata.categoryName.S}`,
+			event_label: `${asindata.asin.S}`
+		})
+	}
+
 	return (
 		<>
 			<TopHeader sidebarOpen={sidebarOpen} toggleSidebar={toggleSidebar} />
@@ -69,7 +77,12 @@ export default function Home({
 
 					<div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4 bg-white mt-6">
 						{result.map((data) => (
-							<Link href={`/items/${data.date.S}/${extractAsin(data.asin.S)}`} key={data.asin.S} prefetch={false}>
+							<Link
+								href={`/items/${data.date.S}/${extractAsin(data.asin.S)}`}
+								key={data.asin.S}
+								prefetch={false}
+								onClick={() => trackClick(data)}
+							>
 								<div className="border p-2 bg-white flex flex-col h-full cursor-pointer">
 									<div className="flex-grow flex justify-center items-center mb-4 h-[270px] w-full">
 										<img
