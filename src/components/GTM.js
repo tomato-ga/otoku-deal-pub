@@ -1,6 +1,6 @@
 import Script from 'next/script'
 
-export default GoogleTagManager = () => {
+const GoogleTagManager = () => {
 	const gtmId = 'GTM-MZ96GPRL'
 
 	return (
@@ -15,3 +15,5 @@ export default GoogleTagManager = () => {
 		/>
 	)
 }
+
+export default GoogleTagManager
