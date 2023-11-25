@@ -1,7 +1,6 @@
 const { DynamoDBClient, UpdateItemCommand } = require('@aws-sdk/client-dynamodb')
 require('dotenv').config()
 
-// TODO: SDKだとうまくいかないから、Lambda Pythonでやってみる
 const ClickCounter = async (asin) => {
 	console.log('クリックカウント発動')
 	console.log('asin', asin)
