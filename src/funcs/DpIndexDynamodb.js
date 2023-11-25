@@ -23,7 +23,7 @@ const dynamoQueryIndex = async (lastEvaluatedKey = null) => {
 			ExpressionAttributeValues: {
 				':duExists': { S: 'false' }
 			},
-			Limit: 20,
+			Limit: 10,
 			ScanIndexForward: false, // 最新順
 			...(lastEvaluatedKey && { ExclusiveStartKey: lastEvaluatedKey })
 		}
