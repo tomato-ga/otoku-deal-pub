@@ -118,6 +118,9 @@ export default function Home({
 }
 
 export async function getServerSideProps(context) {
+	const { res } = context
+	res.setHeader('Cache-Control', 'public, s-maxage=0, stale-while-revalidate=86400')
+
 	const pageNumber = parseInt(context.query.number) || 1
 
 	// DynamoDBクエリ関数を呼び出し

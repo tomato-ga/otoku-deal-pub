@@ -47,6 +47,9 @@ const Pages = ({ result, lastEvaluatedKey, pageNumber, hasMore }) => {
 export default Pages
 
 export async function getServerSideProps(context) {
+	const { res } = context
+	res.setHeader('Cache-Control', 'public, s-maxage=0, stale-while-revalidate=86400')
+
 	const pageNumber = parseInt(context.query.number) || 1
 	const lastEvaluatedKey = context.query.lastkey ? JSON.parse(decodeURIComponent(context.query.lastkey)) : null
 

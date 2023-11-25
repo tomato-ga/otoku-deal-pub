@@ -57,7 +57,7 @@ export const dynamoBestSellerQuery = async (category) => {
 			const data = await client.send(command)
 
 			if (!data.Items || !Array.isArray(data.Items) || data.Items.length === 0) {
-				console.log('No data for date:', params.ExpressionAttributeValues[':dateVal'].S)
+				// console.log('No data for date:', params.ExpressionAttributeValues[':dateVal'].S)
 				let previousDay = new Date(now)
 				previousDay.setDate(previousDay.getDate() - 1)
 				const previousParams = createParams(formatDate(previousDay), category)

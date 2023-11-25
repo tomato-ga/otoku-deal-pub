@@ -314,10 +314,12 @@ export default function ItemsPage({
 }
 
 export async function getServerSideProps(context) {
+	const { res } = context
+	res.setHeader('Cache-Control', 'public, s-maxage=0, stale-while-revalidate=86400')
+
 	const asin = context.params.asin
 
 	// MEMO ASIN単体フェッチ
-
 	const ProductasinFetchFromDynamo = await dynamoQueryAsin(asin, '商品情報')
 	const ReviewasinFetchFromDynamo = await dynamoQueryAsin(asin, 'レビュー')
 	const relatedIndexFromDynamo = await dynamoQueryIndex()
