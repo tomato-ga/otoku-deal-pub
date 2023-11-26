@@ -13,6 +13,7 @@ import CategoryItems from '@/components/CategoryItemIndex'
 import CategoryPagination from '@/components/CategoryPaginaion'
 import { dynamoQueryCategory } from '@/funcs/CategoryDynamodb'
 import Footer from '@/components/Footer'
+import { NextSeo } from 'next-seo'
 
 const CategoryPages = ({ categoryResult, categoryLastkey, pageNumber, categoryName }) => {
 	// console.log("Saving cookie for page:", pageNumber, "with key:", result.lastEvaluatedKey); // ログ出力
@@ -31,6 +32,9 @@ const CategoryPages = ({ categoryResult, categoryLastkey, pageNumber, categoryNa
 
 	return (
 		<>
+
+		<NextSeo title={categoryName} />
+
 			<div className="flex flex-col min-h-screen">
 				<TopHeader />
 				<div className="mx-auto flex flex-col md:flex-row justify-between md:justify-start min-h-screen bg-white">

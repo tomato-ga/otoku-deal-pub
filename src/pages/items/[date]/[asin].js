@@ -129,7 +129,20 @@ export default function ItemsPage({
 			<NextSeo
 				title={ProductasinFetchFromDynamo.productName.S}
 				description={`${ProductasinFetchFromDynamo.productName.S}のセール情報を紹介しています`}
-				canonical={``} // TODO: ドメインURL入れる
+				openGraph={{
+					type: 'website',
+					url: `https://www.otoku-deal.com/${ProductasinFetchFromDynamo.date.S}`,
+					title: ProductasinFetchFromDynamo.productName.S,
+					description: `${ProductasinFetchFromDynamo.productName.S}のセール情報を紹介しています`,
+					images: [
+						{
+							url: ProductasinFetchFromDynamo.imageUrl.S,
+							width: 800,
+							height: 600,
+							alt: `${ProductasinFetchFromDynamo.productName.S}の商品画像`
+						}
+					]
+				}}
 			/>
 
 			<ArticleJsonLd

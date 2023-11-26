@@ -8,6 +8,7 @@ import DealPagination from '@/components/DealPagination'
 
 import Sidebar from '@/components/Sidebar'
 import Footer from '@/components/Footer'
+import { NextSeo } from 'next-seo'
 
 const GroupSalePage = ({ dealItemsFromDynamo, LastEvaluatedKey, pageNumber }) => {
 	useEffect(() => {
@@ -22,6 +23,8 @@ const GroupSalePage = ({ dealItemsFromDynamo, LastEvaluatedKey, pageNumber }) =>
 
 	return (
 		<>
+			<NextSeo title={'お得なグループセール'} />
+
 			<TopHeader />
 			<div className="mx-auto flex flex-col md:flex-row justify-between md:justify-start min-h-screen bg-white">
 				<div className="w-full sm:w-1/2 md:w-3/4 p-4 bg-white order-1 md:order-2">
