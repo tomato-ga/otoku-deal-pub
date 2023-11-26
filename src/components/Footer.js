@@ -8,14 +8,14 @@ export default function Footer() {
 					<Link href="/">
 						<span className="cursor-pointer hover:underline">ホーム</span>
 					</Link>
-					{/* <Link href="/about">
-						<span className="cursor-pointer hover:underline">私たちについて</span>
-					</Link> */}
+					<Link href="/about">
+						<span className="cursor-pointer hover:underline">このサイトについて</span>
+					</Link>
 					<Link href="/contact">
 						<span className="cursor-pointer hover:underline">お問い合わせ</span>
 					</Link>
 				</div>
-				<p className="text-white text-sm mt-4">© {new Date().getFullYear()} セールまとめ</p>
+				<p className="text-white text-sm mt-4">© {new Date().getFullYear()} 激安特価セール速報</p>
 			</div>
 		</footer>
 	)
