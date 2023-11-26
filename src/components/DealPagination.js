@@ -3,7 +3,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 
 const DealPagination = ({ hasNextPage }) => {
-	console.log('DealPagination', hasNextPage)
+
 
 	const router = useRouter()
 	const currentPage = parseInt(router.query.number) || 1
@@ -30,7 +30,8 @@ const DealPagination = ({ hasNextPage }) => {
 					<Link href={`/group/page/${prevPage}`}>
 						<button
 							onClick={handlePrevPage}
-							className="flex items-center justify-center px-4 py-2 w-32 h-10 ml-0 leading-tight text-gray-800 font-semibold bg-white dark:bg-white border border-gray-300 rounded-l-lg hover:bg-orange-100 hover:text-gray-700"
+							className="flex items-center justify-center px-4 py-2 w-40 h-14 ml-0 mr-2 leading-tight text-gray-800 font-semibold rounded-lg hover:text-gray-100
+							bg-gradient-to-r from-[#FFED46] to-[#FF7EC7]"
 						>
 							前のページ
 						</button>
@@ -40,7 +41,8 @@ const DealPagination = ({ hasNextPage }) => {
 					<Link href={`/group/page/${nextPage}`}>
 						<button
 							onClick={handleNextPage}
-							className="flex items-center justify-center px-4 py-2 w-32 h-10 ml-0 leading-tight text-gray-800 font-semibold bg-white dark:bg-white border border-gray-300 rounded-l-lg hover:bg-orange-100 hover:text-gray-700"
+							className="flex items-center justify-center px-4 py-2 w-40 h-14 ml-2 leading-tight text-gray-800 font-semibold rounded-lg hover:text-gray-100
+							bg-gradient-to-r from-[#B7DCFF] to-[#FFA4F6]"
 						>
 							次のページ
 						</button>

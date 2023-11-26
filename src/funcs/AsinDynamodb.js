@@ -14,7 +14,6 @@ const dynamoQueryAsin = async (asin, types) => {
 	const queryDynamoDB = async () => {
 		let today = new Date()
 		let formattedToday = today.toISOString().split('T')[0] // "YYYY-MM-DD" 形式に変換
-		console.log(formattedToday)
 
 		const params = {
 			TableName: 'saleitems',

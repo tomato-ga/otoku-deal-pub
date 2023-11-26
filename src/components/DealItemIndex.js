@@ -29,12 +29,12 @@ const DealItem = ({ data }) => {
 					{truncateString(data.productName, 50)}
 				</h2>
 				<div className="mt-auto">
-					<div className="flex items-center">
-						{data.priceOff && <p className="text-xl font-bold text-red-600 px-2">{data.priceOff}</p>}
-						<p className="text-2xl font-bold text-gray-700 px-2">{data.price}</p>
+					<div className="flex">
+						{data.priceOff && <p className="text-lg md:text-2xl font-bold text-red-600 px-2">{data.priceOff}</p>}
+						<p className="text-lg md:text-2xl font-bold text-gray-700 px-2">{data.price}</p>
 					</div>
 					{data.priceOff && (
-						<div className="flex items-center">
+						<div className="flex">
 							<p className="text-sm font-light text-gray-700 px-2">過去価格:</p>
 							<p className="text-sm font-light text-gray-700 px-2 line-through">
 								{calculateOriginalPrice(data.price, data.priceOff)}
@@ -48,7 +48,6 @@ const DealItem = ({ data }) => {
 }
 
 const DealItems = ({ dealItemsFromDynamo }) => {
-	console.log('dealitems: ', dealItemsFromDynamo)
 
 	const extractSimpleValuesFromDynamoDBItem = (dynamoDbItem) => {
 		let plainObject = {}
@@ -89,7 +88,7 @@ const DealItems = ({ dealItemsFromDynamo }) => {
 						<h3 className="text-2xl font-bold pt-3 pr-3 pb-3 pl-1 mt-10">{h1Value}</h3>
 						<div className="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-[#1fcff1] to-[#234cb6] mb-2"></div>
 					</div>
-					<div className="grid grid-cols-2 md:grid-cols-6 gap-4 bg-white mt-6">
+					<div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4 bg-white mt-6">
 						{items.map((item) => (
 							<div key={item.asin}>
 								<DealItem data={item} />

@@ -13,10 +13,7 @@ import PaginationContent from '@/components/PagenationContent'
 import Footer from '@/components/Footer'
 
 const Pages = ({ result, lastEvaluatedKey, pageNumber, hasMore }) => {
-	console.log('Saving cookie for page:', pageNumber, 'with key:', lastEvaluatedKey) // ログ出力
-
 	const showPagination = !result.endOfData
-	console.log('showPagination', showPagination)
 
 	// const typeData = result.items.filter((data) => data.type === '商品情報')
 	// const combinebyAsin = combineDataByAsin(typeData)
@@ -53,7 +50,7 @@ export async function getServerSideProps(context) {
 	const pageNumber = parseInt(context.query.number) || 1
 	const lastEvaluatedKey = context.query.lastkey ? JSON.parse(decodeURIComponent(context.query.lastkey)) : null
 
-	console.log('ラストキー', lastEvaluatedKey)
+	// console.log('ラストキー', lastEvaluatedKey)
 
 	// DynamoDBクエリ関数を呼び出し
 	const result = await dynamoQueryIndex(lastEvaluatedKey)

@@ -65,7 +65,6 @@ export async function getServerSideProps(context) {
 
 	// 2ページ目の処理
 	if (pageNumber > 1) {
-		console.log('2ページ目呼び出し', pageNumber)
 		if (lastEvaluatedKey) {
 			// lastkey使って2ページ目以降のクエリ
 			const dealItemsFromDynamo = await dynamoQueryDeal(lastEvaluatedKey)
@@ -79,7 +78,7 @@ export async function getServerSideProps(context) {
 			}
 		} else {
 			// lastEvaluatedKeyが無い場合の処理
-			console.log('LastEvaluatedKeyが見つかりませんでした。')
+
 			return {
 				props: {
 					dealItemsFromDynamo: [],

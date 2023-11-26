@@ -4,15 +4,11 @@ const Pagination = ({ hasNextPage }) => {
 	const router = useRouter()
 	const currentPage = parseInt(router.query.number) || 1
 
-	console.log('Paginationナンバー', currentPage)
-
 	const handlePrevPage = () => {
 		const prevPageNumber = currentPage - 1
 		const prevPaginationNumber = currentPage - 2
 		const lastEvaluatedKeyString = localStorage.getItem(`lastEvaluatedKey_page_${prevPaginationNumber}`)
 		const lastEvaluatedKey = lastEvaluatedKeyString ? JSON.parse(lastEvaluatedKeyString) : null
-
-		console.log('handlePrevPage', lastEvaluatedKey)
 
 		if (lastEvaluatedKey) {
 			router.push(`/page/${prevPageNumber}?lastkey=${encodeURIComponent(JSON.stringify(lastEvaluatedKey))}`)
@@ -25,8 +21,6 @@ const Pagination = ({ hasNextPage }) => {
 		const nextPageNumber = currentPage + 1
 		const lastEvaluatedKeyString = localStorage.getItem(`lastEvaluatedKey_page_${currentPage}`)
 		const lastEvaluatedKey = lastEvaluatedKeyString ? JSON.parse(lastEvaluatedKeyString) : null
-
-		console.log('handleNextPage', lastEvaluatedKey)
 
 		if (lastEvaluatedKey) {
 			router.push(`/page/${nextPageNumber}?lastkey=${encodeURIComponent(JSON.stringify(lastEvaluatedKey))}`)

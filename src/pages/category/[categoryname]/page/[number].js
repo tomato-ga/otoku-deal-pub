@@ -17,8 +17,6 @@ import Footer from '@/components/Footer'
 const CategoryPages = ({ categoryResult, categoryLastkey, pageNumber, categoryName }) => {
 	// console.log("Saving cookie for page:", pageNumber, "with key:", result.lastEvaluatedKey); // ログ出力
 	const showPagination = !categoryResult.endOfData
-	console.log('カテゴリーフェッチ結果!', categoryResult)
-	console.log('カテゴリーlastkey', categoryLastkey)
 
 	// カテゴリーページ
 	useEffect(() => {
@@ -65,9 +63,6 @@ export async function getServerSideProps(context) {
 	const lastEvaluatedKey = context.query.lastkey ? JSON.parse(decodeURIComponent(context.query.lastkey)) : null
 	const limit = 20
 
-	console.log('コンテキストQueryName', categoryName)
-	console.log('コンテキストQueryNumber', pageNumber)
-
 	if (pageNumber == 1) {
 		const categoryResult = await dynamoQueryCategory(categoryName, limit)
 		return {
@@ -81,10 +76,9 @@ export async function getServerSideProps(context) {
 	}
 
 	if (pageNumber > 1) {
-		console.log('2ページ目カテゴリー', pageNumber)
 		if (lastEvaluatedKey) {
 			const categoryResultNextPage = await dynamoQueryCategory(categoryName, limit, lastEvaluatedKey)
-			console.log('2ページ目カテゴリー結果', categoryResultNextPage)
+
 			return {
 				props: {
 					categoryResult: categoryResultNextPage.Items || [],

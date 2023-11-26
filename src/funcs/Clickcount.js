@@ -2,9 +2,6 @@ const { DynamoDBClient, UpdateItemCommand } = require('@aws-sdk/client-dynamodb'
 require('dotenv').config()
 
 const ClickCounter = async (asin) => {
-	console.log('クリックカウント発動')
-	console.log('asin', asin)
-
 	const client = new DynamoDBClient({
 		region: 'ap-northeast-1',
 		credentials: {

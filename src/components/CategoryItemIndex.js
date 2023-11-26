@@ -2,7 +2,6 @@ import Link from 'next/link'
 import React from 'react'
 
 const CategoryItem = ({ data }) => {
-	console.log('CategoryItem', data)
 
 	const truncateString = (str, num) => {
 		if (str.length <= num) {
@@ -50,7 +49,6 @@ const CategoryItem = ({ data }) => {
 }
 
 const CategoryItems = ({ categoryFromDynamo }) => {
-	console.log('Categoryitems: ', categoryFromDynamo)
 
 	// const extractSimpleValuesFromDynamoDBItem = (dynamoDbItem) => {
 	// 	let plainObject = {}

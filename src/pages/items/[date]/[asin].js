@@ -1,10 +1,5 @@
 // /Volumes/SSD_1TB/AmazonChrome/amazon-pages-router/src/pages/items/[asin].js
-
-import useItemData from '@/jotai/Store'
-import { combineDataByAsin } from '@/funcs/combineASIN'
-
 import Link from 'next/link'
-import Image from 'next/image'
 import TopHeader from '@/components/TopHeader'
 import Footer from '@/components/Footer'
 import BreadCrumb from '@/components/Breadcrumb'
@@ -18,6 +13,8 @@ import { dynamoQueryIndex } from '@/funcs/DpIndexDynamodb'
 import { dynamoQueryCategory } from '@/funcs/CategoryDynamodb'
 
 import { NextSeo, ArticleJsonLd } from 'next-seo'
+import Sidebar from '@/components/Sidebar'
+import Itemspagenavbar from '@/components/ItemsPage3navbar'
 
 export default function ItemsPage({
 	ProductasinFetchFromDynamo,
@@ -26,9 +23,6 @@ export default function ItemsPage({
 	categoryFromDynamo,
 	asin
 }) {
-	// console.log('ASINデータ', categoryFromDynamo)
-	// console.log(typeof categoryFromDynamo)
-
 	const [localData, setLocalData] = useState([])
 
 	useEffect(() => {
@@ -135,7 +129,7 @@ export default function ItemsPage({
 			<NextSeo
 				title={ProductasinFetchFromDynamo.productName.S}
 				description={`${ProductasinFetchFromDynamo.productName.S}のセール情報を紹介しています`}
-				canonical={``} // TODO: ドメイン決める
+				canonical={``} // TODO: ドメインURL入れる
 			/>
 
 			<ArticleJsonLd
@@ -151,6 +145,9 @@ export default function ItemsPage({
 			<div className="flex flex-col min-h-screen">
 				<TopHeader />
 				<div className="flex-grow">
+					{/* PC表示の場合は3段目のトップヘッダーを表示する */}
+					<Itemspagenavbar />
+
 					<BreadCrumb
 						categoryName={ProductasinFetchFromDynamo.categoryName.S}
 						productName={ProductasinFetchFromDynamo.productName.S}
@@ -223,60 +220,34 @@ export default function ItemsPage({
 
 					<div className="border-t border-gray-300 pb-3"></div>
 
-					{/* インデックスの最新情報 */}
-					<h2 className="text-gray-500 mt-3 mb-3 text-center text-2xl font-bold">最新セール情報</h2>
-					<div className="h-0.5 bg-gradient-to-r from-[#d299c2] to-[#fef9d7] ml-10 mr-10"></div>
-					<div className="flex flex-col md:flex-row bg-white p-4">
-						{relatedIndexFromDynamo.slice(0, 8).map((data, index) => (
-							<div className="text text-black" key={index}>
-								<Link href={`/items/${data.date.S}/${extractAsin(data.asin.S)}`} prefetch={false}>
-									<div className="h-[270px] w-full md:h-[270px] md:w-full mb-4">
-										<img
-											src={data.imageUrl.S}
-											alt={data.productName.S}
-											className="w-full h-full"
-											style={{ objectFit: 'contain' }}
-										/>
-									</div>
-									<div className="mr-2 ml-2">
-										<p>
-											{data.productName.S.length > 80
-												? `${data.productName.S.substring(0, 80)}...`
-												: data.productName.S}
-										</p>
-									</div>
-								</Link>
-							</div>
-						))}
-					</div>
-
 					{/* カテゴリーの最新情報 */}
-
 					<h2 className="text-gray-500 mt-3 mb-3 text-center text-2xl font-bold">似ている商品のセール情報</h2>
 					<div className="h-0.5 bg-gradient-to-r from-[#f093fb] to-[#f5576c] ml-10 mr-10"></div>
 
 					<div className="flex flex-col md:flex-row bg-white p-4">
-						{categoryFromDynamo.slice(0, 8).map((data, index) => (
-							<div className="text text-black" key={index}>
-								<Link href={`/items/${data.date.S}/${extractAsin(data.asin.S)}`} prefetch={false}>
-									<div className="h-[270px] w-full md:h-[270px] md:w-full mb-4">
-										<img
-											src={data.imageUrl.S}
-											alt={data.productName.S}
-											className="w-full h-full"
-											style={{ objectFit: 'contain' }}
-										/>
-									</div>
-									<div className="mr-2 ml-2">
-										<p>
-											{data.productName.S.length > 80
-												? `${data.productName.S.substring(0, 80)}...`
-												: data.productName.S}
-										</p>
-									</div>
-								</Link>
-							</div>
-						))}
+						<div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8">
+							{categoryFromDynamo.slice(0, 8).map((data, index) => (
+								<div className="text text-black" key={index}>
+									<Link href={`/items/${data.date.S}/${extractAsin(data.asin.S)}`} prefetch={false}>
+										<div className="h-[270px] w-full md:h-[270px] md:w-full mb-4">
+											<img
+												src={data.imageUrl.S}
+												alt={data.productName.S}
+												className="w-full h-full"
+												style={{ objectFit: 'contain' }}
+											/>
+										</div>
+										<div className="mr-2 ml-2">
+											<p>
+												{data.productName.S.length > 80
+													? `${data.productName.S.substring(0, 80)}...`
+													: data.productName.S}
+											</p>
+										</div>
+									</Link>
+								</div>
+							))}
+						</div>
 					</div>
 
 					{/* 閲覧履歴 */}
@@ -284,27 +255,62 @@ export default function ItemsPage({
 					<div className="h-0.5 bg-gradient-to-r from-[#43e97b] to-[#38f9d7] ml-10 mr-10"></div>
 
 					<div className="flex flex-col md:flex-row bg-white p-4">
-						{localData.slice(0, 8).map((data, index) => (
-							<div className="text text-black" key={index}>
-								<Link href={`/items/${data.date.S}/${extractAsin(data.asin.S)}`} prefetch={false}>
-									<div className="h-[270px] w-full md:h-[270px] md:w-full mb-4">
-										<img
-											src={data.imageUrl.S}
-											alt={data.productName.S}
-											className="w-full h-full"
-											style={{ objectFit: 'contain' }}
-										/>
-									</div>
-									<div className="mr-2 ml-2">
-										<p>
-											{data.productName.S.length > 80
-												? `${data.productName.S.substring(0, 80)}...`
-												: data.productName.S}
-										</p>
-									</div>
-								</Link>
-							</div>
-						))}
+						<div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8">
+							{localData.slice(0, 8).map((data, index) => (
+								<div className="text text-black" key={index}>
+									<Link href={`/items/${data.date.S}/${extractAsin(data.asin.S)}`} prefetch={false}>
+										<div className="h-[270px] w-full md:h-[270px] md:w-full mb-4">
+											<img
+												src={data.imageUrl.S}
+												alt={data.productName.S}
+												className="w-full h-full"
+												style={{ objectFit: 'contain' }}
+											/>
+										</div>
+										<div className="mr-2 ml-2">
+											<p>
+												{data.productName.S.length > 80
+													? `${data.productName.S.substring(0, 80)}...`
+													: data.productName.S}
+											</p>
+										</div>
+									</Link>
+								</div>
+							))}
+						</div>
+					</div>
+
+					{/* インデックスの最新情報 */}
+					<h2 className="text-gray-500 mt-3 mb-3 text-center text-2xl font-bold">最新セール情報</h2>
+					<div className="h-0.5 bg-gradient-to-r from-[#d299c2] to-[#fef9d7] ml-10 mr-10"></div>
+					<div className="flex flex-col md:flex-row bg-white p-4">
+						<div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8">
+							{relatedIndexFromDynamo.slice(0, 8).map((data, index) => (
+								<div className="text text-black" key={index}>
+									<Link href={`/items/${data.date.S}/${extractAsin(data.asin.S)}`} prefetch={false}>
+										<div className="h-[270px] w-full md:h-[270px] md:w-full mb-4">
+											<img
+												src={data.imageUrl.S}
+												alt={data.productName.S}
+												className="w-full h-full"
+												style={{ objectFit: 'contain' }}
+											/>
+										</div>
+										<div className="mr-2 ml-2">
+											<p>
+												{data.productName.S.length > 80
+													? `${data.productName.S.substring(0, 80)}...`
+													: data.productName.S}
+											</p>
+										</div>
+									</Link>
+								</div>
+							))}
+						</div>
+					</div>
+					{/* Sidebar */}
+					<div className="block md:hidden">
+						<Sidebar />
 					</div>
 				</div>
 				<Footer />

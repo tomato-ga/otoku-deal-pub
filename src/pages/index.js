@@ -14,7 +14,6 @@ import { dynamoBestSellerQuery } from '@/funcs/BestsellerDynamodb'
 import DealItems from '@/components/DealItemIndex'
 import BestSellerItems from '@/components/Bestseller'
 
-import SideCategoryLinks from '@/components/SideCategoryLinks'
 import Footer from '@/components/Footer'
 import Sidebar from '@/components/Sidebar'
 
@@ -66,7 +65,7 @@ export default function Home({
 
 	return (
 		<>
-			<TopHeader sidebarOpen={sidebarOpen} toggleSidebar={toggleSidebar} />
+			<TopHeader />
 
 			<div className="mx-auto flex flex-col md:flex-row justify-between md:justify-start min-h-screen bg-white">
 				{/* Main content */}
@@ -100,7 +99,7 @@ export default function Home({
 											{data.priceOff.S && (
 												<p className="text-lg md:text-2xl font-bold text-red-600 px-2">{data.priceOff.S}</p>
 											)}
-											<p className="text-lg md:text-2xl font-bold text-gray-700 px-2 ">{data.price.S}</p>
+											<p className="text-lg md:text-2xl font-bold text-gray-700 px-2">{data.price.S}</p>
 										</div>
 										{data.priceOff && (
 											<div className="flex ">
@@ -124,7 +123,8 @@ export default function Home({
 				</div>
 
 				{/* Sidebar */}
-				<Sidebar sidebarOpen={sidebarOpen} toggleSidebar={toggleSidebar} />
+				<Sidebar />
+
 			</div>
 			<Footer />
 		</>

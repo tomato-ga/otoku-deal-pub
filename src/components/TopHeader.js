@@ -6,9 +6,9 @@ const TopHeader = () => {
 	const toggleSidebar = useSidebarStore((state) => state.toggleSidebar)
 
 	return (
-		<header className="border-b relative">
+		<header className="relative">
 			{/* Upper Section */}
-			<div className="flex items-center h-10 pl-3 justify-between bg-[#141921] border-t-2 border-orange-300 ">
+			<div className="flex items-center h-12 pl-3 justify-between bg-[#141921] border-t-2 border-orange-300 ">
 				{/* Logo/Title */}
 				<Link href="/">
 					<div className="flex items-center">
@@ -27,7 +27,7 @@ const TopHeader = () => {
 			</div>
 
 			{/* Lower Section */}
-			<nav className="flex items-center h-16 pl-3 justify-between bg-[#232e3e]">
+			<nav className="flex items-center h-12 pl-3 justify-between bg-[#232e3e]">
 				<div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-3">
 					{/* Links for all screen sizes */}
 					<div className="flex space-x-2 lg:space-x-4">
@@ -38,12 +38,12 @@ const TopHeader = () => {
 							<span className="text-white hover:text-yellow-400 px-2 py-1 rounded-md cursor-pointer">お気に入り</span>
 						</Link> */}
 						<Link href="/group/page/1">
-							<span className="text-white hover:text-yellow-400 px-2 py-1 rounded-md cursor-pointer">
+							<span className="text-white hover:text-yellow-400 px-2 py-1 rounded-md cursor-pointer font-semibold">
 								グループセール
 							</span>
 						</Link>
 						<Link href="/rireki">
-							<span className="text-white hover:text-yellow-400 px-2 py-1 rounded-md cursor-pointer">閲覧履歴</span>
+							<span className="text-white hover:text-yellow-400 px-2 py-1 rounded-md cursor-pointer font-semibold">閲覧履歴</span>
 						</Link>
 					</div>
 				</div>
