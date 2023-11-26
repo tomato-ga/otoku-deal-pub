@@ -56,11 +56,12 @@ export default function Home({
 	}
 
 	const trackClick = (asindata) => {
-		// Google Analytics イベントを送信
-		window.gtag('event', 'imp_Click', {
-			event_category: `${asindata.categoryName.S}`,
-			event_label: `${asindata.asin.S}`
-		})
+		if (typeof window.gtag === 'function') {
+			window.gtag('event', 'imp_Click', {
+				event_category: `${asindata.categoryName.S}`,
+				event_label: `${asindata.asin.S}`
+			})
+		}
 	}
 
 	return (
