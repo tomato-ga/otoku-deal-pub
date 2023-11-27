@@ -4,8 +4,6 @@ import { GetServerSideProps } from 'next'
 import { dynamoSitemapIndexQuery } from '@/funcs/sitemapGenerate'
 
 export const getServerSideProps = async (ctx) => {
-	// TODO:  一日ごとに、トップインデックスのクエリ分だけURLを生成してxmlにする
-
 	let siteMapUrl = []
 
 	const indexDatas = await dynamoSitemapIndexQuery()
@@ -29,8 +27,7 @@ export const getServerSideProps = async (ctx) => {
 		'https://www.otoku-deal.com/category/DIY%E3%83%BB%E5%B7%A5%E5%85%B7%E3%83%BB%E3%82%AC%E3%83%BC%E3%83%87%E3%83%B3/page/1',
 		'https://www.otoku-deal.com/category/%E3%81%8A%E3%82%82%E3%81%A1%E3%82%83/page/1',
 		'https://www.otoku-deal.com/category/%E3%83%9A%E3%83%83%E3%83%88%E7%94%A8%E5%93%81/page/1',
-		'https://www.otoku-deal.com/group/page/1',
-		
+		'https://www.otoku-deal.com/group/page/1'
 	]
 
 	console.log(siteMapUrl)
