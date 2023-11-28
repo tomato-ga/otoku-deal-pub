@@ -50,50 +50,10 @@ const CategoryItem = ({ data }) => {
 
 const CategoryItems = ({ categoryFromDynamo }) => {
 
-	// const extractSimpleValuesFromDynamoDBItem = (dynamoDbItem) => {
-	// 	let plainObject = {}
-	// 	for (const [key, valueObj] of Object.entries(dynamoDbItem)) {
-	// 		// MEMO DynamoDBの値オブジェクトのうち、'S', 'N', 'B', 'BOOL'などのキーに対応する値だけを取り出す
-	// 		const valueKey = Object.keys(valueObj).find((k) => ['S', 'N', 'B', 'BOOL'].includes(k))
-	// 		plainObject[key] = valueObj[valueKey]
-	// 	}
-	// 	return plainObject
-	// }
-
-	// const extractSimpleValuesFromDynamoDBItems = (dynamoDbItems) => {
-	// 	console.log('extractSimpleValuesFromDynamoDBItems', dynamoDbItems)
-	// 	// Object.valuesを使ってオブジェクトの各配列にアクセス
-	// 	return Object.values(dynamoDbItems)
-	// 		.flat()
-	// 		.map((item) => extractSimpleValuesFromDynamoDBItem(item))
-	// }
-
-	// // dealItemsFromDynamoの値を使って処理を実行
-	// let plainArray = extractSimpleValuesFromDynamoDBItems(categoryItemsFromDynamo)
-
-	// return (
-	// 	<>
-	// 		{categoryFromDynamo.map((data) => (
-	// 			<div key={data.asin.S} className="deal-item">
-	// 				<div className="relative">
-	// 					{/* <h3 className="text-2xl font-bold pt-3 pr-3 pb-3 pl-1 mt-10">{h1Value}</h3> */}
-	// 					<div className="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-[#1fcff1] to-[#234cb6] mb-2"></div>
-	// 				</div>
-	// 				<div className="grid grid-cols-2 md:grid-cols-6 gap-4 bg-white mt-6">
-	// 					{data.map((item) => (
-	// 						<div key={item.asin.S}>
-	// 							<CategoryItem data={item} />
-	// 						</div>
-	// 					))}
-	// 				</div>
-	// 			</div>
-	// 		))}
-	// 	</>
-	// )
 
 	return (
 		<>
-			<div className="grid grid-cols-2 md:grid-cols-6 gap-4 bg-white mt-6">
+			<div className="grid grid-cols-2 md:grid-cols-5 gap-4 bg-white mt-6">
 				{categoryFromDynamo.map((item) => (
 					<div key={item.asin.S} className="deal-item">
 						{/* ここに各商品情報を表示するコード */}
