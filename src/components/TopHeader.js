@@ -17,7 +17,7 @@ const TopHeader = () => {
 					</div>
 				</Link>
 
-				<button className="md:hidden absolute top-2 right-1 z-50 text-gray-500" onClick={toggleSidebar}>
+				<button className="absolute top-2 right-1 z-50 text-gray-500" onClick={toggleSidebar}>
 					<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 						<path d="M3 12H21" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
 						<path d="M3 6H21" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
@@ -31,19 +31,15 @@ const TopHeader = () => {
 				<div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-3">
 					{/* Links for all screen sizes */}
 					<div className="flex space-x-2 lg:space-x-4">
-						{/* <Link href="/Mostpopular">
-							<span className="text-white hover:text-yellow-400 px-2 py-1 rounded-md cursor-pointer">人気</span>
-						</Link> */}
-						{/* <Link href="/favpage">
-							<span className="text-white hover:text-yellow-400 px-2 py-1 rounded-md cursor-pointer">お気に入り</span>
-						</Link> */}
 						<Link href="/group/page/1">
 							<span className="text-white hover:text-yellow-400 px-2 py-1 rounded-md cursor-pointer font-semibold">
 								グループセール
 							</span>
 						</Link>
 						<Link href="/rireki">
-							<span className="text-white hover:text-yellow-400 px-2 py-1 rounded-md cursor-pointer font-semibold">閲覧履歴</span>
+							<span className="text-white hover:text-yellow-400 px-2 py-1 rounded-md cursor-pointer font-semibold">
+								閲覧履歴
+							</span>
 						</Link>
 					</div>
 				</div>
