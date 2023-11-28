@@ -17,6 +17,8 @@ import BestSellerItems from '@/components/Bestseller'
 import Footer from '@/components/Footer'
 import Sidebar from '@/components/Sidebar'
 
+import Testnav from '@/components/testnav'
+
 export default function Home({
 	result,
 	lastEvaluatedKey,
@@ -124,7 +126,6 @@ export default function Home({
 
 				{/* Sidebar */}
 				<Sidebar />
-
 			</div>
 			<Footer />
 		</>
