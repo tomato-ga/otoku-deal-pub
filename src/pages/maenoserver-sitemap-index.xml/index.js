@@ -3,7 +3,9 @@ import { getServerSideSitemapIndexLegacy } from 'next-sitemap'
 import { GetServerSideProps } from 'next'
 import { dynamoSitemapIndexQuery } from '@/funcs/sitemapGenerate'
 
-export const getServerSideProps = async (ctx) => {
+export const getServerSideProps = async ({ ctx }) => {
+	ctx.setHeader('Content-Type', 'text/xml')
+
 	let siteMapUrl = []
 
 	const indexDatas = await dynamoSitemapIndexQuery()
