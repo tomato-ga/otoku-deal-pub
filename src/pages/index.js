@@ -1,7 +1,5 @@
 // /Volumes/SSD_1TB/AmazonChrome/amazon-pages-router/src/pages/index.js
 
-import { combineDataByAsin } from '@/funcs/combineASIN'
-
 import TopHeader from '@/components/TopHeader'
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
