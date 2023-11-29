@@ -227,7 +227,9 @@ export default function ItemsPage({
 						</div>
 						{/* Right Sidebar: スマホ表示ではフル幅 */}
 						<div className="w-full sm:w-1/5 pl-6 mt-4 sm:mt-0 sm:order-3 sm:border-l border-l-0">
-							<p className="text-gray-500 mb-2 text-center">Right Sidebar</p>
+							<p className="text-gray-500 mb-2 text-center">
+								割引は投稿時点の価格です。詳細はアマゾンのページでご確認ください。
+							</p>
 						</div>
 					</div>
 
