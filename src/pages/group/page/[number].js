@@ -27,7 +27,7 @@ const GroupSalePage = ({ dealItemsFromDynamo, LastEvaluatedKey, pageNumber }) =>
 
 			<TopHeader />
 			<div className="mx-auto flex flex-col md:flex-row justify-between md:justify-start min-h-screen bg-white">
-				<div className="w-full sm:w-1/2 md:w-3/4 p-4 bg-white order-1 md:order-2">
+				<div className="w-full md:w-full p-4 bg-white order-1 md:order-2">
 					<h2 className="text-2xl font-bold pt-3 pr-3 pb-3 pl-1 relative">
 						新着グループセールアイテム
 						<div className="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-[#f087ff]  to-[#6e1fce] mb-2"></div>

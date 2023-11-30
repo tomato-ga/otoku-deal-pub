@@ -2,7 +2,7 @@ import Link from 'next/link'
 
 const Itemspagenavbar = () => {
 	return (
-		<nav className="hidden md:flex h-12 pl-3 bg-[#232e3e]">
+		<nav className="hidden sm:flex h-12 pl-3 bg-[#232e3e]">
 			<div className="max-w-screen flex items-center justify-between mx-auto p-3 overflow-x-scroll">
 				{/* Links for all screen sizes */}
 				<div className="flex items-center space-x-2">

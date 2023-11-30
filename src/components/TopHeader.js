@@ -2,7 +2,7 @@ import Link from 'next/link'
 import { useState } from 'react'
 import useSidebarStore from '@/jotai/Store'
 
-const TopHeader = () => {
+const TopHeader = (isPage) => {
 	const toggleSidebar = useSidebarStore((state) => state.toggleSidebar)
 
 	return (
@@ -17,14 +17,36 @@ const TopHeader = () => {
 					</div>
 				</Link>
 
-				
-				<button className="sm:inline md:inline lg:hidden absolute items-center top-3 right-2 mr-2 z-50 text-gray-500" onClick={toggleSidebar}>
+				{isPage ? (
+					<button
+						className="sm:inline md:hidden  absolute items-center top-3 right-2 mr-2 z-50 text-gray-500"
+						onClick={toggleSidebar}
+					>
+						<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+							<path d="M3 12H21" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+							<path d="M3 6H21" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+							<path d="M3 18H21" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+						</svg>
+					</button>
+				) : (
+					<button
+						className="sm:inline md:inline lg:inline xl:hidden absolute items-center top-3 right-2 mr-2 z-50 text-gray-500"
+						onClick={toggleSidebar}
+					>
+						<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+							<path d="M3 12H21" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+							<path d="M3 6H21" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+							<path d="M3 18H21" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+						</svg>
+					</button>
+				)}
+				{/* <button className="sm:inline md:inline lg:inline xl:hidden absolute items-center top-3 right-2 mr-2 z-50 text-gray-500" onClick={toggleSidebar}>
 					<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 						<path d="M3 12H21" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
 						<path d="M3 6H21" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
 						<path d="M3 18H21" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
 					</svg>
-				</button>
+				</button> */}
 			</div>
 
 			{/* Lower Section */}
