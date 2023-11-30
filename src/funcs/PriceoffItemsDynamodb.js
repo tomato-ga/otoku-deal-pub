@@ -24,7 +24,7 @@ const dynamoQueryPriceoff = async () => {
 			ExpressionAttributeValues: {
 				':duExists': { S: 'false' }
 			},
-			Limit: 5
+			Limit: 5,
 			ScanIndexForward: false
 		}
 
