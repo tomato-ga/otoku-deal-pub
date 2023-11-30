@@ -56,12 +56,14 @@ export default function Home({
 	}
 
 	const trackClick = (asindata) => {
+		console.log('クリックイベント開始')
 		if (typeof window.gtag === 'function') {
 			window.gtag('event', 'imp_Click', {
 				event_category: `${asindata.categoryName.S}`,
 				event_label: `${asindata.asin.S}`
 			})
 		}
+		console.log('クリックイベント終わり')
 	}
 
 	// MEMO 割引率が一桁のアイテムは除外する
@@ -97,34 +99,41 @@ export default function Home({
 						{priceOfflimitItems(priceOffItems)
 							.slice(0, 5)
 							.map((data) => (
-								<div className="border p-2 bg-white flex flex-col h-full cursor-pointer">
-									<div className="flex-grow flex justify-center items-center mb-4 h-[270px] w-full">
-										<img
-											src={data.imageUrl.S}
-											alt={data.productName.S}
-											className="w-full max-h-[270px] object-contain"
-										/>
-									</div>
-									<h2 className="text-md font-semibold mb-1 text-gray-800 px-2 overflow-hidden">
-										{truncateString(data.productName.S, 50)}
-									</h2>
-									<div className="mt-auto">
-										<div className="flex">
-											{data.priceOff.S && (
-												<p className="text-lg md:text-2xl font-bold text-red-600 px-2">{data.priceOff.S}</p>
-											)}
-											<p className="text-lg md:text-2xl font-bold text-gray-700 px-2">{data.price.S}</p>
+								<Link
+									href={`/items/${data.date.S}/${extractAsin(data.asin.S)}`}
+									key={data.asin.S}
+									prefetch={false}
+									onClick={() => trackClick(data)}
+								>
+									<div className="border p-2 bg-white flex flex-col h-full cursor-pointer">
+										<div className="flex-grow flex justify-center items-center mb-4 h-[270px] w-full">
+											<img
+												src={data.imageUrl.S}
+												alt={data.productName.S}
+												className="w-full max-h-[270px] object-contain"
+											/>
 										</div>
-										{data.priceOff && (
-											<div className="flex ">
-												<p className="text-sm font-light text-gray-700 px-2">過去価格:</p>
-												<p className="text-sm font-light text-gray-700 px-2 line-through">
-													{calculateOriginalPrice(data.price.S, data.priceOff.S)}
-												</p>
+										<h2 className="text-md font-semibold mb-1 text-gray-800 px-2 overflow-hidden">
+											{truncateString(data.productName.S, 50)}
+										</h2>
+										<div className="mt-auto">
+											<div className="flex">
+												{data.priceOff.S && (
+													<p className="text-lg md:text-2xl font-bold text-red-600 px-2">{data.priceOff.S}</p>
+												)}
+												<p className="text-lg md:text-2xl font-bold text-gray-700 px-2">{data.price.S}</p>
 											</div>
-										)}
+											{data.priceOff && (
+												<div className="flex">
+													<p className="text-sm font-light text-gray-700 px-2">過去価格:</p>
+													<p className="text-sm font-light text-gray-700 px-2 line-through">
+														{calculateOriginalPrice(data.price.S, data.priceOff.S)}
+													</p>
+												</div>
+											)}
+										</div>
 									</div>
-								</div>
+								</Link>
 							))}
 					</div>
 
