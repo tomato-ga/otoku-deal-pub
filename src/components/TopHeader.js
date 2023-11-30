@@ -2,8 +2,9 @@ import Link from 'next/link'
 import { useState } from 'react'
 import useSidebarStore from '@/jotai/Store'
 
-const TopHeader = (isPage) => {
+const TopHeader = (props) => {
 	const toggleSidebar = useSidebarStore((state) => state.toggleSidebar)
+	const { isPage } = props
 
 	return (
 		<header className="relative">
@@ -17,9 +18,10 @@ const TopHeader = (isPage) => {
 					</div>
 				</Link>
 
+				{/* 個別ページはisPage == true */}
 				{isPage ? (
 					<button
-						className="sm:inline md:hidden  absolute items-center top-3 right-2 mr-2 z-50 text-gray-500"
+						className="sm:inline md:hidden lg:hidden xl:hidden 2xl:hidden absolute items-center top-3 right-2 mr-2 z-50 text-gray-500"
 						onClick={toggleSidebar}
 					>
 						<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">

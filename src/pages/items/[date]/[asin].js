@@ -156,7 +156,7 @@ export default function ItemsPage({
 			/>
 
 			<div className="flex flex-col min-h-screen">
-				<TopHeader isPage={asin} />
+				<TopHeader isPage={true} />
 				<div className="flex-grow">
 					{/* PC表示の場合は3段目のトップヘッダーを表示する */}
 					<Itemspagenavbar />

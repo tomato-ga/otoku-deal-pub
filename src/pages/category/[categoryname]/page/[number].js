@@ -32,11 +32,10 @@ const CategoryPages = ({ categoryResult, categoryLastkey, pageNumber, categoryNa
 
 	return (
 		<>
-
-		<NextSeo title={categoryName} />
+			<NextSeo title={categoryName} />
 
 			<div className="flex flex-col min-h-screen">
-				<TopHeader />
+				<TopHeader isPage={false} />
 				<div className="mx-auto flex flex-col md:flex-row justify-between md:justify-start min-h-screen bg-white">
 					<div className="w-full md:w-full p-4 bg-white order-1 md:order-2">
 						<h2 className="text-2xl font-bold pt-3 pr-3 pb-3 pl-1 relative">
