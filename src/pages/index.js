@@ -9,13 +9,13 @@ import useSidebarStore from '@/jotai/Store'
 import { dynamoQueryIndex } from '@/funcs/DpIndexDynamodb'
 import { dynamoQueryDeal } from '@/funcs/DealIndexDynamodb'
 import { dynamoBestSellerQuery } from '@/funcs/BestsellerDynamodb'
+import { dynamoQueryPriceoff } from '@/funcs/PriceoffItemsDynamodb'
+
 import DealItems from '@/components/DealItemIndex'
 import BestSellerItems from '@/components/Bestseller'
 
 import Footer from '@/components/Footer'
 import Sidebar from '@/components/Sidebar'
-
-import Testnav from '@/components/testnav'
 
 export default function Home({
 	result,
@@ -25,7 +25,8 @@ export default function Home({
 	dealItemsFromDynamo,
 	bestSellerBooksFromDynamo,
 	bestSellerVideoGamesFromDynamo,
-	bestSellerPCFromDynamo
+	bestSellerPCFromDynamo,
+	priceOffItems
 }) {
 	useEffect(() => {
 		if (lastEvaluatedKey) {
@@ -62,6 +63,8 @@ export default function Home({
 			})
 		}
 	}
+
+	console.log('off', priceOffItems)
 
 	return (
 		<>
@@ -151,6 +154,8 @@ export async function getServerSideProps(context) {
 	)
 	const bestSellerPCFromDynamo = await dynamoBestSellerQuery('https://www.amazon.co.jp/gp/bestsellers/computers/')
 
+	const priceOffItems = await dynamoQueryPriceoff()
+
 	return {
 		props: {
 			result: result.Items || [],
@@ -160,7 +165,8 @@ export async function getServerSideProps(context) {
 			dealItemsFromDynamo: dealItemsFromDynamo.Items || [],
 			bestSellerBooksFromDynamo,
 			bestSellerVideoGamesFromDynamo,
-			bestSellerPCFromDynamo
+			bestSellerPCFromDynamo,
+			priceOffItems: priceOffItems.Items || []
 		}
 	}
 }

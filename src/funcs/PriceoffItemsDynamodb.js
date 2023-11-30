@@ -2,7 +2,7 @@ const { DynamoDBClient, QueryCommand } = require('@aws-sdk/client-dynamodb')
 
 // DynamoDBクエリ関数
 // lastEvaluatedKeyをパラメータとして追加
-const dynamoQueryPriceoff = async (lastEvaluatedKey = null) => {
+const dynamoQueryPriceoff = async () => {
 	const client = new DynamoDBClient({
 		region: 'ap-northeast-1',
 		credentials: {
@@ -24,7 +24,7 @@ const dynamoQueryPriceoff = async (lastEvaluatedKey = null) => {
 			ExpressionAttributeValues: {
 				':duExists': { S: 'false' }
 			},
-			Limit: 5,
+			Limit: 5
 			ScanIndexForward: false
 		}
 
