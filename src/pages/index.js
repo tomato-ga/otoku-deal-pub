@@ -64,7 +64,23 @@ export default function Home({
 		}
 	}
 
-	console.log('off', priceOffItems)
+	// MEMO 割引率が一桁のアイテムは除外する
+	const priceOfflimitItems = (priceOffItemList) => {
+		let priceOfflimitOnItems = []
+
+		priceOffItemList.forEach((item) => {
+			if (item.priceOff && typeof item.priceOff.S === 'string') {
+				const priceOffValue = parseInt(item.priceOff.S.replace('%', '').replace('-', ''), 10)
+
+				// parseIntの結果をチェック
+				if (!isNaN(priceOffValue) && priceOffValue >= 10) {
+					priceOfflimitOnItems.push(item)
+				}
+			}
+		})
+
+		return priceOfflimitOnItems
+	}
 
 	return (
 		<>
@@ -73,6 +89,45 @@ export default function Home({
 			<div className="mx-auto flex flex-col md:flex-row justify-between md:justify-start min-h-screen bg-white">
 				{/* Main content */}
 				<div className="w-full md:w-full p-4 bg-white order-1 md:order-2">
+					<h2 className="text-2xl font-bold pt-3 pr-3 pb-3 pl-1 relative">
+						割引率が高いアイテム
+						<div className="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-[#f087ff]  to-[#6e1fce] mb-2"></div>
+					</h2>
+					<div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4 bg-white mt-6">
+						{priceOfflimitItems(priceOffItems)
+							.slice(0, 5)
+							.map((data) => (
+								<div className="border p-2 bg-white flex flex-col h-full cursor-pointer">
+									<div className="flex-grow flex justify-center items-center mb-4 h-[270px] w-full">
+										<img
+											src={data.imageUrl.S}
+											alt={data.productName.S}
+											className="w-full max-h-[270px] object-contain"
+										/>
+									</div>
+									<h2 className="text-md font-semibold mb-1 text-gray-800 px-2 overflow-hidden">
+										{truncateString(data.productName.S, 50)}
+									</h2>
+									<div className="mt-auto">
+										<div className="flex">
+											{data.priceOff.S && (
+												<p className="text-lg md:text-2xl font-bold text-red-600 px-2">{data.priceOff.S}</p>
+											)}
+											<p className="text-lg md:text-2xl font-bold text-gray-700 px-2">{data.price.S}</p>
+										</div>
+										{data.priceOff && (
+											<div className="flex ">
+												<p className="text-sm font-light text-gray-700 px-2">過去価格:</p>
+												<p className="text-sm font-light text-gray-700 px-2 line-through">
+													{calculateOriginalPrice(data.price.S, data.priceOff.S)}
+												</p>
+											</div>
+										)}
+									</div>
+								</div>
+							))}
+					</div>
+
 					<h2 className="text-2xl font-bold pt-3 pr-3 pb-3 pl-1 relative">
 						新着セールアイテム
 						<div className="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-[#f087ff]  to-[#6e1fce] mb-2"></div>
@@ -118,7 +173,6 @@ export default function Home({
 						))}
 					</div>
 					<Pagination hasNextPage={!!lastEvaluatedKey} />
-
 					<DealItems dealItemsFromDynamo={dealItemsFromDynamo} />
 					<BestSellerItems bestSellerFromDynamo={bestSellerBooksFromDynamo} />
 					<BestSellerItems bestSellerFromDynamo={bestSellerVideoGamesFromDynamo} />
