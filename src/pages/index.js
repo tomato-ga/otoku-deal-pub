@@ -55,13 +55,23 @@ export default function Home({
 		return value.replace('ASIN#', '')
 	}
 
+	// const trackClick = (asindata) => {
+	// 	if (typeof window.gtag === 'function') {
+	// 		window.gtag('event', 'imp_Click', {
+	// 			event_category: `${asindata.categoryName.S}`,
+	// 			event_label: `${asindata.asin.S}`
+	// 		})
+	// 	}
+	// }
+
+	// TODO : GTMデータレイヤー経由で、GA4にクリック数を保存したい。クリック数を保存するときには、ASIN情報とカテゴリー名を保存したい
 	const trackClick = (asindata) => {
-		if (typeof window.gtag === 'function') {
-			window.gtag('event', 'imp_Click', {
-				event_category: `${asindata.categoryName.S}`,
-				event_label: `${asindata.asin.S}`
-			})
-		}
+		window.dataLayer = window.dataLayer || []
+		dataLayer.push({
+			event: 'index_to_page_click',
+			ASIN: asindata.asin.S,
+			category: asindata.categoryName.S
+		})
 	}
 
 	// MEMO 割引率が一桁のアイテムは除外する
