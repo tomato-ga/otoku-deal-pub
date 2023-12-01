@@ -48,7 +48,6 @@ const DealItem = ({ data }) => {
 }
 
 const DealItems = ({ dealItemsFromDynamo }) => {
-
 	const extractSimpleValuesFromDynamoDBItem = (dynamoDbItem) => {
 		let plainObject = {}
 		for (const [key, valueObj] of Object.entries(dynamoDbItem)) {
@@ -96,6 +95,7 @@ const DealItems = ({ dealItemsFromDynamo }) => {
 						))}
 					</div>
 				</div>
+				
 			))}
 		</>
 	)
