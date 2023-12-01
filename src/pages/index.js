@@ -56,14 +56,12 @@ export default function Home({
 	}
 
 	const trackClick = (asindata) => {
-		console.log('クリックイベント開始')
 		if (typeof window.gtag === 'function') {
 			window.gtag('event', 'imp_Click', {
 				event_category: `${asindata.categoryName.S}`,
 				event_label: `${asindata.asin.S}`
 			})
 		}
-		console.log('クリックイベント終わり')
 	}
 
 	// MEMO 割引率が一桁のアイテムは除外する
