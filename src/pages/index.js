@@ -183,6 +183,18 @@ export default function Home({
 					</div>
 					<Pagination hasNextPage={!!lastEvaluatedKey} />
 					<DealItems dealItemsFromDynamo={dealItemsFromDynamo} />
+
+					<div className="flex items-center justify-center">
+						<Link href="/group/page/1" prefetch={false}>
+							<button
+								className="flex items-center justify-center px-4 py-2 w-80 h-14 ml-2 mt-4 leading-tight text-gray-800 font-semibold rounded-lg hover:text-gray-100
+						bg-gradient-to-r from-[#B7DCFF] to-[#FFA4F6]"
+							>
+								グループセール一覧
+							</button>
+						</Link>
+					</div>
+
 					<BestSellerItems bestSellerFromDynamo={bestSellerBooksFromDynamo} />
 					<BestSellerItems bestSellerFromDynamo={bestSellerVideoGamesFromDynamo} />
 					<BestSellerItems bestSellerFromDynamo={bestSellerPCFromDynamo} />
