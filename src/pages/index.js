@@ -69,7 +69,7 @@ export default function Home({
 		window.dataLayer = window.dataLayer || []
 		dataLayer.push({
 			event: 'index_to_page_click',
-			ASIN: asindata.asin.S,
+			ASIN: asindata.asin.S.replace('ASIN#', ''),
 			category: asindata.categoryName.S
 		})
 	}
