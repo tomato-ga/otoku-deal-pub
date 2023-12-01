@@ -28,6 +28,8 @@ export default function Home({
 	bestSellerPCFromDynamo,
 	priceOffItems
 }) {
+	// TODO 今日じゃない日付のlocalStorage lastkeyが保存されていたら削除するか上書きするか決める
+
 	useEffect(() => {
 		if (lastEvaluatedKey) {
 			const storageValue = JSON.stringify(lastEvaluatedKey)
