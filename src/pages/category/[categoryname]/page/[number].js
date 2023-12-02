@@ -78,6 +78,7 @@ export async function getServerSideProps(context) {
 		}
 	}
 
+	// TODO localstorageにlastkeyを保存しない方法でもよいかもしれない
 	if (pageNumber > 1) {
 		if (lastEvaluatedKey) {
 			const categoryResultNextPage = await dynamoQueryCategory(categoryName, limit, lastEvaluatedKey)
