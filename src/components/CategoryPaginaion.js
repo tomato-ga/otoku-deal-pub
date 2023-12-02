@@ -1,10 +1,8 @@
-// Pagination.js
+// /Volumes/SSD_1TB/otoku-deal/src/components/CategoryPaginaion.js
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 
 const CategoryPagination = ({ categoryName, hasNextPage }) => {
-
-
 	const router = useRouter()
 	const currentPage = parseInt(router.query.number) || 1
 	const nextPage = currentPage + 1

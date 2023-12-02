@@ -16,7 +16,7 @@ import Footer from '@/components/Footer'
 import { NextSeo } from 'next-seo'
 
 const CategoryPages = ({ categoryResult, categoryLastkey, pageNumber, categoryName }) => {
-	// console.log("Saving cookie for page:", pageNumber, "with key:", result.lastEvaluatedKey); // ログ出力
+	console.log('Saving cookie for page:', pageNumber, 'with key:', categoryLastkey) // ログ出力
 	const showPagination = !categoryResult.endOfData
 
 	// カテゴリーページ
