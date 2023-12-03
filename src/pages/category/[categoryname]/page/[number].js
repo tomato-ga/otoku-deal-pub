@@ -12,7 +12,6 @@ import { NextSeo } from 'next-seo'
 
 const CategoryPages = ({ categoryResult, categoryLastkey, pageNumber, categoryName }) => {
 	console.log('Saving cookie for page:', pageNumber, 'with key:', categoryLastkey) // ログ出力
-	const showPagination = !categoryResult.endOfData
 
 	// カテゴリーページ
 	useEffect(() => {
@@ -61,50 +60,26 @@ export async function getServerSideProps(context) {
 	const lastEvaluatedKey = context.query.lastkey ? JSON.parse(decodeURIComponent(context.query.lastkey)) : null
 	const limit = 20
 
-	if (pageNumber == 1) {
+	// propsの初期化
+	let props = {
+		categoryResult: [],
+		categoryLastkey: null,
+		pageNumber,
+		categoryName,
+		error: null
+	}
+
+	if (pageNumber === 1) {
 		const categoryResult = await dynamoQueryCategory(categoryName, limit)
-		return {
-			props: {
-				categoryResult: categoryResult.Items || [],
-				categoryLastkey: categoryResult.LastEvaluatedKey || null,
-				pageNumber,
-				categoryName
-			}
-		}
+		props.categoryResult = categoryResult.Items || []
+		props.categoryLastkey = categoryResult.LastEvaluatedKey || null
+	} else if (lastEvaluatedKey) {
+		const categoryResultNextPage = await dynamoQueryCategory(categoryName, limit, lastEvaluatedKey)
+		props.categoryResult = categoryResultNextPage.Items || []
+		props.categoryLastkey = categoryResultNextPage.LastEvaluatedKey || null
+	} else {
+		props.error = 'LastEvaluatedKeyが見つかりませんでした。'
 	}
 
-	// TODO localstorageにlastkeyを保存しない方法でもよいかもしれない
-	if (pageNumber > 1) {
-		if (lastEvaluatedKey) {
-			const categoryResultNextPage = await dynamoQueryCategory(categoryName, limit, lastEvaluatedKey)
-
-			return {
-				props: {
-					categoryResult: categoryResultNextPage.Items || [],
-					categoryLastkey: categoryResultNextPage.LastEvaluatedKey || null,
-					pageNumber,
-					categoryName
-				}
-			}
-		} else {
-			return {
-				props: {
-					categoryResult: [],
-					categoryLastkey: null,
-					pageNumber,
-					categoryName,
-					error: 'LastEvaluatedKeyが見つかりませんでした。'
-				}
-			}
-		}
-	}
-	return {
-		props: {
-			categoryResult: [],
-			categoryLastkey: null,
-			pageNumber,
-			categoryName,
-			error: 'LastEvaluatedKeyが見つかりませんでした。'
-		}
-	}
+	return { props }
 }
