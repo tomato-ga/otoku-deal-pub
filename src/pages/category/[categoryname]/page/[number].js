@@ -24,6 +24,8 @@ const CategoryPages = ({ categoryResult, categoryLastkey, pageNumber, categoryNa
 		}
 	}, [categoryLastkey, pageNumber])
 
+	console.log('useEffect後のlastkey: ', categoryLastkey)
+
 	return (
 		<>
 			<NextSeo title={categoryName} />
@@ -73,10 +75,12 @@ export async function getServerSideProps(context) {
 		const categoryResult = await dynamoQueryCategory(categoryName, limit)
 		props.categoryResult = categoryResult.Items || []
 		props.categoryLastkey = categoryResult.LastEvaluatedKey || null
+		console.log('1.SSR実行', props.categoryLastkey)
 	} else if (lastEvaluatedKey) {
 		const categoryResultNextPage = await dynamoQueryCategory(categoryName, limit, lastEvaluatedKey)
 		props.categoryResult = categoryResultNextPage.Items || []
 		props.categoryLastkey = categoryResultNextPage.LastEvaluatedKey || null
+		console.log('1.SSR実行', props.categoryLastkey)
 	} else {
 		props.error = 'LastEvaluatedKeyが見つかりませんでした。'
 	}

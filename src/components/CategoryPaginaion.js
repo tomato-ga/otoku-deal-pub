@@ -3,13 +3,13 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 
 const CategoryPagination = ({ categoryName, hasNextPage }) => {
-	console.log('hasNextPage', hasNextPage)
-
 	const router = useRouter()
 	const currentPage = parseInt(router.query.number) || 1
 	const nextPage = currentPage + 1
 	const prevPage = currentPage - 1
 	const prevPaginationNumber = currentPage - 2
+
+	console.log('hasNextPage: ', `${currentPage}ページ目のhasNextPage: ${hasNextPage}`)
 
 	const handlePrevPage = () => {
 		const prevPageNumber = currentPage - 1
