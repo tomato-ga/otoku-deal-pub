@@ -11,7 +11,8 @@ import Footer from '@/components/Footer'
 import { NextSeo } from 'next-seo'
 
 const CategoryPages = ({ categoryResult, categoryLastkey, pageNumber, categoryName }) => {
-	console.log('Saving cookie for page:', pageNumber, 'with key:', categoryLastkey) // ログ出力
+	// console.log("Saving cookie for page:", pageNumber, "with key:", result.lastEvaluatedKey); // ログ出力
+	const showPagination = !categoryResult.endOfData
 
 	// カテゴリーページ
 	useEffect(() => {
@@ -23,8 +24,6 @@ const CategoryPages = ({ categoryResult, categoryLastkey, pageNumber, categoryNa
 			}
 		}
 	}, [categoryLastkey, pageNumber])
-
-	console.log('useEffect後のlastkey:', categoryLastkey)
 
 	return (
 		<>
@@ -62,28 +61,49 @@ export async function getServerSideProps(context) {
 	const lastEvaluatedKey = context.query.lastkey ? JSON.parse(decodeURIComponent(context.query.lastkey)) : null
 	const limit = 20
 
-	// propsの初期化
-	let props = {
-		categoryResult: [],
-		categoryLastkey: null,
-		pageNumber,
-		categoryName,
-		error: null
-	}
-
-	if (pageNumber === 1) {
+	if (pageNumber == 1) {
 		const categoryResult = await dynamoQueryCategory(categoryName, limit)
-		props.categoryResult = categoryResult.Items || []
-		props.categoryLastkey = categoryResult.LastEvaluatedKey || null
-		console.log('1.SSR実行', props.categoryLastkey)
-	} else if (lastEvaluatedKey) {
-		const categoryResultNextPage = await dynamoQueryCategory(categoryName, limit, lastEvaluatedKey)
-		props.categoryResult = categoryResultNextPage.Items || []
-		props.categoryLastkey = categoryResultNextPage.LastEvaluatedKey || null
-		console.log('1.SSR実行', props.categoryLastkey)
-	} else {
-		props.error = 'LastEvaluatedKeyが見つかりませんでした。'
+		return {
+			props: {
+				categoryResult: categoryResult.Items || [],
+				categoryLastkey: categoryResult.LastEvaluatedKey || null,
+				pageNumber,
+				categoryName
+			}
+		}
 	}
 
-	return { props }
+	if (pageNumber > 1) {
+		if (lastEvaluatedKey) {
+			const categoryResultNextPage = await dynamoQueryCategory(categoryName, limit, lastEvaluatedKey)
+
+			return {
+				props: {
+					categoryResult: categoryResultNextPage.Items || [],
+					categoryLastkey: categoryResultNextPage.LastEvaluatedKey || null,
+					pageNumber,
+					categoryName
+				}
+			}
+		} else {
+			return {
+				props: {
+					categoryResult: [],
+					categoryLastkey: null,
+					pageNumber,
+					categoryName,
+					error: 'LastEvaluatedKeyが見つかりませんでした。'
+				}
+			}
+		}
+	}
+	return {
+		props: {
+			categoryResult: [],
+			categoryLastkey: null,
+			pageNumber,
+			categoryName,
+			error: 'LastEvaluatedKeyが見つかりませんでした。'
+		}
+	}
 }

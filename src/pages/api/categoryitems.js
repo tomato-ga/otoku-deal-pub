@@ -1,13 +1,12 @@
-// pages/api/indexitems.js
-import { dynamoQueryIndex } from '@/funcs/DpIndexDynamodb'
+// pages/api/categoryitems.js
+import { dynamoQueryCategory } from '@/funcs/CategoryDynamodb'
 
 export default async function handler(req, res) {
-	// URLパラメータからLastEvaluatedKeyを取得
-	const { lastKey } = req.query
+	const { categoryName, lastKey } = req.query
 	const lastEvaluatedKey = lastKey ? JSON.parse(decodeURIComponent(lastKey)) : null
 
 	// DynamoDBクエリを実行
-	const result = await dynamoQueryIndex(lastEvaluatedKey)
+	const result = await dynamoQueryCategory(categoryName, 20, lastEvaluatedKey)
 
 	if (result.Items) {
 		res.status(200).json({ items: result.Items, lastEvaluatedKey: result.LastEvaluatedKey })
