@@ -1,6 +1,6 @@
 //  /Volumes/SSD_1TB/AmazonChrome/amazon-pages-router/src/tag/[tagpage]/page/[number].js
 
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import TopHeader from '@/components/TopHeader'
 import Sidebar from '@/components/Sidebar'
 
@@ -10,10 +10,12 @@ import { dynamoQueryCategory } from '@/funcs/CategoryDynamodb'
 import Footer from '@/components/Footer'
 import { NextSeo } from 'next-seo'
 
-const CategoryPages = ({ categoryResult, categoryLastkey, pageNumber, categoryName }) => {
-	console.log('Saving cookie for page:', pageNumber, 'with key:', categoryLastkey) // ログ出力
+const CategoryPages = ({ categoryResult, categoryLastkeyinitial, pageNumber, categoryName }) => {
+	console.log('Saving cookie for page:', pageNumber, 'with key:', categoryLastkeyinitial) // ログ出力
 
 	// カテゴリーページ
+	const [categoryLastkey, setCategoryLastkey] = useState(categoryLastkeyinitial)
+
 	useEffect(() => {
 		if (categoryLastkey) {
 			const existingKey = localStorage.getItem(`lastEvaluatedKey_category_page_${categoryName}_${pageNumber}`)
@@ -22,7 +24,7 @@ const CategoryPages = ({ categoryResult, categoryLastkey, pageNumber, categoryNa
 				localStorage.setItem(`lastEvaluatedKey_category_page_${categoryName}_${pageNumber}`, storageValue)
 			}
 		}
-	}, [categoryLastkey, pageNumber])
+	}, [categoryLastkey, pageNumber, categoryName])
 
 	console.log('useEffect後のlastkey: ', categoryLastkey)
 
@@ -65,7 +67,7 @@ export async function getServerSideProps(context) {
 	// propsの初期化
 	let props = {
 		categoryResult: [],
-		categoryLastkey: null,
+		categoryLastkeyinitial: null,
 		pageNumber,
 		categoryName,
 		error: null
@@ -74,13 +76,13 @@ export async function getServerSideProps(context) {
 	if (pageNumber === 1) {
 		const categoryResult = await dynamoQueryCategory(categoryName, limit)
 		props.categoryResult = categoryResult.Items || []
-		props.categoryLastkey = categoryResult.LastEvaluatedKey || null
-		console.log('1.SSR実行', props.categoryLastkey)
+		props.categoryLastkeyinitial = categoryResult.LastEvaluatedKey || null
+		console.log('1.SSR実行', props.categoryLastkeyinitial)
 	} else if (lastEvaluatedKey) {
 		const categoryResultNextPage = await dynamoQueryCategory(categoryName, limit, lastEvaluatedKey)
 		props.categoryResult = categoryResultNextPage.Items || []
-		props.categoryLastkey = categoryResultNextPage.LastEvaluatedKey || null
-		console.log('1.SSR実行', props.categoryLastkey)
+		props.categoryLastkeyinitial = categoryResultNextPage.LastEvaluatedKey || null
+		console.log('1.SSR実行', props.categoryLastkeyinitial)
 	} else {
 		props.error = 'LastEvaluatedKeyが見つかりませんでした。'
 	}
