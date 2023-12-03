@@ -10,6 +10,8 @@ import { dynamoQueryCategory } from '@/funcs/CategoryDynamodb'
 import Footer from '@/components/Footer'
 import { NextSeo } from 'next-seo'
 
+// TODO APIルートを使って、paginateScanで実装する -> lastkeyは結局保存しておかないといけない
+
 const CategoryPages = ({ categoryResult, categoryLastkey, pageNumber, categoryName }) => {
 	// console.log("Saving cookie for page:", pageNumber, "with key:", result.lastEvaluatedKey); // ログ出力
 	const showPagination = !categoryResult.endOfData
