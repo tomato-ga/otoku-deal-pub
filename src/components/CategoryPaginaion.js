@@ -3,6 +3,8 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 
 const CategoryPagination = ({ categoryName, hasNextPage }) => {
+	console.log('hasNextPage', hasNextPage)
+
 	const router = useRouter()
 	const currentPage = parseInt(router.query.number) || 1
 	const nextPage = currentPage + 1
@@ -14,17 +16,21 @@ const CategoryPagination = ({ categoryName, hasNextPage }) => {
 		const lastEvaluatedKey = localStorage.getItem(
 			`lastEvaluatedKey_category_page_${categoryName}_${prevPaginationNumber}`
 		)
-		router.push(
-			`/category/${categoryName}/page/${prevPageNumber}?lastkey=${encodeURIComponent(lastEvaluatedKey || '')}`
-		)
+		if (lastEvaluatedKey) {
+			router.push(`/category/${categoryName}/page/${prevPageNumber}?lastkey=${encodeURIComponent(lastEvaluatedKey)}`)
+		} else {
+			router.push(`/category/${categoryName}/page/${prevPageNumber}`)
+		}
 	}
 
 	const handleNextPage = () => {
 		const nextPageNumber = currentPage + 1
 		const lastEvaluatedKey = localStorage.getItem(`lastEvaluatedKey_category_page_${categoryName}_${currentPage}`)
-		router.push(
-			`/category/${categoryName}/page/${nextPageNumber}?lastkey=${encodeURIComponent(lastEvaluatedKey || '')}`
-		)
+		if (lastEvaluatedKey) {
+			router.push(`/category/${categoryName}/page/${nextPageNumber}?lastkey=${encodeURIComponent(lastEvaluatedKey)}`)
+		} else {
+			router.push(`/category/${categoryName}/page/${nextPageNumber}`)
+		}
 	}
 
 	return (

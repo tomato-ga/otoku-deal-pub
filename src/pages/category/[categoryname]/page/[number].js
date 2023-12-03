@@ -1,13 +1,8 @@
 //  /Volumes/SSD_1TB/AmazonChrome/amazon-pages-router/src/tag/[tagpage]/page/[number].js
 
-import { combineDataByAsin } from '@/funcs/combineASIN'
-
 import { useEffect } from 'react'
 import TopHeader from '@/components/TopHeader'
 import Sidebar from '@/components/Sidebar'
-import Pagination from '@/components/Pagination'
-import Image from 'next/image'
-import Link from 'next/link'
 
 import CategoryItems from '@/components/CategoryItemIndex'
 import CategoryPagination from '@/components/CategoryPaginaion'
