@@ -217,15 +217,17 @@ export default function Home({
 					</div>
 
 					{lastEvaluatedKey && (
-						<Link href={`/page/2`}>
-							<button
-								onClick={handleNextPage}
-								className="flex items-center justify-center px-4 py-2 w-40 h-14 ml-2 leading-tight text-gray-800 font-semibold rounded-lg hover:text-gray-100
-				bg-gradient-to-r from-[#B7DCFF] to-[#FFA4F6]"
-							>
-								次のページ
-							</button>
-						</Link>
+						<div className="flex items-center justify-center">
+							<Link href={`/page/2`}>
+								<button
+									onClick={handleNextPage}
+									className="flex items-center justify-center px-4 py-2 w-40 h-14 mt-4 ml-2 leading-tight text-gray-800 font-semibold rounded-lg hover:text-gray-100
+				bg-gradient-to-r from-[#FF7EC7] to-[#FFED46]"
+								>
+									次のページ
+								</button>
+							</Link>
+						</div>
 					)}
 					{/* <Pagination hasNextPage={!!lastEvaluatedKey} /> */}
 					<DealItems dealItemsFromDynamo={dealResult} />

@@ -100,7 +100,7 @@ const CategoryPages = () => {
 										<button
 											onClick={handleNextPage}
 											className="flex items-center justify-center px-4 py-2 w-40 h-14 ml-2 leading-tight text-gray-800 font-semibold rounded-lg hover:text-gray-100
-							bg-gradient-to-r from-[#B7DCFF] to-[#FFA4F6]"
+							bg-gradient-to-r from-[#FF7EC7] to-[#FFED46]"
 										>
 											次のページ
 										</button>
