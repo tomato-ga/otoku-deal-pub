@@ -17,23 +17,24 @@ import BestSellerItems from '@/components/Bestseller'
 import Footer from '@/components/Footer'
 import Sidebar from '@/components/Sidebar'
 
+import useIndexStore from '@/jotai/IndexStore'
+
 export default function Home({
 	result,
 	lastEvaluatedKey,
 	pageNumber,
-	hasMore,
 	dealItemsFromDynamo,
 	bestSellerBooksFromDynamo,
 	bestSellerVideoGamesFromDynamo,
 	bestSellerPCFromDynamo,
 	priceOffItems
 }) {
-	// TODO 今日じゃない日付のlocalStorage lastkeyが保存されていたら削除するか上書きするか決める
+
+	const { lastKeyList, setLastKeyList } = useIndexStore()
 
 	useEffect(() => {
 		if (lastEvaluatedKey) {
-			const storageValue = JSON.stringify(lastEvaluatedKey)
-			localStorage.setItem(`lastEvaluatedKey_page_${pageNumber}`, storageValue)
+			setLastKeyList(pageNumber, lastEvaluatedKey)
 		}
 	}, [lastEvaluatedKey, pageNumber])
 
@@ -57,16 +58,6 @@ export default function Home({
 		return value.replace('ASIN#', '')
 	}
 
-	// const trackClick = (asindata) => {
-	// 	if (typeof window.gtag === 'function') {
-	// 		window.gtag('event', 'imp_Click', {
-	// 			event_category: `${asindata.categoryName.S}`,
-	// 			event_label: `${asindata.asin.S}`
-	// 		})
-	// 	}
-	// }
-
-	// TODO : GTMデータレイヤー経由で、GA4にクリック数を保存したい。クリック数を保存するときには、ASIN情報とカテゴリー名を保存したい
 	const trackClick = (asindata) => {
 		window.dataLayer = window.dataLayer || []
 		dataLayer.push({
@@ -227,9 +218,6 @@ export async function getServerSideProps(context) {
 	// DynamoDBクエリ関数を呼び出し
 	const result = await dynamoQueryIndex()
 
-	// LastEvaluatedKeyの存在をチェック
-	const hasMore = !!result.LastEvaluatedKey
-
 	// /dealごとのDynamoDB直クエリ
 	const dealItemsFromDynamo = await dynamoQueryDeal()
 
@@ -244,9 +232,8 @@ export async function getServerSideProps(context) {
 	return {
 		props: {
 			result: result.Items || [],
-			lastEvaluatedKey: hasMore ? result.LastEvaluatedKey : null,
+			lastEvaluatedKey: result.LastEvaluatedKey || null,
 			pageNumber,
-			hasMore,
 			dealItemsFromDynamo: dealItemsFromDynamo.Items || [],
 			bestSellerBooksFromDynamo,
 			bestSellerVideoGamesFromDynamo,

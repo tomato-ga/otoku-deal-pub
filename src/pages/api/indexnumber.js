@@ -5,8 +5,8 @@ export default async function handler(req, res) {
 	const result = await dynamoQueryIndex(lastkey)
 
 	if (result.Items) {
-		res.status(200).json({ items: result.Items, lastEvaluatedKey: result.LastEvaluatedKey })
+		res.status(200).json({ items: result.Items, LastKey: result.LastEvaluatedKey })
 	} else {
-		res.status(500).json({ error: 'データ取得に失敗' })
+		res.status(500).json({ error: 'APIルートindexnumber.js データ取得失敗' })
 	}
 }
