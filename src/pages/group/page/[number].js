@@ -10,6 +10,7 @@ import Sidebar from '@/components/Sidebar'
 import Footer from '@/components/Footer'
 import { NextSeo } from 'next-seo'
 
+// TODO APIルートにする
 const GroupSalePage = ({ dealItemsFromDynamo, LastEvaluatedKey, pageNumber }) => {
 	useEffect(() => {
 		if (LastEvaluatedKey) {
