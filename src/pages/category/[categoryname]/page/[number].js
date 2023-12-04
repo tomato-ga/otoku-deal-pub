@@ -12,6 +12,7 @@ import { useRouter } from 'next/router'
 import Link from 'next/link'
 import useCategoryStore from '@/jotai/CategoryStore'
 
+
 const CategoryPages = () => {
 	const router = useRouter()
 	const { categoryname, number } = router.query
@@ -37,7 +38,7 @@ const CategoryPages = () => {
 					setCategoryResult(result.Items)
 					// 次のページのためにlastKeyを保存
 					setLastKeyList(categoryname, number, result.LastKey)
-					console.log(`[Fetch後] lastKeyList更新: ${categoryname}, ${number}, ${JSON.stringify(result.LastKey)}`)
+					// console.log(`[Fetch後] lastKeyList更新: ${categoryname}, ${number}, ${JSON.stringify(result.LastKey)}`)
 				} catch (error) {
 					console.error('エラー', error)
 				}
@@ -45,10 +46,6 @@ const CategoryPages = () => {
 			fetchData()
 		}
 	}, [categoryname, number]) // 依存配列に lastKeyList と setLastKeyList を含めない
-
-	useEffect(() => {
-		console.log('lastKeyList ストアの状態:', lastKeyList)
-	}, [lastKeyList])
 
 	const currentPage = Number(number)
 	const hasNextPage = !!lastKeyList[`lastkey_category_page_${categoryname}_${number}`] // 次のページのlastKeyが存在するか
