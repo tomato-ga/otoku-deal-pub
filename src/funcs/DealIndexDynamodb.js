@@ -29,7 +29,7 @@ const dynamoQueryDeal = async (lastEvaluatedKey = null) => {
 				'#dealUrlExists': 'dealUrlExists',
 				'#dateDealUrl': 'date#dealUrl'
 			},
-			Limit: 60,
+			Limit: 30,
 			ScanIndexForward: false,
 			...(lastEvaluatedKey && { ExclusiveStartKey: lastEvaluatedKey })
 		}

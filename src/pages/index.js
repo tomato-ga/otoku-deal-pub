@@ -19,21 +19,45 @@ import Footer from '@/components/Footer'
 import Sidebar from '@/components/Sidebar'
 
 import useIndexStore from '@/jotai/IndexStore'
+import useDealStore from '@/jotai/DealStore'
 
 export default function Home({
 	result,
 	lastEvaluatedKey,
 	pageNumber,
-	dealItemsFromDynamo,
+	// dealItemsFromDynamo,
 	bestSellerBooksFromDynamo,
 	bestSellerVideoGamesFromDynamo,
 	bestSellerPCFromDynamo,
 	priceOffItems
 }) {
 	const { lastKeyList, setLastKeyList } = useIndexStore()
+	const { deallastKeyList, dealsetLastKeyList } = useDealStore()
+	const [dealResult, setDealResult] = useState([])
 	const router = useRouter()
 
-	console.log('ラストキーインデックス', lastEvaluatedKey)
+	let number = 1
+	useEffect(() => {
+		const fetchData = async () => {
+			try {
+				const lastKey = deallastKeyList[`lastkey_deal_page_${number - 1}`]
+				const encodedLastKey = lastKey ? encodeURIComponent(JSON.stringify(lastKey)) : ''
+				const url = `/api/dealnumber?lastkey=${encodedLastKey}`
+				const response = await fetch(url)
+				if (!response.ok) throw new Error('DealNumberPages fetchエラー')
+				const result = await response.json()
+
+				setDealResult(result.Items)
+				dealsetLastKeyList(number, result.LastKey)
+			} catch (error) {
+				console.error('エラー', error)
+			}
+		}
+		fetchData()
+	}, [])
+
+	console.log('index deal result: ', dealResult)
+	console.log('index deal key: ', deallastKeyList)
 
 	useEffect(() => {
 		if (lastEvaluatedKey) {
@@ -204,10 +228,10 @@ export default function Home({
 						</Link>
 					)}
 					{/* <Pagination hasNextPage={!!lastEvaluatedKey} /> */}
-					<DealItems dealItemsFromDynamo={dealItemsFromDynamo} />
+					<DealItems dealItemsFromDynamo={dealResult} />
 
 					<div className="flex items-center justify-center">
-						<Link href="/group/page/1" prefetch={false}>
+						<Link href="/group/page/2" prefetch={false}>
 							<button
 								className="flex items-center justify-center px-4 py-2 w-80 h-14 ml-2 mt-4 leading-tight text-gray-800 font-semibold rounded-lg hover:text-gray-100
 						bg-gradient-to-r from-[#B7DCFF] to-[#FFA4F6]"
@@ -240,7 +264,7 @@ export async function getServerSideProps(context) {
 	const result = await dynamoQueryIndex()
 
 	// /dealごとのDynamoDB直クエリ
-	const dealItemsFromDynamo = await dynamoQueryDeal()
+	// const dealItemsFromDynamo = await dynamoQueryDeal()
 
 	const bestSellerBooksFromDynamo = await dynamoBestSellerQuery('https://www.amazon.co.jp/gp/bestsellers/books/')
 	const bestSellerVideoGamesFromDynamo = await dynamoBestSellerQuery(
@@ -255,7 +279,7 @@ export async function getServerSideProps(context) {
 			result: result.Items || [],
 			lastEvaluatedKey: result.LastEvaluatedKey || null,
 			pageNumber,
-			dealItemsFromDynamo: dealItemsFromDynamo.Items || [],
+			// dealItemsFromDynamo: dealItemsFromDynamo.Items || [],
 			bestSellerBooksFromDynamo,
 			bestSellerVideoGamesFromDynamo,
 			bestSellerPCFromDynamo,

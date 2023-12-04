@@ -1,26 +1,66 @@
 import Link from 'next/link'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
 import TopHeader from '@/components/TopHeader'
 import DealItems from '@/components/DealItemIndex'
-import { dynamoQueryDeal } from '@/funcs/DealIndexDynamodb'
 import DealPagination from '@/components/DealPagination'
 
 import Sidebar from '@/components/Sidebar'
 import Footer from '@/components/Footer'
 import { NextSeo } from 'next-seo'
 
-// TODO APIルートにする
-const GroupSalePage = ({ dealItemsFromDynamo, LastEvaluatedKey, pageNumber }) => {
+import useDealStore from '@/jotai/DealStore'
+import { useRouter } from 'next/router'
+
+const GroupSalePage = () => {
+	const router = useRouter()
+	const { number } = router.query
+
+	const [dealResult, setDealResult] = useState([])
+	const { deallastKeyList, dealsetLastKeyList } = useDealStore()
+
 	useEffect(() => {
-		if (LastEvaluatedKey) {
-			const existingKey = localStorage.getItem(`lastEvaluatedKey_group_page_${pageNumber}`)
-			if (!existingKey) {
-				const storageValue = JSON.stringify(LastEvaluatedKey)
-				localStorage.setItem(`lastEvaluatedKey_group_page_${pageNumber}`, storageValue)
+		if (number) {
+			const fetchData = async () => {
+				try {
+					const lastKey = deallastKeyList[`lastkey_deal_page_${number - 1}`]
+					const encodedLastKey = lastKey ? encodeURIComponent(JSON.stringify(lastKey)) : ''
+					const url = `/api/dealnumber?lastkey=${encodedLastKey}`
+					const response = await fetch(url)
+					if (!response.ok) throw new Error('IndexNumberPages fetchエラー')
+					const result = await response.json()
+
+					setDealResult(result.Items)
+					dealsetLastKeyList(number, result.LastKey)
+				} catch (error) {
+					console.error('エラー', error)
+				}
 			}
+			fetchData()
 		}
-	}, [LastEvaluatedKey, pageNumber])
+	}, [number])
+
+	const currentPage = Number(number)
+	const hasNextPage = !!deallastKeyList[`lastkey_deal_page_${number}`] // 次のページのlastKeyが存在するか
+
+	console.log('hasNextPage', hasNextPage)
+
+	const nextPage = currentPage + 1
+	const prevPage = currentPage - 1
+
+	const handlePrevPage = () => {
+		if (currentPage > 1) {
+			router.push(`/group/page/${prevPage}`)
+		}
+	}
+
+	const handleNextPage = () => {
+		if (hasNextPage) {
+			router.push(`/group/page/${nextPage}`)
+		}
+	}
+
+	console.log('dealResult: ', dealResult)
 
 	return (
 		<>
@@ -34,8 +74,34 @@ const GroupSalePage = ({ dealItemsFromDynamo, LastEvaluatedKey, pageNumber }) =>
 						<div className="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-[#f087ff]  to-[#6e1fce] mb-2"></div>
 					</h2>
 
-					<DealItems dealItemsFromDynamo={dealItemsFromDynamo} />
-					<DealPagination hasNextPage={!!LastEvaluatedKey} />
+					<DealItems dealItemsFromDynamo={dealResult} />
+					{/* ページネーションボタン */}
+					<div className="">
+						<ul className="inline-flex -space-x-px text-base h-10 pt-10">
+							{currentPage > 1 && (
+								<Link href={`/group/page/${prevPage}`}>
+									<button
+										onClick={handlePrevPage}
+										className="flex items-center justify-center px-4 py-2 w-40 h-14 ml-0 mr-2 leading-tight text-gray-800 font-semibold rounded-lg hover:text-gray-100
+							bg-gradient-to-r from-[#FFED46] to-[#FF7EC7]"
+									>
+										前のページ
+									</button>
+								</Link>
+							)}
+							{hasNextPage && (
+								<Link href={`/group/page/${nextPage}`}>
+									<button
+										onClick={handleNextPage}
+										className="flex items-center justify-center px-4 py-2 w-40 h-14 ml-2 leading-tight text-gray-800 font-semibold rounded-lg hover:text-gray-100
+							bg-gradient-to-r from-[#B7DCFF] to-[#FFA4F6]"
+									>
+										次のページ
+									</button>
+								</Link>
+							)}
+						</ul>
+					</div>
 				</div>
 
 				<Sidebar />
@@ -46,62 +112,3 @@ const GroupSalePage = ({ dealItemsFromDynamo, LastEvaluatedKey, pageNumber }) =>
 }
 
 export default GroupSalePage
-
-export async function getServerSideProps(context) {
-	const { res } = context
-	res.setHeader('Cache-Control', 'public, s-maxage=0, stale-while-revalidate=86400')
-
-	const pageNumber = parseInt(context.query.number) || 1
-	const lastEvaluatedKey = context.query.lastkey ? JSON.parse(decodeURIComponent(context.query.lastkey)) : null
-
-	// 1ページ目の処理
-	if (pageNumber === 1) {
-		const dealItemsFromDynamo = await dynamoQueryDeal()
-
-		return {
-			props: {
-				dealItemsFromDynamo: dealItemsFromDynamo.Items || [],
-				LastEvaluatedKey: dealItemsFromDynamo.LastEvaluatedKey || null,
-				pageNumber
-			}
-		}
-	}
-
-	// 2ページ目の処理
-	if (pageNumber > 1) {
-		if (lastEvaluatedKey) {
-			// lastkey使って2ページ目以降のクエリ
-			const dealItemsFromDynamo = await dynamoQueryDeal(lastEvaluatedKey)
-
-			return {
-				props: {
-					dealItemsFromDynamo: dealItemsFromDynamo.Items || [],
-					LastEvaluatedKey: dealItemsFromDynamo.LastEvaluatedKey || null,
-					pageNumber
-				}
-			}
-		} else {
-			// lastEvaluatedKeyが無い場合の処理
-
-			return {
-				props: {
-					dealItemsFromDynamo: [],
-					LastEvaluatedKey: null,
-					pageNumber,
-					error: 'LastEvaluatedKeyが見つかりませんでした。'
-				}
-			}
-		}
-	}
-
-	// MEMO どの条件にも当てはまらない場合の処理をreturnで記述しないと動かない
-	console.log('無効なページナンバー')
-	return {
-		props: {
-			dealItemsFromDynamo: [],
-			LastEvaluatedKey: null,
-			pageNumber,
-			error: '無効なページナンバー'
-		}
-	}
-}
