@@ -2,6 +2,7 @@
 
 import TopHeader from '@/components/TopHeader'
 import { useEffect, useState } from 'react'
+import { useRouter } from 'next/router'
 import Link from 'next/link'
 import Pagination from '@/components/Pagination'
 import useSidebarStore from '@/jotai/Store'
@@ -29,8 +30,10 @@ export default function Home({
 	bestSellerPCFromDynamo,
 	priceOffItems
 }) {
-
 	const { lastKeyList, setLastKeyList } = useIndexStore()
+	const router = useRouter()
+
+	console.log('ラストキーインデックス', lastEvaluatedKey)
 
 	useEffect(() => {
 		if (lastEvaluatedKey) {
@@ -83,6 +86,12 @@ export default function Home({
 		})
 
 		return priceOfflimitOnItems
+	}
+
+	const handleNextPage = () => {
+		if (lastEvaluatedKey) {
+			router.push(`/page/2`)
+		}
 	}
 
 	return (
@@ -182,7 +191,19 @@ export default function Home({
 							</Link>
 						))}
 					</div>
-					<Pagination hasNextPage={!!lastEvaluatedKey} />
+
+					{lastEvaluatedKey && (
+						<Link href={`/page/2`}>
+							<button
+								onClick={handleNextPage}
+								className="flex items-center justify-center px-4 py-2 w-40 h-14 ml-2 leading-tight text-gray-800 font-semibold rounded-lg hover:text-gray-100
+				bg-gradient-to-r from-[#B7DCFF] to-[#FFA4F6]"
+							>
+								次のページ
+							</button>
+						</Link>
+					)}
+					{/* <Pagination hasNextPage={!!lastEvaluatedKey} /> */}
 					<DealItems dealItemsFromDynamo={dealItemsFromDynamo} />
 
 					<div className="flex items-center justify-center">
