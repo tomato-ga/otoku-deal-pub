@@ -24,7 +24,14 @@ const Pages = () => {
 	const { lastKeyList, setLastKeyList } = useIndexStore()
 
 	console.log('store lastkey', lastKeyList)
+	console.log('store lastkey', typeof lastKeyList)
+	if (Object.keys(lastKeyList).length === 0) {
+		console.log('オブジェクトは空です')
+	} else {
+		console.log('オブジェクトは空ではありません')
+	}
 
+	// TODO もし、リロードしてlastKeyListが空になったら、page/1にリダイレクトする
 	useEffect(() => {
 		if (number) {
 			const fetchData = async () => {
