@@ -43,7 +43,7 @@ const GroupSalePage = () => {
 	const currentPage = Number(number)
 	const hasNextPage = !!deallastKeyList[`lastkey_deal_page_${number}`] // 次のページのlastKeyが存在するか
 
-	console.log('hasNextPage', hasNextPage)
+	// console.log('hasNextPage', hasNextPage)
 
 	const nextPage = currentPage + 1
 	const prevPage = currentPage - 1
@@ -60,7 +60,7 @@ const GroupSalePage = () => {
 		}
 	}
 
-	console.log('dealResult: ', dealResult)
+	// console.log('dealResult: ', dealResult)
 
 	return (
 		<>

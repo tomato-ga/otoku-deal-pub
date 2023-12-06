@@ -56,9 +56,6 @@ export default function Home({
 		fetchData()
 	}, [])
 
-	console.log('index deal result: ', dealResult)
-	console.log('index deal key: ', deallastKeyList)
-
 	useEffect(() => {
 		if (lastEvaluatedKey) {
 			setLastKeyList(pageNumber, lastEvaluatedKey)

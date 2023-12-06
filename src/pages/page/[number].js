@@ -18,18 +18,8 @@ const Pages = () => {
 	const router = useRouter()
 	const { number } = router.query
 
-	console.log('index number', number)
-
 	const [indexResult, setIndexResult] = useState([])
 	const { lastKeyList, setLastKeyList } = useIndexStore()
-
-	console.log('store lastkey', lastKeyList)
-	console.log('store lastkey', typeof lastKeyList)
-	if (Object.keys(lastKeyList).length === 0) {
-		console.log('オブジェクトは空です')
-	} else {
-		console.log('オブジェクトは空ではありません')
-	}
 
 	// TODO もし、リロードしてlastKeyListが空になったら、page/1にリダイレクトする
 	useEffect(() => {
@@ -56,7 +46,7 @@ const Pages = () => {
 	const currentPage = Number(number)
 	const hasNextPage = !!lastKeyList[`lastkey_index_page_${number}`] // 次のページのlastKeyが存在するか
 
-	console.log('hasNextPage', hasNextPage)
+	// console.log('hasNextPage', hasNextPage)
 
 	const nextPage = currentPage + 1
 	const prevPage = currentPage - 1
@@ -73,7 +63,7 @@ const Pages = () => {
 		}
 	}
 
-	console.log('indexResult', indexResult)
+	// console.log('indexResult', indexResult)
 
 	return (
 		<>

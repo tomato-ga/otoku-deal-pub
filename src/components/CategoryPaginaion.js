@@ -9,8 +9,6 @@ const CategoryPagination = ({ categoryName, hasNextPage }) => {
 	const prevPage = currentPage - 1
 	const prevPaginationNumber = currentPage - 2
 
-	console.log('hasNextPage: ', `${currentPage}ページ目のhasNextPage: ${hasNextPage}`)
-
 	const handlePrevPage = () => {
 		const prevPageNumber = currentPage - 1
 		const lastEvaluatedKey = localStorage.getItem(
