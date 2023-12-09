@@ -21,7 +21,7 @@ export default async function sitemapsql(req, res) {
 	]
 
 	try {
-		connection = await mysql.createConnection(process.env.DATABASE_URL)
+		connection = await mysql.createConnection(process.env.PS_DATABASE_URL)
 
 		const limit = 1000
 		let offset = 0
