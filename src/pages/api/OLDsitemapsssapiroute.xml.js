@@ -1,10 +1,16 @@
-require('dotenv').config()
-const mysql = require('mysql2/promise')
+import { dynamoSitemapIndexQuery } from '@/funcs/sitemapGenerate'
 
-export default async function sitemapsql(req, res) {
-	let connection
-	let siteMapCategoryUrl = [
-		// ここにカテゴリーURLのリストを挿入
+export default async function Sitemap(req, res) {
+	let siteMapCategoryUrl = []
+
+	// const indexDatas = await dynamoSitemapIndexQuery()
+	// indexDatas.map((data) => {
+	// 	let asinOnly = data.asin.S.replace('ASIN#', '')
+	// 	let url = 'https://www.otoku-deal.com/items/' + data.date.S + '/' + asinOnly
+	// 	siteMapUrl.push(url)
+	// })
+
+	siteMapCategoryUrl = [
 		'https://www.otoku-deal.com/category/%E5%AE%B6%E9%9B%BB%EF%BC%86%E3%82%AB%E3%83%A1%E3%83%A9/page/1',
 		'https://www.otoku-deal.com/category/%E3%83%91%E3%82%BD%E3%82%B3%E3%83%B3%E3%83%BB%E5%91%A8%E8%BE%BA%E6%A9%9F%E5%99%A8/page/1',
 		'https://www.otoku-deal.com/category/%E3%83%9B%E3%83%BC%E3%83%A0%EF%BC%86%E3%82%AD%E3%83%83%E3%83%81%E3%83%B3/page/1',
@@ -20,40 +26,10 @@ export default async function sitemapsql(req, res) {
 		'https://www.otoku-deal.com/group/page/1'
 	]
 
-	try {
-		connection = await mysql.createConnection(process.env.DATABASE_URL)
-
-		const limit = 1000
-		let offset = 0
-		let hasMore = true
-		let productUrls = []
-
-		while (hasMore) {
-			const [rows, fields] = await connection.query('SELECT * FROM sitemapurl LIMIT ? OFFSET ?', [limit, offset])
-			for (const row of rows) {
-				let url = 'https://www.otoku-deal.com/items/' + row.date + '/' + row.asin
-				productUrls.push(url)
-			}
-			offset += limit
-			hasMore = rows.length === limit
-		}
-
-		// カテゴリーURLと商品URLを結合
-		let allUrls = siteMapCategoryUrl.concat(productUrls)
-
-		// XMLを生成
-		const xml = generateXml(allUrls)
-		res.setHeader('Content-Type', 'text/xml')
-		res.write(xml)
-		res.end()
-	} catch (err) {
-		console.error('Database connection or query failed:', err)
-		res.status(500).json({ message: 'Internal server error' })
-	} finally {
-		if (connection) {
-			await connection.end()
-		}
-	}
+	const xml = generateXml(siteMapCategoryUrl)
+	res.setHeader('Content-Type', 'text/xml')
+	res.write(xml)
+	res.end()
 }
 
 function generateXml(urls) {
