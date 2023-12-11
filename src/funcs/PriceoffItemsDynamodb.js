@@ -11,7 +11,7 @@ const dynamoQueryPriceoff = async () => {
 		}
 	})
 
-	// TODO 割引率高い商品のQueryテストする
+	// TODO 割引率高い商品の最新の日付でQueryする
 	// DynamoDBクエリ関数
 	const queryDynamoDB = async () => {
 		const params = {
