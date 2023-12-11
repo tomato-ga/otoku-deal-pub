@@ -21,7 +21,6 @@ const Pages = () => {
 	const [indexResult, setIndexResult] = useState([])
 	const { lastKeyList, setLastKeyList } = useIndexStore()
 
-	// TODO もし、リロードしてlastKeyListが空になったら、page/1にリダイレクトする
 	useEffect(() => {
 		if (number) {
 			const fetchData = async () => {
@@ -46,8 +45,6 @@ const Pages = () => {
 	const currentPage = Number(number)
 	const hasNextPage = !!lastKeyList[`lastkey_index_page_${number}`] // 次のページのlastKeyが存在するか
 
-	// console.log('hasNextPage', hasNextPage)
-
 	const nextPage = currentPage + 1
 	const prevPage = currentPage - 1
 
@@ -62,8 +59,6 @@ const Pages = () => {
 			router.push(`/page/${nextPage}`)
 		}
 	}
-
-	// console.log('indexResult', indexResult)
 
 	return (
 		<>
