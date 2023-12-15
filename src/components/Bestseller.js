@@ -9,15 +9,15 @@ const BestSellerItem = ({ data }) => {
 	}
 
 	return (
-		<div key={data.asin.S} className="border p-2 bg-white flex flex-col h-full">
+		<div key={data.asin.S} className="border p-2 bg-white flex flex-col h-full cursor-pointer">
 			{/* Image */}
 			<div className="flex-grow flex justify-center items-center mb-4 h-[270px] w-full">
-				<img src={data.imageUrl.S} alt={data.productName.S} className="w-full h-full object-contain" />
+				<img src={data.imageUrl.S} alt={data.productName.S} className="w-full max-h-[270px] object-contain" />
 			</div>
 			{/* Product Name */}
-			<div className="h-20 overflow-hidden">
-				<h2 className="text-md font-semibold mb-1 text-gray-800 px-2">{truncateString(data.productName.S, 50)}</h2>
-			</div>
+			{/* <div className="h-20 overflow-hidden"> */}
+				<h2 className="text-md font-semibold mb-1 text-gray-800 px-2 overflow-hidden">{truncateString(data.productName.S, 50)}</h2>
+			{/* </div> */}
 			{/* Other product details would go here */}
 		</div>
 	)
