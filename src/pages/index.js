@@ -129,7 +129,7 @@ export default function Home({
 					</h2>
 					<div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4 bg-white mt-6">
 						{priceOfflimitItems(priceOffItems)
-							.slice(0, 5)
+							.slice(0, 10)
 							.map((data) => (
 								<Link
 									href={`/items/${data.date.S}/${extractAsin(data.asin.S)}`}
@@ -285,7 +285,7 @@ export async function getServerSideProps(context) {
 			bestSellerBooksFromDynamo,
 			bestSellerVideoGamesFromDynamo,
 			bestSellerPCFromDynamo,
-			priceOffItems: priceOffItems.Items || []
+			priceOffItems: newpriceOffitems || []
 		}
 	}
 }

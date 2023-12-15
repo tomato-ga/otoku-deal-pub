@@ -1,7 +1,7 @@
 const { DynamoDBClient, QueryCommand } = require('@aws-sdk/client-dynamodb')
 
 // DynamoDBクエリ関数
-const dynamoPriceoffQuery = async (lastEvaluatedKey = null) => {
+const dynamoPriceoffQuery = async () => {
 	const client = new DynamoDBClient({
 		region: 'ap-northeast-1',
 		credentials: {
@@ -10,38 +10,41 @@ const dynamoPriceoffQuery = async (lastEvaluatedKey = null) => {
 		}
 	})
 
-	// DynamoDBクエリ実行関数
-	const queryDynamoDB = async () => {
-		let today = new Date()
-		today.setDate(today.getDate() - 3) // 最新の日付から3日前に設定
-		let startDate = today.toISOString().split('T')[0]
-
+	// 指定日付に対するクエリを実行する関数
+	const queryByDate = async (date) => {
 		const params = {
 			TableName: 'saleitems',
-			IndexName: 'date-priceOff-index', // GSIの名前を修正
-			KeyConditionExpression: '#date >= :startDate',
+			IndexName: 'date-priceOff-index',
+			KeyConditionExpression: '#date = :dateVal',
 			ExpressionAttributeValues: {
-				':startDate': startDate
+				':dateVal': { S: date }
 			},
 			ExpressionAttributeNames: {
 				'#date': 'date'
 			},
-			Limit: 5,
-			ScanIndexForward: false, // 割引率が高い順
-			...(lastEvaluatedKey && { ExclusiveStartKey: lastEvaluatedKey })
+			Limit: 20,
+			ScanIndexForward: false
 		}
 
-		const command = new QueryCommand(params)
-		return await client.send(command)
+		return await client.send(new QueryCommand(params))
 	}
 
-	try {
-		let data = await queryDynamoDB()
-		return data
-	} catch (error) {
-		console.error('Query failed, error:', error)
-		throw error
+	// 過去3日間の日付に対してクエリを実行
+	let results = []
+	for (let i = 0; i < 3; i++) {
+		let queryDate = new Date()
+		queryDate.setDate(queryDate.getDate() - i)
+		let dateString = queryDate.toISOString().split('T')[0]
+		try {
+			let data = await queryByDate(dateString)
+			results.push(...data.Items)
+		} catch (error) {
+			console.error(`Query failed for date ${dateString}, error:`, error)
+		}
 	}
+
+	// 結果を統合して返す
+	return results
 }
 
 module.exports = { dynamoPriceoffQuery }
