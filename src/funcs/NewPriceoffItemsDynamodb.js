@@ -25,7 +25,6 @@ const dynamoPriceoffQuery = async () => {
 			Limit: 20,
 			ScanIndexForward: false
 		}
-
 		return await client.send(new QueryCommand(params))
 	}
 

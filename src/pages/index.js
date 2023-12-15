@@ -100,12 +100,13 @@ export default function Home({
 			if (item.priceOff && typeof item.priceOff.S === 'string') {
 				const priceOffValue = parseInt(item.priceOff.S.replace('%', '').replace('-', ''), 10)
 
-				// parseIntの結果をチェック
-				if (!isNaN(priceOffValue) && priceOffValue >= 10) {
-					priceOfflimitOnItems.push(item)
+				if (!isNaN(priceOffValue) && priceOffValue >= 5) {
+					priceOfflimitOnItems.push({ ...item, priceOffValue })
 				}
 			}
 		})
+		// 割引率の高い順に並べ替える
+		priceOfflimitOnItems.sort((a, b) => b.priceOffValue - a.priceOffValue)
 
 		return priceOfflimitOnItems
 	}
@@ -274,7 +275,6 @@ export async function getServerSideProps(context) {
 
 	const priceOffItems = await dynamoQueryPriceoff()
 	const newpriceOffitems = await dynamoPriceoffQuery()
-	console.log('priceoffテスト中', newpriceOffitems)
 
 	return {
 		props: {
