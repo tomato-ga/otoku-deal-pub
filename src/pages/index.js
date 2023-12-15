@@ -20,6 +20,7 @@ import Sidebar from '@/components/Sidebar'
 
 import useIndexStore from '@/jotai/IndexStore'
 import useDealStore from '@/jotai/DealStore'
+import { dynamoPriceoffQuery } from '@/funcs/NewPriceoffItemsDynamodb'
 
 export default function Home({
 	result,
@@ -272,6 +273,8 @@ export async function getServerSideProps(context) {
 	const bestSellerPCFromDynamo = await dynamoBestSellerQuery('https://www.amazon.co.jp/gp/bestsellers/computers/')
 
 	const priceOffItems = await dynamoQueryPriceoff()
+	const newpriceOffitems = await dynamoPriceoffQuery()
+	console.log('priceoffテスト中', newpriceOffitems)
 
 	return {
 		props: {
