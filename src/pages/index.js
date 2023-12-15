@@ -4,11 +4,9 @@ import TopHeader from '@/components/TopHeader'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
-import Pagination from '@/components/Pagination'
 import useSidebarStore from '@/jotai/Store'
 
 import { dynamoQueryIndex } from '@/funcs/DpIndexDynamodb'
-import { dynamoQueryDeal } from '@/funcs/DealIndexDynamodb'
 import { dynamoBestSellerQuery } from '@/funcs/BestsellerDynamodb'
 import { dynamoQueryPriceoff } from '@/funcs/PriceoffItemsDynamodb'
 
@@ -272,8 +270,6 @@ export async function getServerSideProps(context) {
 		'https://www.amazon.co.jp/gp/bestsellers/videogames/'
 	)
 	const bestSellerPCFromDynamo = await dynamoBestSellerQuery('https://www.amazon.co.jp/gp/bestsellers/computers/')
-
-	const priceOffItems = await dynamoQueryPriceoff()
 	const newpriceOffitems = await dynamoPriceoffQuery()
 
 	return {
