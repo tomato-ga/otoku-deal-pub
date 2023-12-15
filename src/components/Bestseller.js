@@ -1,6 +1,6 @@
 import Link from 'next/link'
 
-const BestSellerItem = ({ data }) => {
+const BestSellerItem = ({ data, rank }) => {
 	const truncateString = (str, num) => {
 		if (str.length <= num) {
 			return str
@@ -9,16 +9,17 @@ const BestSellerItem = ({ data }) => {
 	}
 
 	return (
-		<div key={data.asin.S} className="border p-2 bg-white flex flex-col h-full cursor-pointer">
+		<div key={data.asin.S} className="border p-2 bg-white flex flex-col h-full cursor-pointer relative">
+			{/* 順位の表示 */}
+			<div className="absolute top-0 left-0 bg-blue-400 text-white p-2 z-10">#{rank}</div>
 			{/* Image */}
 			<div className="flex-grow flex justify-center items-center mb-4 h-[270px] w-full">
 				<img src={data.imageUrl.S} alt={data.productName.S} className="w-full max-h-[270px] object-contain" />
 			</div>
 			{/* Product Name */}
-			{/* <div className="h-20 overflow-hidden"> */}
-				<h2 className="text-md font-semibold mb-1 text-gray-800 px-2 overflow-hidden">{truncateString(data.productName.S, 50)}</h2>
-			{/* </div> */}
-			{/* Other product details would go here */}
+			<h2 className="text-md font-semibold mb-1 text-gray-800 px-2 overflow-hidden">
+				{truncateString(data.productName.S, 50)}
+			</h2>
 		</div>
 	)
 }
@@ -34,10 +35,10 @@ const BestSellerItems = ({ bestSellerFromDynamo }) => {
 			</div>
 
 			<div className="grid grid-cols-2 md:grid-cols-5 gap-4 bg-white mt-6">
-				{bestSellerFromDynamo.map((data) => (
+				{bestSellerFromDynamo.map((data, index) => (
 					<div key={data.asin.S}>
 						<Link href={data.productPageUrl.S} target="_blank">
-							<BestSellerItem data={data} />
+							<BestSellerItem data={data} rank={index + 1} />
 						</Link>
 					</div>
 				))}
