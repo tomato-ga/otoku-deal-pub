@@ -5,7 +5,7 @@ const useDealStore = create((set) => ({
 	dealsetLastKeyList: (number, lastkey) =>
 		set((state) => ({
 			deallastKeyList: {
-				...state.lastKeyList,
+				...state.deallastKeyList,
 				[`lastkey_deal_page_${number}`]: lastkey
 			}
 		}))

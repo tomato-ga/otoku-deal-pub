@@ -1,4 +1,6 @@
-import { dynamoQueryDeal } from "@/funcs/DealIndexDynamodb"
+// /Volumes/SSD_1TB/otoku-deal/src/pages/api/dealnumber.js
+
+import { dynamoQueryDeal } from '@/funcs/DealIndexDynamodb'
 
 export default async function handler(req, res) {
 	const { lastkey } = req.query

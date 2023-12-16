@@ -39,9 +39,9 @@ export default function Home({
 	useEffect(() => {
 		const fetchData = async () => {
 			try {
-				const lastKey = deallastKeyList[`lastkey_deal_page_${number - 1}`]
-				const encodedLastKey = lastKey ? encodeURIComponent(JSON.stringify(lastKey)) : ''
-				const url = `/api/dealnumber?lastkey=${encodedLastKey}`
+				// const lastKey = deallastKeyList[`lastkey_deal_page_${number - 1}`]
+				// const encodedLastKey = lastKey ? encodeURIComponent(JSON.stringify(lastKey)) : ''
+				const url = `/api/dealnumber`
 				const response = await fetch(url)
 				if (!response.ok) throw new Error('DealNumberPages fetchエラー')
 				const result = await response.json()
@@ -61,8 +61,8 @@ export default function Home({
 		}
 	}, [lastEvaluatedKey, pageNumber])
 
-	const sidebarOpen = useSidebarStore((state) => state.sidebarOpen)
-	const toggleSidebar = useSidebarStore((state) => state.toggleSidebar)
+	// const sidebarOpen = useSidebarStore((state) => state.sidebarOpen)
+	// const toggleSidebar = useSidebarStore((state) => state.toggleSidebar)
 
 	const calculateOriginalPrice = (price, priceOff) => {
 		const parsedPrice = parseInt(price.replace('￥', '').replace(',', ''), 10)
@@ -226,7 +226,7 @@ export default function Home({
 							</Link>
 						</div>
 					)}
-					{/* <Pagination hasNextPage={!!lastEvaluatedKey} /> */}
+
 					<DealItems dealItemsFromDynamo={dealResult} />
 
 					<div className="flex items-center justify-center">

@@ -18,18 +18,14 @@ const dynamoQueryDeal = async (lastEvaluatedKey = null) => {
 		const params = {
 			TableName: 'saleitems',
 			IndexName: 'dealUrlExists-datedealUrl-index',
-			KeyConditionExpression: '#dealUrlExists = :dealUrlExistsVal AND #dateDealUrl >= :startDate',
-			// MEMO 日付範囲指定の場合↓
-			// KeyConditionExpression: '#dealUrlExists = :dealUrlExistsVal AND #dateDealUrl BETWEEN :startDate AND :endDate',
+			KeyConditionExpression: '#dealUrlExists = :dealUrlExistsVal',
 			ExpressionAttributeValues: {
-				':dealUrlExistsVal': { S: 'true' },
-				':startDate': { S: '2023-11-19' }
+				':dealUrlExistsVal': { S: 'true' }
 			},
 			ExpressionAttributeNames: {
-				'#dealUrlExists': 'dealUrlExists',
-				'#dateDealUrl': 'date#dealUrl'
+				'#dealUrlExists': 'dealUrlExists'
 			},
-			Limit: 30,
+			Limit: 45, // MEMO Limit 30だとページングがうまくいかなかったので40以上にした 2023/12/16
 			ScanIndexForward: false,
 			...(lastEvaluatedKey && { ExclusiveStartKey: lastEvaluatedKey })
 		}

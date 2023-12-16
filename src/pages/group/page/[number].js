@@ -23,13 +23,19 @@ const GroupSalePage = () => {
 		if (number) {
 			const fetchData = async () => {
 				try {
+					// 現在のlastKeyを取得
 					const lastKey = deallastKeyList[`lastkey_deal_page_${number - 1}`]
+
+					// lastKeyをエンコード
 					const encodedLastKey = lastKey ? encodeURIComponent(JSON.stringify(lastKey)) : ''
 					const url = `/api/dealnumber?lastkey=${encodedLastKey}`
+
+					// APIリクエスト
 					const response = await fetch(url)
 					if (!response.ok) throw new Error('IndexNumberPages fetchエラー')
 					const result = await response.json()
 
+					// 結果の設定とlastKeyの保存
 					setDealResult(result.Items)
 					dealsetLastKeyList(number, result.LastKey)
 				} catch (error) {
@@ -43,10 +49,8 @@ const GroupSalePage = () => {
 	const currentPage = Number(number)
 	const hasNextPage = !!deallastKeyList[`lastkey_deal_page_${number}`] // 次のページのlastKeyが存在するか
 
-	// console.log('hasNextPage', hasNextPage)
-
-	const nextPage = currentPage + 1
 	const prevPage = currentPage - 1
+	const nextPage = currentPage + 1
 
 	const handlePrevPage = () => {
 		if (currentPage > 1) {
@@ -59,8 +63,6 @@ const GroupSalePage = () => {
 			router.push(`/group/page/${nextPage}`)
 		}
 	}
-
-	// console.log('dealResult: ', dealResult)
 
 	return (
 		<>
