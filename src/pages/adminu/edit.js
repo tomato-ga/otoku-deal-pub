@@ -20,7 +20,7 @@ const Editor = () => {
 
 	const handleSave = async () => {
 		const articleData = { title, content, tags, author }
-		const response = await fetch('/api/savearticle', {
+		const response = await fetch('/api/admin_savearticle', {
 			method: 'POST',
 			headers: { 'Content-Type': 'application/json' },
 			body: JSON.stringify(articleData)
