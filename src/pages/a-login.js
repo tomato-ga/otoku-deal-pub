@@ -28,7 +28,7 @@ const LoginPage = () => {
 			console.log('localstorageセットしました')
 
 			login() // 認証成功時にログイン状態を更新
-			router.push('/adminu/edit') // 管理者ページにリダイレクト
+			router.push('/adminu/postlists') // 管理者ページにリダイレクト
 		} else {
 			alert('Authentication failed.') // 認証失敗時の処理
 		}

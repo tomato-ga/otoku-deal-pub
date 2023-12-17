@@ -3,6 +3,7 @@ import useAuthStore from '@/jotai/authStore'
 import { useRouter } from 'next/router'
 
 import AdminLayout from '@/components/AdminLayout'
+import Link from 'next/link'
 
 const AdminPostLists = () => {
 	const isLoggedIn = useAuthStore((state) => state.isLoggedIn)
@@ -41,13 +42,31 @@ const AdminPostLists = () => {
 		fetchData()
 	}, [])
 
+	const formatDate = (dateString) => {
+		const date = new Date(dateString)
+		const year = date.getFullYear()
+		const month = (date.getMonth() + 1).toString().padStart(2, '0')
+		const day = date.getDate().toString().padStart(2, '0')
+		const hours = date.getHours().toString().padStart(2, '0')
+		const minutes = date.getMinutes().toString().padStart(2, '0')
+
+		return `${year}/${month}/${day} ${hours}:${minutes}`
+	}
+
 	return (
 		<AdminLayout>
 			<div className="postlists">
 				{postLists.map((post) => (
-					<ul key={post.id}>
-						<li>{post.id}</li>
-					</ul>
+					<div className="flex items-center justify-center" key={post.id}>
+						<ul>
+							<li className="m-3 text-4xl text-slate-700">
+								<Link href={`/adminu/post/${post.id}`}>
+									{post.title}
+									<div className="text-2xl">{formatDate(post.created_at)}</div>
+								</Link>
+							</li>
+						</ul>
+					</div>
 				))}
 			</div>
 		</AdminLayout>

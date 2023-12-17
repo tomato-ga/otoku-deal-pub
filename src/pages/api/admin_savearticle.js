@@ -6,6 +6,7 @@ export default async function handler(req, res) {
 
 		try {
 			// データベースに記事を挿入
+			// TODO UPDATEメソッドへ変更する, 時間を追加する
 			const result = await sql`
                 INSERT INTO blog_posts (title, content, tags, author)
                 VALUES (${title}, ${content}, ${tags}, ${author});
