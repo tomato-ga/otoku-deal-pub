@@ -22,9 +22,8 @@ const PostEditor = () => {
 	const handleContentChange = (e) => setContent(e.target.value)
 	const handleTagsChange = (e) => setTags(e.target.value)
 
-	// TODO APIと一緒に修正するUPDATE
 	const handleSave = async () => {
-		const articleData = { title, content, tags, author }
+		const articleData = { id, title, content, tags, author }
 		const response = await fetch('/api/admin_savearticle', {
 			method: 'POST',
 			headers: { 'Content-Type': 'application/json' },
