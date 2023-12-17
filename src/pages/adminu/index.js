@@ -1,28 +1,20 @@
-import { useState } from 'react'
+// pages/adminu/index.js
 
-// TODO Basic認証かける
+import { useEffect } from 'react'
+import { useRouter } from 'next/router'
+import useAuthStore from '@/jotai/authStore'
 
-const Editor = () => {
-	const [titleTextArea, setTitleTextArea] = useState('')
-	const handleTextAreaChange = (event) => {
-		setTitleTextArea(event.target.value)
-	}
+const AdminuPage = () => {
+	const router = useRouter()
+	const isLoggedIn = useAuthStore((state) => state.isLoggedIn)
 
-	return (
-		<>
-			<div className="flex items-center justify-center flex-col">
-				<h1 className="items-center text-2xl mt-4 border-b-2">タイトル</h1>
-				<textarea
-					value={titleTextArea}
-					onChange={handleTextAreaChange}
-					rows="3"
-					cols="100"
-					placeholder="タイトル入力"
-					className="border-2 m-5"
-				></textarea>
-			</div>
-		</>
-	)
+	useEffect(() => {
+		if (!isLoggedIn) {
+			router.push('/a-login')
+		}
+	}, [isLoggedIn, router])
+
+	return <div>{/* 管理者ページのコンテンツ */}</div>
 }
 
-export default Editor
+export default AdminuPage
