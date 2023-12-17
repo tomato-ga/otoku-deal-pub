@@ -19,6 +19,14 @@ const LoginPage = () => {
 		})
 
 		if (response.ok) {
+			const data = await response.json()
+			const token = data.token
+
+			console.log(token)
+
+			localStorage.setItem('logintoken', token)
+			console.log('localstorageセットしました')
+
 			login() // 認証成功時にログイン状態を更新
 			router.push('/adminu/edit') // 管理者ページにリダイレクト
 		} else {

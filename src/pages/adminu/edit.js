@@ -1,11 +1,18 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import useAuthStore from '@/jotai/authStore'
+import { useRouter } from 'next/router'
+
+import AdminLayout from '@/components/AdminLayout'
 
 const Editor = () => {
 	const [title, setTitle] = useState('')
 	const [content, setContent] = useState('')
 	const [tags, setTags] = useState('')
 	const author = 'dondonbe'
+
+	const isLoggedIn = useAuthStore((state) => state.isLoggedIn)
+	const login = useAuthStore((state) => state.login) // loginアクションを取得
+	const router = useRouter()
 
 	const handleTitleChange = (e) => setTitle(e.target.value)
 	const handleContentChange = (e) => setContent(e.target.value)
@@ -28,40 +35,51 @@ const Editor = () => {
 		}
 	}
 
+	useEffect(() => {
+		const token = localStorage.getItem('logintoken')
+		if (!token) {
+			router.push('/a-login')
+		} else if (!isLoggedIn) {
+			login() // Zustandストアのログイン状態を更新
+		}
+	}, [isLoggedIn, router])
+
 	return (
-		<div className="flex items-center justify-center flex-col">
-			<h1 className="text-2xl mt-4 border-b-2">タイトル</h1>
-			<textarea
-				value={title}
-				onChange={handleTitleChange}
-				rows="3"
-				cols="100"
-				placeholder="タイトル入力"
-				className="border-2 m-5"
-			></textarea>
+		<AdminLayout>
+			<div className="flex items-center justify-center flex-col">
+				<h1 className="text-2xl mt-4 border-b-2">タイトル</h1>
+				<textarea
+					value={title}
+					onChange={handleTitleChange}
+					rows="3"
+					cols="100"
+					placeholder="タイトル入力"
+					className="border-2 m-5"
+				></textarea>
 
-			<h2 className="text-2xl mt-4 border-b-2">コンテンツ本文</h2>
-			<textarea
-				value={content}
-				onChange={handleContentChange}
-				rows="10" // 行数を増やす
-				cols="100"
-				placeholder="コンテンツをここに入力"
-				className="border-2 m-5"
-			></textarea>
+				<h2 className="text-2xl mt-4 border-b-2">コンテンツ本文</h2>
+				<textarea
+					value={content}
+					onChange={handleContentChange}
+					rows="10" // 行数を増やす
+					cols="100"
+					placeholder="コンテンツをここに入力"
+					className="border-2 m-5"
+				></textarea>
 
-			<h2 className="text-2xl mt-4 border-b-2">タグ</h2>
-			<input
-				type="text"
-				value={tags}
-				onChange={handleTagsChange}
-				placeholder="タグをカンマ区切りで入力"
-				className="border-2 m-5 w-3/4" // 幅を増やす
-			/>
-			<button onClick={handleSave} className="bg-blue-500 text-white p-2 rounded mt-4">
-				保存
-			</button>
-		</div>
+				<h2 className="text-2xl mt-4 border-b-2">タグ</h2>
+				<input
+					type="text"
+					value={tags}
+					onChange={handleTagsChange}
+					placeholder="タグをカンマ区切りで入力"
+					className="border-2 m-5 w-3/4" // 幅を増やす
+				/>
+				<button onClick={handleSave} className="bg-blue-500 text-white p-2 rounded mt-4">
+					保存
+				</button>
+			</div>
+		</AdminLayout>
 	)
 }
 
