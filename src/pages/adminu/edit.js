@@ -47,33 +47,31 @@ const Editor = () => {
 	return (
 		<AdminLayout>
 			<div className="flex items-center justify-center flex-col">
-				<h1 className="text-2xl mt-4 border-b-2">タイトル</h1>
+				<h1 className="text-xl mt-4 border-b-2">タイトル</h1>
 				<textarea
 					value={title}
 					onChange={handleTitleChange}
 					rows="3"
-					cols="100"
 					placeholder="タイトル入力"
-					className="border-2 m-5"
+					className="w-full max-w-lg border-2 m-2"
 				></textarea>
 
-				<h2 className="text-2xl mt-4 border-b-2">コンテンツ本文</h2>
+				<h2 className="text-xl mt-4 border-b-2">コンテンツ本文</h2>
 				<textarea
 					value={content}
 					onChange={handleContentChange}
-					rows="10" // 行数を増やす
-					cols="100"
+					rows="10"
 					placeholder="コンテンツをここに入力"
-					className="border-2 m-5"
+					className="w-full max-w-lg border-2 m-2"
 				></textarea>
 
-				<h2 className="text-2xl mt-4 border-b-2">タグ</h2>
+				<h2 className="text-xl mt-4 border-b-2">タグ</h2>
 				<input
 					type="text"
 					value={tags}
 					onChange={handleTagsChange}
 					placeholder="タグをカンマ区切りで入力"
-					className="border-2 m-5 w-3/4" // 幅を増やす
+					className="w-3/4 max-w-lg border-2 m-2"
 				/>
 				<button onClick={handleSave} className="bg-blue-500 text-white p-2 rounded mt-4">
 					保存

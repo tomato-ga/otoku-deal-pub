@@ -29,7 +29,6 @@ const AdminPostLists = () => {
 				})
 				if (response.ok) {
 					const sqldata = await response.json()
-					console.log(sqldata.data)
 					setPostLists(sqldata.data) // データを状態にセット
 				} else {
 					console.error('Failed to fetch data:', response.status)
@@ -46,8 +45,8 @@ const AdminPostLists = () => {
 		<AdminLayout>
 			<div className="postlists">
 				{postLists.map((post) => (
-					<ul>
-						<li key={post.id}>{post.id}</li>
+					<ul key={post.id}>
+						<li>{post.id}</li>
 					</ul>
 				))}
 			</div>
