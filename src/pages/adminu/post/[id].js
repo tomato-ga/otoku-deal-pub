@@ -3,7 +3,7 @@ import useAuthStore from '@/jotai/authStore'
 import { useRouter } from 'next/router'
 
 import AdminLayout from '@/components/AdminLayout'
-import RichTextEditor from '@/components/Adminslate'
+import RichTextEditor from '@/components/Admslate'
 
 const initialValue = [
 	{
@@ -111,7 +111,7 @@ const PostEditor = () => {
 				></textarea>
 
 				<h2 className="text-xl mt-4 border-b-2">コンテンツ本文</h2>
-				{isContentLoaded && <RichTextEditor value={content} onChange={handleContentChange} />}
+				<RichTextEditor value={content} onChange={handleContentChange} />
 
 				{/* <textarea
 					value={content}
