@@ -1,0 +1,5 @@
+User-Agent: *
+Allow: /
+Disallow: /post
+
+Sitemap: https://www.otoku-deal.com/api/sitemapsssapiroute.xml
