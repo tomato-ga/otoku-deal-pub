@@ -10,6 +10,11 @@ const Editor = () => {
 	const [tags, setTags] = useState('')
 	const author = 'dondonbe'
 
+	const [toast, setToast] = useState({ show: false, message: '' })
+	const showToast = (message) => {
+		setToast({ show: true, message })
+	}
+
 	const isLoggedIn = useAuthStore((state) => state.isLoggedIn)
 	const login = useAuthStore((state) => state.login) // loginアクションを取得
 	const router = useRouter()
@@ -20,15 +25,15 @@ const Editor = () => {
 
 	const handleSave = async () => {
 		const articleData = { title, content, tags, author }
-		const response = await fetch('/api/admin_savearticle', {
+		const response = await fetch('/api/admin_newarticle', {
 			method: 'POST',
 			headers: { 'Content-Type': 'application/json' },
 			body: JSON.stringify(articleData)
 		})
 
 		if (response.ok) {
-			console.log('Article saved successfully')
-			// ここに成功時の処理を記述（任意）
+			console.log('記事がデータベースに保存されました')
+			showToast('記事がデータベースに保存されました')
 		} else {
 			console.error('Failed to save article')
 			// ここに失敗時の処理を記述（任意）
@@ -76,6 +81,13 @@ const Editor = () => {
 				<button onClick={handleSave} className="bg-blue-500 text-white p-2 rounded mt-4">
 					保存
 				</button>
+				{toast.show && <span className="ml-4 text-green-600">{toast.message}</span>}
+
+				{toast.show && (
+					<div className="fixed bottom-5 left-1/2 transform -translate-x-1/2 px-6 py-3 border border-blue-300 shadow-lg rounded-md bg-blue-100 text-blue-800">
+						{toast.message}
+					</div>
+				)}
 			</div>
 		</AdminLayout>
 	)

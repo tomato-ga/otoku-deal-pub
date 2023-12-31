@@ -3,14 +3,6 @@ import useAuthStore from '@/jotai/authStore'
 import { useRouter } from 'next/router'
 
 import AdminLayout from '@/components/AdminLayout'
-// import RichTextEditor from '@/components/Admslate'
-
-const initialValue = [
-	{
-		type: 'paragraph',
-		children: [{ text: 'コンテンツをここに入力' }]
-	}
-]
 
 const PostEditor = () => {
 	const router = useRouter()

@@ -30,7 +30,7 @@ const AdminPostLists = () => {
 				})
 				if (response.ok) {
 					const sqldata = await response.json()
-					setPostLists(sqldata.data) // データを状態にセット
+					setPostLists(sqldata.data)
 				} else {
 					console.error('Failed to fetch data:', response.status)
 				}
