@@ -27,3 +27,15 @@
     )
     rgb(var(--background-start-rgb));
 } */
+
+.markdown h1 {
+  font-size: 2em;
+}
+
+.markdown h2 {
+  font-size: 1.5em;
+}
+
+.markdown p {
+  color: #333;
+}

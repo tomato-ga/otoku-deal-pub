@@ -16,7 +16,7 @@ const PostEditor = () => {
 	const author = 'dondonbe'
 
 	const isLoggedIn = useAuthStore((state) => state.isLoggedIn)
-	const login = useAuthStore((state) => state.login) // loginアクションを取得
+	const login = useAuthStore((state) => state.login)
 
 	const handleTitleChange = (e) => setTitle(e.target.value)
 	const handleContentChange = (e) => setContent(e.target.value)

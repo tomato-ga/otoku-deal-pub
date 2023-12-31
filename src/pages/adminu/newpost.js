@@ -57,17 +57,19 @@ const Editor = () => {
 					value={title}
 					onChange={handleTitleChange}
 					rows="3"
+					style={{ width: '90%' }}
 					placeholder="タイトル入力"
-					className="w-full max-w-lg border-2 m-2"
+					className="border-2 m-2"
 				></textarea>
 
 				<h2 className="text-xl mt-4 border-b-2">コンテンツ本文</h2>
 				<textarea
 					value={content}
 					onChange={handleContentChange}
-					rows="10"
+					rows="50"
+					style={{ width: '90%' }}
 					placeholder="コンテンツをここに入力"
-					className="w-full max-w-lg border-2 m-2"
+					className="border-2 m-2"
 				></textarea>
 
 				<h2 className="text-xl mt-4 border-b-2">タグ</h2>
@@ -75,8 +77,10 @@ const Editor = () => {
 					type="text"
 					value={tags}
 					onChange={handleTagsChange}
+					rows="3"
+					style={{ width: '90%' }}
 					placeholder="タグをカンマ区切りで入力"
-					className="w-3/4 max-w-lg border-2 m-2"
+					className="border-2 m-2 h-20"
 				/>
 				<button onClick={handleSave} className="bg-blue-500 text-white p-2 rounded mt-4">
 					保存
