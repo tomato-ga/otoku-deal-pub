@@ -1,6 +1,6 @@
 const axios = require('axios')
 const { google } = require('googleapis')
-const key = require('../../funcs/saleproject_service.json')
+const key = require('./saleproject_service.json')
 
 require('dotenv').config()
 const mysql = require('mysql2/promise')
@@ -58,7 +58,7 @@ async function sitemapsql(req, res) {
 	]
 
 	try {
-		connection = await mysql.createConnection(process.env.PS_DATABASE_URL)
+		connection = await mysql.createConnection('')
 
 		const [rows] = await connection.query('SELECT * FROM sitemapurl WHERE date = CURRENT_DATE LIMIT 200')
 

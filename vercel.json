@@ -4,11 +4,5 @@
         "deploymentEnabled": {
           "main": true
         }
-      },
-    "crons": [
-      {
-        "path": "/api/indexingapi",
-        "schedule": "12 * * * *"
       }
-    ]
   }
