@@ -16,10 +16,10 @@ interface ProductInfo {
 
 export async function searchItems(keyword: string): Promise<ProductInfo[]> {
 	const query = 'SELECT * FROM product_info WHERE descripText LIKE ? ORDER BY date DESC LIMIT 10'
-
 	const values = [`%${keyword}%`]
+	const [results] = await pool.query(query, values)
 
-	const [results] = await pool.query<RowDataPacket[]>(query, values)
+	// 戻り値を ProductInfo[] 型にキャスト
 	return results as ProductInfo[]
 }
 
