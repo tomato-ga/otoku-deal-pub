@@ -38,7 +38,7 @@ async function notifyIndexing(urls) {
 	}
 }
 
-async function sitemapsql(req, res) {
+export default async function sitemapsql(req, res) {
 	let connection
 	let siteMapCategoryUrl = [
 		// ここにカテゴリーURLのリストを挿入
@@ -73,5 +73,3 @@ async function sitemapsql(req, res) {
 		}
 	}
 }
-
-sitemapsql()

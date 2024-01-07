@@ -15,7 +15,8 @@ interface ProductInfo {
 }
 
 export async function searchItems(keyword: string): Promise<ProductInfo[]> {
-	const query = 'SELECT * FROM product_info WHERE descripText LIKE ? ORDER BY date DESC LIMIT 10'
+	const query =
+		'SELECT descripText, date, productName, imageUrl  FROM product_info WHERE descripText LIKE ? ORDER BY date DESC LIMIT 10'
 	const values = [`%${keyword}%`]
 	const [results] = await pool.query(query, values)
 
