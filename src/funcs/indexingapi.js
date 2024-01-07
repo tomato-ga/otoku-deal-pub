@@ -58,7 +58,9 @@ async function sitemapsql(req, res) {
 	]
 
 	try {
-		connection = await mysql.createConnection('')
+		connection = await mysql.createConnection(
+			'mysql://8mm9ov0ekqzpvcppzkj5:pscale_pw_Inf9sgqVcBr9FMls80RBr4r6em8YmFFq2OHtLmnjfEP@aws.connect.psdb.cloud/salesitemap?ssl={"rejectUnauthorized":true}'
+		)
 
 		const [rows] = await connection.query('SELECT * FROM sitemapurl WHERE date = CURRENT_DATE LIMIT 200')
 
