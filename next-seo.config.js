@@ -12,7 +12,7 @@ export default {
 		}
 	],
 	openGraph: {
-		url: 'https://sale-matome.com',
+		url: 'https://www.otoku-deal.com/',
 		type: 'website',
 		locale: 'ja_JP',
 		site_name: '激安特価セール速報'
