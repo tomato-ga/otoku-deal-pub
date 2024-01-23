@@ -62,7 +62,7 @@ async function sitemapsql(req, res) {
 			'mysql://8mm9ov0ekqzpvcppzkj5:pscale_pw_Inf9sgqVcBr9FMls80RBr4r6em8YmFFq2OHtLmnjfEP@aws.connect.psdb.cloud/salesitemap?ssl={"rejectUnauthorized":true}'
 		)
 
-		const [rows] = await connection.query('SELECT * FROM sitemapurl WHERE date = CURRENT_DATE LIMIT 200')
+		const [rows] = await connection.query('SELECT * FROM sitemapurl ORDER BY date DESC LIMIT 200')
 
 		let urls = rows.map((row) => 'https://www.otoku-deal.com/items/' + row.date + '/' + row.asin)
 		let allUrls = siteMapCategoryUrl.concat(urls)
