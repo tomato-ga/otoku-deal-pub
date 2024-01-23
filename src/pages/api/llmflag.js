@@ -1,4 +1,4 @@
-import { dynamoQueryLlmflagTrue } from '@funcs/LLMflagindexDynamodb'
+import { dynamoQueryLlmflagTrue } from '@/funcs/LLMflagindexDynamodb'
 
 export default async function handler(req, res) {
 	const { lastkey } = req.query
