@@ -18,7 +18,9 @@ import Sidebar from '@/components/Sidebar'
 
 import useIndexStore from '@/jotai/IndexStore'
 import useDealStore from '@/jotai/DealStore'
+import useLLMStore from '@/jotai/LLMStore'
 import { dynamoPriceoffQuery } from '@/funcs/NewPriceoffItemsDynamodb'
+import { dynamoQueryLlmflagTrue } from '../funcs/LLMflagindexDynamodb'
 
 export default function Home({
 	result,
@@ -33,9 +35,15 @@ export default function Home({
 	const { lastKeyList, setLastKeyList } = useIndexStore()
 	const { deallastKeyList, dealsetLastKeyList } = useDealStore()
 	const [dealResult, setDealResult] = useState([])
+
+	const { llmlastKeyList, llmsetLastKeyList } = useLLMStore()
+	const [llmResult, setllmResult] = useState([])
+
 	const router = useRouter()
 
 	let number = 1
+
+	// Deal API
 	useEffect(() => {
 		const fetchData = async () => {
 			try {
@@ -48,6 +56,26 @@ export default function Home({
 
 				setDealResult(result.Items)
 				dealsetLastKeyList(number, result.LastKey)
+			} catch (error) {
+				console.error('エラー', error)
+			}
+		}
+		fetchData()
+	}, [])
+
+	// LLM API
+	useEffect(() => {
+		const fetchData = async () => {
+			try {
+				// const lastKey = deallastKeyList[`lastkey_deal_page_${number - 1}`]
+				// const encodedLastKey = lastKey ? encodeURIComponent(JSON.stringify(lastKey)) : ''
+				const url = `/api/llmflag`
+				const response = await fetch(url)
+				if (!response.ok) throw new Error('LLM Flag fetchエラー')
+				const result = await response.json()
+
+				setllmResult(result.Items)
+				llmsetLastKeyList(number, result.LastKey)
 			} catch (error) {
 				console.error('エラー', error)
 			}
@@ -275,6 +303,7 @@ export async function getServerSideProps(context) {
 	return {
 		props: {
 			result: result.Items || [],
+			llmresult: llmresult.Items || [],
 			lastEvaluatedKey: result.LastEvaluatedKey || null,
 			pageNumber,
 			// dealItemsFromDynamo: dealItemsFromDynamo.Items || [],
