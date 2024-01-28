@@ -1,18 +1,27 @@
 import Link from 'next/link'
 import React from 'react'
 
-const DealItem = ({ data }) => {
+const LLMItem = ({ data }) => {
+	// 文字列を短縮する関数
 	const truncateString = (str, num) => {
-		if (str.length <= num) {
-			return str
+		// '*'を削除
+		const cleanedString = str.replace(/\*/g, '')
+
+		// 文字列がnum以下の長さであればそのまま返す
+		if (cleanedString.length <= num) {
+			return cleanedString
 		}
-		return str.slice(0, num) + '...'
+
+		// 文字列がnumより長い場合は、num文字で切り詰めて'...'を追加
+		return cleanedString.slice(0, num) + '...'
 	}
 
+	// ASINを抽出する関数
 	const extractAsin = (value) => {
 		return value.replace('ASIN#', '')
 	}
 
+	// 元の価格を計算する関数
 	const calculateOriginalPrice = (price, priceOff) => {
 		const parsedPrice = parseInt(price.replace('￥', '').replace(',', ''), 10)
 		const discountRate = parseFloat(priceOff.replace('-', '').replace('%', '')) / 100
@@ -20,13 +29,13 @@ const DealItem = ({ data }) => {
 	}
 
 	return (
-		<div key={data.asin} className="border p-2 bg-white flex flex-col h-full">
+		<div className="border p-2 bg-white flex flex-col h-full">
 			<Link href={`/items/${data.date}/${extractAsin(data.asin)}`}>
 				<div className="flex-grow flex justify-center items-center mb-4 h-[270px] w-full">
 					<img src={data.imageUrl} alt={data.productName} className="w-full max-h-[270px] object-contain" />
 				</div>
 				<h2 className="text-md font-semibold mb-1 text-gray-800 px-2 overflow-hidden">
-					{truncateString(data.productName, 50)}
+					{truncateString(data.llmtitle, 50)}
 				</h2>
 				<div className="mt-auto">
 					<div className="flex">
@@ -47,32 +56,26 @@ const DealItem = ({ data }) => {
 	)
 }
 
-// TODO LLMコンテンツ表示の調整
-const LLMItems = ({ dealItemsFromDynamo }) => {
-	const extractSimpleValuesFromDynamoDBItem = (dynamoDbItem) => {
-		let plainObject = {}
-		for (const [key, valueObj] of Object.entries(dynamoDbItem)) {
-			// MEMO DynamoDBの値オブジェクトのうち、'S', 'N', 'B', 'BOOL'などのキーに対応する値だけを取り出す
-			const valueKey = Object.keys(valueObj).find((k) => ['S', 'N', 'B', 'BOOL'].includes(k))
-			plainObject[key] = valueObj[valueKey]
-		}
-		return plainObject
+// DynamoDBアイテムから単純な値を抽出する関数
+const extractSimpleValuesFromDynamoDBItem = (dynamoDbItem) => {
+	let plainObject = {}
+	for (const [key, valueObj] of Object.entries(dynamoDbItem)) {
+		const valueKey = Object.keys(valueObj).find((k) => ['S', 'N', 'B', 'BOOL'].includes(k))
+		plainObject[key] = valueObj[valueKey]
 	}
+	return plainObject
+}
 
-	const extractSimpleValuesFromDynamoDBItems = (dynamoDbItems) => {
-		// Object.valuesを使ってオブジェクトの各配列にアクセス
-		return Object.values(dynamoDbItems)
-			.flat()
-			.map((item) => extractSimpleValuesFromDynamoDBItem(item))
-	}
+// LLMコンテンツ表示
+const LLMItems = ({ LLMItemsfromDynamo }) => {
+	// DynamoDBアイテムを単純な値のオブジェクトに変換
+	let plainArray = Object.values(LLMItemsfromDynamo)
+		.flat()
+		.map((item) => extractSimpleValuesFromDynamoDBItem(item))
 
-	// dealItemsFromDynamoの値を使って処理を実行
-	let plainArray = extractSimpleValuesFromDynamoDBItems(dealItemsFromDynamo)
-
-	// h1によってグループ化されたオブジェクトを作成する
+	// アイテムをグループ化する関数
 	const groupedByH1 = plainArray.reduce((group, item) => {
-		// h1値が同じアイテムを同じグループにする
-		const dealName = item.dealName || 'その他'
+		const dealName = item.dealName || 'おすすめガジェット'
 		if (!group[dealName]) {
 			group[dealName] = []
 		}
@@ -91,7 +94,7 @@ const LLMItems = ({ dealItemsFromDynamo }) => {
 					<div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4 bg-white mt-6">
 						{items.map((item) => (
 							<div key={item.asin}>
-								<DealItem data={item} />
+								<LLMItem data={item} />
 							</div>
 						))}
 					</div>

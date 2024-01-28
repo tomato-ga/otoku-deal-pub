@@ -21,10 +21,12 @@ import useDealStore from '@/jotai/DealStore'
 import useLLMStore from '@/jotai/LLMStore'
 import { dynamoPriceoffQuery } from '@/funcs/NewPriceoffItemsDynamodb'
 import { dynamoQueryLlmflagTrue } from '@/funcs/LLMflagindexDynamodb'
+import LLMItems from '../components/LLMItemIndex'
 
 export default function Home({
 	result,
 	lastEvaluatedKey,
+	llmresult,
 	pageNumber,
 	// dealItemsFromDynamo,
 	bestSellerBooksFromDynamo,
@@ -40,7 +42,6 @@ export default function Home({
 	const [llmResult, setllmResult] = useState([])
 
 	const router = useRouter()
-
 	let number = 1
 
 	// Deal API
@@ -254,6 +255,12 @@ export default function Home({
 							</Link>
 						</div>
 					)}
+
+					<h2 className="text-2xl font-bold pt-3 pr-3 pb-3 pl-1 relative">
+						LLMcontent
+						<div className="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-[#f087ff]  to-[#6e1fce] mb-2"></div>
+					</h2>
+					<LLMItems LLMItemsfromDynamo={llmresult} />
 
 					<DealItems dealItemsFromDynamo={dealResult} />
 

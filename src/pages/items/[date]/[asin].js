@@ -25,6 +25,8 @@ export default function ItemsPage({
 }) {
 	const [localData, setLocalData] = useState([])
 
+	console.log('llmcheck : ', ProductasinFetchFromDynamo)
+
 	useEffect(() => {
 		let savedPagelists = {
 			pages: []
@@ -101,6 +103,48 @@ export default function ItemsPage({
 		outputTitle = ProductasinFetchFromDynamo.outputTitle.S
 	} else {
 		outputTitle = ProductasinFetchFromDynamo.productName.S
+	}
+
+	const processLLMTitle = (title) => {
+		// '*'を取り除き、JSXの<h2>タグでラップする
+		return <h2 className="text-2xl font-bold pb-3">{title.replace(/\*/g, '')}</h2>
+	}
+
+	const processLLMContent = (content) => {
+		// '*'を削除
+		content = content.replace(/\*/g, '')
+
+		// 箇条書きの数字の前に改行を挿入し、その後にも改行を追加
+		content = content.replace(/(\d+\.\s+)/g, '\n\n$1\n')
+
+		// 改行ごとに分割してリスト化
+		const lines = content.split('\n').filter(Boolean)
+		return (
+			<>
+				{lines.map((line, index) => (
+					<div key={index}>
+						{line}
+						<br />
+						<br />
+					</div>
+				))}
+			</>
+		)
+	}
+
+	let llmContent
+	if (ProductasinFetchFromDynamo.llmcontent && ProductasinFetchFromDynamo.llmtitle) {
+		const processedLLMTitle = processLLMTitle(ProductasinFetchFromDynamo.llmtitle.S)
+		const processedLLMContent = processLLMContent(ProductasinFetchFromDynamo.llmcontent.S)
+
+		llmContent = (
+			<>
+				{processedLLMTitle}
+				<div>{processedLLMContent}</div>
+			</>
+		)
+	} else {
+		llmContent = null
 	}
 
 	function calculateOriginalPrice(price, discountPercentage) {
@@ -216,6 +260,12 @@ export default function ItemsPage({
 									</button>
 								</div>
 							</Link>
+
+							<div className="recommendtext">
+								{llmContent} {/* llmContentを追加 */}
+								<pre className="pb-3 overflow-auto whitespace-pre-wrap break-words">{outputText}</pre>
+							</div>
+
 							<div className="recommendtext">
 								<pre className="pb-3 overflow-auto whitespace-pre-wrap break-words">{outputText}</pre>
 							</div>
