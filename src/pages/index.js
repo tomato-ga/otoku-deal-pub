@@ -151,6 +151,8 @@ export default function Home({
 			<div className="mx-auto flex flex-col md:flex-row justify-between md:justify-start min-h-screen bg-white">
 				{/* Main content */}
 				<div className="w-full md:w-full p-4 bg-white order-1 md:order-2">
+					<LLMItems LLMItemsfromDynamo={llmresult} />
+
 					<h2 className="text-2xl font-bold pt-3 pr-3 pb-3 pl-1 relative">
 						割引率が高いアイテム
 						<div className="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-[#f087ff]  to-[#6e1fce] mb-2"></div>
@@ -255,8 +257,6 @@ export default function Home({
 							</Link>
 						</div>
 					)}
-
-					<LLMItems LLMItemsfromDynamo={llmresult} />
 
 					<DealItems dealItemsFromDynamo={dealResult} />
 
