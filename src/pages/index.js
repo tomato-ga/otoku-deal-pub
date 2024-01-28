@@ -20,7 +20,7 @@ import useIndexStore from '@/jotai/IndexStore'
 import useDealStore from '@/jotai/DealStore'
 import useLLMStore from '@/jotai/LLMStore'
 import { dynamoPriceoffQuery } from '@/funcs/NewPriceoffItemsDynamodb'
-import { dynamoQueryLlmflagTrue } from '../funcs/LLMflagindexDynamodb'
+import { dynamoQueryLlmflagTrue } from '@/funcs/LLMflagindexDynamodb'
 
 export default function Home({
 	result,
@@ -289,6 +289,8 @@ export async function getServerSideProps(context) {
 
 	// DynamoDBクエリ関数を呼び出し
 	const result = await dynamoQueryIndex()
+
+	const llmresult = await dynamoQueryLlmflagTrue()
 
 	// /dealごとのDynamoDB直クエリ
 	// const dealItemsFromDynamo = await dynamoQueryDeal()
