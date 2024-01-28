@@ -59,7 +59,7 @@ async function sitemapsql(req, res) {
 
 	try {
 		connection = await mysql.createConnection(
-			'mysql://5hi36p5sxtkfcsnw9jd8:pscale_pw_h9h5vbxdy3mcKDIpbc5behVknX4NsJj9gY4uebfEGDt@aws.connect.psdb.cloud/salesitemap?ssl={"rejectUnauthorized":true}'
+			'mysql://5hi36p5sxtkfcsnw9jd8:pscale_pw_h9h5vbxdy3mcKDIpbc5behVknX4NsJj9gY4uebfEGDt@aws.connect.psdb.cloud/salesitemap?ssl={"rejectUnauthorized":true}',
 		)
 
 		const [rows] = await connection.query('SELECT * FROM sitemapurl ORDER BY date DESC LIMIT 200')
