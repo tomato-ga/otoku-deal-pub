@@ -77,4 +77,5 @@ export const dynamoBestSellerQuery = async (category) => {
 	return propdata
 }
 
-module.exports = { dynamoBestSellerQuery }
+// module.exports = { dynamoBestSellerQuery }
+// export { dynamoBestSellerQuery }
