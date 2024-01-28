@@ -390,14 +390,23 @@ export async function getServerSideProps(context) {
 
 	const asin = context.params.asin
 
-	// MEMO ASIN単体フェッチ
+	// ASIN単体フェッチ
 	const ProductasinFetchFromDynamo = await dynamoQueryAsin(asin, '商品情報')
 	const ReviewasinFetchFromDynamo = await dynamoQueryAsin(asin, 'レビュー')
 	const relatedIndexFromDynamo = await dynamoQueryIndex()
 	const categoryFromDynamo = await dynamoQueryCategory(ProductasinFetchFromDynamo.Items[0].categoryName.S)
 
-	// console.log('ASINページ商品情報: ', ProductasinFetchFromDynamo.Items)
-	// console.log('ASINページレビュー: ', ReviewasinFetchFromDynamo.Items)
+	// Amazon.co.jp: のプレフィックスを削除
+	const removeAmazonPrefix = (productName) => {
+		return productName.replace(/^Amazon\.co\.jp:\s*/, '')
+	}
+
+	// プロダクト名からAmazon.co.jp: を削除
+	if (ProductasinFetchFromDynamo.Items[0] && ProductasinFetchFromDynamo.Items[0].productName) {
+		ProductasinFetchFromDynamo.Items[0].productName.S = removeAmazonPrefix(
+			ProductasinFetchFromDynamo.Items[0].productName.S
+		)
+	}
 
 	return {
 		props: {
