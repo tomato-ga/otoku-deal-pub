@@ -256,10 +256,6 @@ export default function Home({
 						</div>
 					)}
 
-					<h2 className="text-2xl font-bold pt-3 pr-3 pb-3 pl-1 relative">
-						LLMcontent
-						<div className="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-[#f087ff]  to-[#6e1fce] mb-2"></div>
-					</h2>
 					<LLMItems LLMItemsfromDynamo={llmresult} />
 
 					<DealItems dealItemsFromDynamo={dealResult} />
