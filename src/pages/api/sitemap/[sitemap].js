@@ -1,20 +1,21 @@
+// /Users/don/Codes/otoku-deal/src/pages/api/sitemap/[sitemap].js
+
+// サイトマップインデックスを生成するAPIエンドポイント
 require('dotenv').config()
 const mysql = require('mysql2/promise')
 
 export default async function sitemapIndex(req, res) {
+
+    const { sitemap } = req.query
+
 	let connection
 	try {
 		connection = await mysql.createConnection(process.env.PS_DATABASE_URL)
-
-		// 全URLの総数を取得
 		const [rows] = await connection.query('SELECT COUNT(*) AS count FROM sitemapurl')
 		const totalCount = rows[0].count
 		const limit = 1000
-
-		// 必要なサイトマップの数を計算
 		const sitemapCount = Math.ceil(totalCount / limit)
 
-		// サイトマップインデックスXMLを生成
 		const xml = generateSitemapIndex(sitemapCount)
 		res.setHeader('Content-Type', 'text/xml')
 		res.send(xml)
