@@ -171,7 +171,11 @@ export default function ItemsPage({
 	return (
 		<>
 			<NextSeo
-				title={ProductasinFetchFromDynamo.productName.S}
+				title={
+					ProductasinFetchFromDynamo.llmtitle
+						? ProductasinFetchFromDynamo.llmtitle.S
+						: ProductasinFetchFromDynamo.productName.S
+				}
 				description={`${ProductasinFetchFromDynamo.productName.S}のセール情報を紹介しています`}
 				openGraph={{
 					type: 'website',
