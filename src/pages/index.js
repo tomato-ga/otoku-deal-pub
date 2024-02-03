@@ -144,8 +144,6 @@ export default function Home({
 		}
 	}
 
-	console.log('dealResult', dealResult)
-
 	return (
 		<>
 			<TopHeader />
