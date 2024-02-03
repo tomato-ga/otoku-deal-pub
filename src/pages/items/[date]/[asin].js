@@ -110,6 +110,11 @@ export default function ItemsPage({
 		return <h2 className="text-2xl font-bold pb-3">{title.replace(/\*/g, '')}</h2>
 	}
 
+	const processLLMTitleSEO = (title) => {
+		// '*'を取り除き、JSXの<>タグでラップする
+		return title.replace(/\*/g, '')
+	}
+
 	const processLLMContent = (content) => {
 		// '*'を削除
 		content = content.replace(/\*/g, '')
@@ -133,6 +138,7 @@ export default function ItemsPage({
 	}
 
 	let llmContent
+	let llmtitleSEO = processLLMTitleSEO(ProductasinFetchFromDynamo.llmtitle.S)
 	if (ProductasinFetchFromDynamo.llmcontent && ProductasinFetchFromDynamo.llmtitle) {
 		const processedLLMTitle = processLLMTitle(ProductasinFetchFromDynamo.llmtitle.S)
 		const processedLLMContent = processLLMContent(ProductasinFetchFromDynamo.llmcontent.S)
@@ -171,18 +177,12 @@ export default function ItemsPage({
 	return (
 		<>
 			<NextSeo
-				title={
-					ProductasinFetchFromDynamo.llmtitle
-						? ProductasinFetchFromDynamo.llmtitle.S
-						: ProductasinFetchFromDynamo.productName.S
-				}
+				title={ProductasinFetchFromDynamo.llmtitle ? llmtitleSEO : ProductasinFetchFromDynamo.productName.S}
 				description={`${ProductasinFetchFromDynamo.productName.S}のセール情報を紹介しています`}
 				openGraph={{
 					type: 'website',
 					url: `https://www.otoku-deal.com/${ProductasinFetchFromDynamo.date.S}`,
-					title: ProductasinFetchFromDynamo.llmtitle
-						? ProductasinFetchFromDynamo.llmtitle.S
-						: ProductasinFetchFromDynamo.productName.S,
+					title: ProductasinFetchFromDynamo.llmtitle ? llmtitleSEO : ProductasinFetchFromDynamo.productName.S,
 					description: `${ProductasinFetchFromDynamo.productName.S}のセール情報を紹介しています`,
 					images: [
 						{
@@ -197,11 +197,7 @@ export default function ItemsPage({
 
 			<ArticleJsonLd
 				url={``}
-				title={
-					ProductasinFetchFromDynamo.llmtitle
-						? ProductasinFetchFromDynamo.llmtitle.S
-						: ProductasinFetchFromDynamo.productName.S
-				}
+				title={ProductasinFetchFromDynamo.llmtitle ? llmtitleSEO : ProductasinFetchFromDynamo.productName.S}
 				images={ProductasinFetchFromDynamo.imageUrl.S}
 				datePublished={ProductasinFetchFromDynamo.date.S}
 				authorName="激安特価セール速報運営者"
