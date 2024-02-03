@@ -176,7 +176,9 @@ export default function ItemsPage({
 				openGraph={{
 					type: 'website',
 					url: `https://www.otoku-deal.com/${ProductasinFetchFromDynamo.date.S}`,
-					title: ProductasinFetchFromDynamo.productName.S,
+					title: ProductasinFetchFromDynamo.llmtitle
+						? ProductasinFetchFromDynamo.llmtitle.S
+						: ProductasinFetchFromDynamo.productName.S,
 					description: `${ProductasinFetchFromDynamo.productName.S}のセール情報を紹介しています`,
 					images: [
 						{
@@ -191,7 +193,11 @@ export default function ItemsPage({
 
 			<ArticleJsonLd
 				url={``}
-				title={ProductasinFetchFromDynamo.productName.S}
+				title={
+					ProductasinFetchFromDynamo.llmtitle
+						? ProductasinFetchFromDynamo.llmtitle.S
+						: ProductasinFetchFromDynamo.productName.S
+				}
 				images={ProductasinFetchFromDynamo.imageUrl.S}
 				datePublished={ProductasinFetchFromDynamo.date.S}
 				authorName="激安特価セール速報運営者"
