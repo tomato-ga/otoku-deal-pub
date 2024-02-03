@@ -146,13 +146,13 @@ export default function ItemsPage({
 		return content.replace(/\n+/g, ' ').trim()
 	}
 
-	let llmContent
-	let llmtitleSEO = processLLMTitleSEO(ProductasinFetchFromDynamo.llmtitle.S)
-	let llmcontentDescription = processLLMContentAsText(ProductasinFetchFromDynamo.llmcontent.S)
+	let llmContent, llmtitleSEO, llmcontentDescription
 
 	if (ProductasinFetchFromDynamo.llmcontent && ProductasinFetchFromDynamo.llmtitle) {
 		const processedLLMTitle = processLLMTitle(ProductasinFetchFromDynamo.llmtitle.S)
 		const processedLLMContent = processLLMContent(ProductasinFetchFromDynamo.llmcontent.S)
+		llmtitleSEO = processLLMTitleSEO(ProductasinFetchFromDynamo.llmtitle.S)
+		llmcontentDescription = processLLMContentAsText(ProductasinFetchFromDynamo.llmcontent.S)
 
 		llmContent = (
 			<>
