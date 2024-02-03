@@ -137,8 +137,23 @@ export default function ItemsPage({
 		)
 	}
 
+	const processLLMContentAsText = (content) => {
+		// '*'を削除
+		content = content.replace(/\*/g, '')
+
+		// 箇条書きの数字の前に改行を挿入し、その後にも改行を追加
+		content = content.replace(/(\d+\.\s+)/g, '\n\n$1\n')
+
+		// 改行をスペースに置き換えて、全体を単一の文字列にする
+		return content.replace(/\n+/g, ' ').trim()
+	}
+
 	let llmContent
 	let llmtitleSEO = processLLMTitleSEO(ProductasinFetchFromDynamo.llmtitle.S)
+	let llmcontentDescription = processLLMContentAsText(ProductasinFetchFromDynamo.llmcontent.S)
+
+	console.log('llmcontentDescription', llmcontentDescription)
+
 	if (ProductasinFetchFromDynamo.llmcontent && ProductasinFetchFromDynamo.llmtitle) {
 		const processedLLMTitle = processLLMTitle(ProductasinFetchFromDynamo.llmtitle.S)
 		const processedLLMContent = processLLMContent(ProductasinFetchFromDynamo.llmcontent.S)
@@ -178,12 +193,18 @@ export default function ItemsPage({
 		<>
 			<NextSeo
 				title={ProductasinFetchFromDynamo.llmtitle ? llmtitleSEO : ProductasinFetchFromDynamo.productName.S}
-				description={`${ProductasinFetchFromDynamo.productName.S}のセール情報を紹介しています`}
+				description={
+					ProductasinFetchFromDynamo.llmcontent
+						? llmcontentDescription
+						: `${ProductasinFetchFromDynamo.productName.S}のセール情報を紹介しています`
+				}
 				openGraph={{
 					type: 'website',
 					url: `https://www.otoku-deal.com/${ProductasinFetchFromDynamo.date.S}`,
 					title: ProductasinFetchFromDynamo.llmtitle ? llmtitleSEO : ProductasinFetchFromDynamo.productName.S,
-					description: `${ProductasinFetchFromDynamo.productName.S}のセール情報を紹介しています`,
+					description: ProductasinFetchFromDynamo.llmcontent
+						? llmcontentDescription
+						: `${ProductasinFetchFromDynamo.productName.S}のセール情報を紹介しています`,
 					images: [
 						{
 							url: ProductasinFetchFromDynamo.imageUrl.S,
@@ -202,7 +223,11 @@ export default function ItemsPage({
 				datePublished={ProductasinFetchFromDynamo.date.S}
 				authorName="激安特価セール速報運営者"
 				publisherName="激安特価セール速報"
-				description={`${ProductasinFetchFromDynamo.productName.S}のセール情報を紹介しています`}
+				description={
+					ProductasinFetchFromDynamo.llmcontent
+						? llmcontentDescription
+						: `${ProductasinFetchFromDynamo.productName.S}のセール情報を紹介しています`
+				}
 			/>
 
 			<div className="flex flex-col min-h-screen">
