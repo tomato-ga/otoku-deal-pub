@@ -25,8 +25,6 @@ export default function ItemsPage({
 }) {
 	const [localData, setLocalData] = useState([])
 
-	console.log('llmcheck : ', ProductasinFetchFromDynamo)
-
 	useEffect(() => {
 		let savedPagelists = {
 			pages: []
@@ -151,8 +149,6 @@ export default function ItemsPage({
 	let llmContent
 	let llmtitleSEO = processLLMTitleSEO(ProductasinFetchFromDynamo.llmtitle.S)
 	let llmcontentDescription = processLLMContentAsText(ProductasinFetchFromDynamo.llmcontent.S)
-
-	console.log('llmcontentDescription', llmcontentDescription)
 
 	if (ProductasinFetchFromDynamo.llmcontent && ProductasinFetchFromDynamo.llmtitle) {
 		const processedLLMTitle = processLLMTitle(ProductasinFetchFromDynamo.llmtitle.S)
