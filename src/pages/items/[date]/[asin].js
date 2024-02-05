@@ -98,9 +98,9 @@ export default function ItemsPage({
 
 	let outputTitle
 	if (ProductasinFetchFromDynamo.outputTitle) {
-		outputTitle = ProductasinFetchFromDynamo.outputTitle.S
+		outputTitle = ProductasinFetchFromDynamo.outputTitle?.S
 	} else {
-		outputTitle = ProductasinFetchFromDynamo.productName.S
+		outputTitle = ProductasinFetchFromDynamo.productName?.S
 	}
 
 	const processLLMTitle = (title) => {
@@ -206,7 +206,7 @@ export default function ItemsPage({
 							url: ProductasinFetchFromDynamo.imageUrl.S,
 							width: 800,
 							height: 600,
-							alt: `${ProductasinFetchFromDynamo.productName.S}の商品画像`
+							alt: `${ProductasinFetchFromDynamo.productName?.S}の商品画像`
 						}
 					]
 				}}
@@ -233,8 +233,8 @@ export default function ItemsPage({
 					<Itemspagenavbar />
 
 					<BreadCrumb
-						categoryName={ProductasinFetchFromDynamo.categoryName.S}
-						productName={ProductasinFetchFromDynamo.productName.S}
+						categoryName={ProductasinFetchFromDynamo.categoryName?.S}
+						productName={ProductasinFetchFromDynamo.productName?.S}
 					/>
 
 					{/* スマホ表示では子要素を縦に並べる */}
@@ -243,8 +243,8 @@ export default function ItemsPage({
 						<div className="w-full sm:w-1/3 pb-2">
 							<div className="relative">
 								<img
-									src={ProductasinFetchFromDynamo.imageUrl.S}
-									alt={ProductasinFetchFromDynamo.productName.S}
+									src={ProductasinFetchFromDynamo.imageUrl?.S}
+									alt={ProductasinFetchFromDynamo.productName?.S}
 									width={600}
 									height={600}
 									style={{ objectFit: 'contain' }}
@@ -324,16 +324,16 @@ export default function ItemsPage({
 										<div className="h-[270px] w-full md:h-[270px] md:w-full mb-4">
 											<img
 												src={data.imageUrl.S}
-												alt={data.productName.S}
+												alt={data.productName?.S}
 												className="w-full h-full"
 												style={{ objectFit: 'contain' }}
 											/>
 										</div>
 										<div className="mr-2 ml-2">
 											<p>
-												{data.productName.S.length > 80
-													? `${data.productName.S.substring(0, 80)}...`
-													: data.productName.S}
+												{data.productName?.S.length > 80
+													? `${data.productName?.S.substring(0, 80)}...`
+													: data.productName?.S}
 											</p>
 										</div>
 									</Link>
@@ -354,16 +354,16 @@ export default function ItemsPage({
 										<div className="h-[270px] w-full md:h-[270px] md:w-full mb-4">
 											<img
 												src={data.imageUrl.S}
-												alt={data.productName.S}
+												alt={data.productName?.S}
 												className="w-full h-full"
 												style={{ objectFit: 'contain' }}
 											/>
 										</div>
 										<div className="mr-2 ml-2">
 											<p>
-												{data.productName.S.length > 80
-													? `${data.productName.S.substring(0, 80)}...`
-													: data.productName.S}
+												{data.productName?.S.length > 80
+													? `${data.productName?.S.substring(0, 80)}...`
+													: data.productName?.S}
 											</p>
 										</div>
 									</Link>
@@ -383,16 +383,16 @@ export default function ItemsPage({
 										<div className="h-[270px] w-full md:h-[270px] md:w-full mb-4">
 											<img
 												src={data.imageUrl.S}
-												alt={data.productName.S}
+												alt={data.productName?.S}
 												className="w-full h-full"
 												style={{ objectFit: 'contain' }}
 											/>
 										</div>
 										<div className="mr-2 ml-2">
 											<p>
-												{data.productName.S.length > 80
-													? `${data.productName.S.substring(0, 80)}...`
-													: data.productName.S}
+												{data.productName?.S.length > 80
+													? `${data.productName?.S.substring(0, 80)}...`
+													: data.productName?.S}
 											</p>
 										</div>
 									</Link>
