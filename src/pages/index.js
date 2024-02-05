@@ -44,6 +44,8 @@ export default function Home({
 	const router = useRouter()
 	let number = 1
 
+	console.log('result', result)
+
 	// Deal API
 	useEffect(() => {
 		const fetchData = async () => {
@@ -100,6 +102,11 @@ export default function Home({
 	}
 
 	const truncateString = (str, num) => {
+		// strがundefinedまたはnullである場合、または文字列でない場合に空文字列を返す
+		if (typeof str !== 'string') {
+			return ''
+		}
+
 		if (str.length <= num) {
 			return str
 		}
@@ -114,8 +121,8 @@ export default function Home({
 		window.dataLayer = window.dataLayer || []
 		dataLayer.push({
 			event: 'index_to_page_click',
-			ASIN: asindata.asin.S.replace('ASIN#', ''),
-			category: asindata.categoryName.S
+			ASIN: asindata.asin?.S.replace('ASIN#', ''),
+			category: asindata.categoryName?.S
 		})
 	}
 
@@ -170,13 +177,13 @@ export default function Home({
 									<div className="border p-2 bg-white flex flex-col h-full cursor-pointer">
 										<div className="flex-grow flex justify-center items-center mb-4 h-[270px] w-full">
 											<img
-												src={data.imageUrl.S}
-												alt={data.productName.S}
+												src={data.imageUrl?.S}
+												alt={data.productName?.S}
 												className="w-full max-h-[270px] object-contain"
 											/>
 										</div>
 										<h2 className="text-md font-semibold mb-1 text-gray-800 px-2 overflow-hidden">
-											{truncateString(data.productName.S, 50)}
+											{truncateString(data.productName?.S, 50)}
 										</h2>
 										<div className="mt-auto">
 											<div className="flex">
@@ -215,13 +222,13 @@ export default function Home({
 								<div className="border p-2 bg-white flex flex-col h-full cursor-pointer">
 									<div className="flex-grow flex justify-center items-center mb-4 h-[270px] w-full">
 										<img
-											src={data.imageUrl.S}
-											alt={data.productName.S}
+											src={data.imageUrl?.S}
+											alt={data.productName?.S}
 											className="w-full max-h-[270px] object-contain"
 										/>
 									</div>
 									<h2 className="text-md font-semibold mb-1 text-gray-800 px-2 overflow-hidden">
-										{truncateString(data.productName.S, 50)}
+										{truncateString(data.productName?.S, 50)}
 									</h2>
 									<div className="mt-auto">
 										<div className="flex">
@@ -292,11 +299,24 @@ export async function getServerSideProps(context) {
 
 	// DynamoDBクエリ関数を呼び出し
 	const result = await dynamoQueryIndex()
-
 	const llmresult = await dynamoQueryLlmflagTrue()
+
+	// Amazon.co.jp: のプレフィックスを削除
+	// const removeAmazonPrefix = (productName) => {
+	// 	return productName.replace(/^Amazon\.co\.jp:\s*/, '')
+	// }
+
+	// // プロダクト名からAmazon.co.jp: を削除
+	// if (ProductasinFetchFromDynamo.Items[0] && ProductasinFetchFromDynamo.Items[0].productName) {
+	// 	ProductasinFetchFromDynamo.Items[0].productName.S = removeAmazonPrefix(
+	// 		ProductasinFetchFromDynamo.Items[0].productName.S
+	// 	)
+	// }
 
 	// /dealごとのDynamoDB直クエリ
 	// const dealItemsFromDynamo = await dynamoQueryDeal()
+
+	console.log('SSR index: ', result.Items)
 
 	const bestSellerBooksFromDynamo = await dynamoBestSellerQuery('https://www.amazon.co.jp/gp/bestsellers/books/')
 	const bestSellerVideoGamesFromDynamo = await dynamoBestSellerQuery(
