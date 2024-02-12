@@ -23,6 +23,8 @@ export default function ItemsPage({
 	categoryFromDynamo,
 	asin
 }) {
+	console.log('ProductasinFetchFromDynamo', ProductasinFetchFromDynamo)
+
 	const [localData, setLocalData] = useState([])
 
 	useEffect(() => {
