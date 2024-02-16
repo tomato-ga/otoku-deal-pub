@@ -25,6 +25,7 @@ const DealItem = ({ data }) => {
 				<div className="flex-grow flex justify-center items-center mb-4 h-[270px] w-full">
 					<img src={data.imageUrl} alt={data.productName} className="w-full max-h-[270px] object-contain" />
 				</div>
+
 				<h2 className="text-md font-semibold mb-1 text-gray-800 px-2 overflow-hidden">
 					{truncateString(data.productName, 50)}
 				</h2>
@@ -84,7 +85,9 @@ const DealItems = ({ dealItemsFromDynamo }) => {
 			{Object.entries(groupedByH1).map(([h1Value, items]) => (
 				<div key={h1Value} className="deal-item">
 					<div className="relative">
-						<h3 className="text-2xl font-bold pt-3 pr-3 pb-3 pl-1 mt-10">{h1Value}</h3>
+						<h3 className="text-4xl font-bold pt-3 pr-3 pb-3 pl-1 mt-10 bg-gradient-to-r from-orange-400 via-red-500 to-pink-500 inline-block text-transparent bg-clip-text">
+							{h1Value}
+						</h3>
 						<div className="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-[#1fcff1] to-[#234cb6] mb-2"></div>
 					</div>
 					<div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4 bg-white mt-6">
@@ -95,7 +98,6 @@ const DealItems = ({ dealItemsFromDynamo }) => {
 						))}
 					</div>
 				</div>
-				
 			))}
 		</>
 	)

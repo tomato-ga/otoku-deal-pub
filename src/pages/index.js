@@ -44,8 +44,6 @@ export default function Home({
 	const router = useRouter()
 	let number = 1
 
-	console.log('result', result)
-
 	// Deal API
 	useEffect(() => {
 		const fetchData = async () => {
@@ -160,10 +158,13 @@ export default function Home({
 				<div className="w-full md:w-full p-4 bg-white order-1 md:order-2">
 					<LLMItems LLMItemsfromDynamo={llmresult} />
 
-					<h2 className="text-2xl font-bold pt-3 pr-3 pb-3 pl-1 relative">
-						割引率が高いアイテム
-						<div className="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-[#f087ff]  to-[#6e1fce] mb-2"></div>
-					</h2>
+					<div className="relative">
+						<h2 className="text-4xl font-bold pt-3 pr-3 pb-3 pl-1 mt-10 bg-gradient-to-r from-orange-400 via-red-500 to-pink-500 inline-block text-transparent bg-clip-text">
+							割引率が高いアイテム
+							<div className="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-[#f087ff]  to-[#6e1fce] mb-2"></div>
+						</h2>
+					</div>
+
 					<div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4 bg-white mt-6">
 						{priceOfflimitItems(priceOffItems)
 							.slice(0, 10)
@@ -206,10 +207,12 @@ export default function Home({
 							))}
 					</div>
 
-					<h2 className="text-2xl font-bold pt-3 pr-3 pb-3 pl-1 relative">
-						新着セールアイテム
-						<div className="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-[#f087ff]  to-[#6e1fce] mb-2"></div>
-					</h2>
+					<div className="relative">
+						<h2 className="text-4xl font-bold pt-3 pr-3 pb-3 pl-1 mt-10 bg-gradient-to-r from-orange-400 via-red-500 to-pink-500 inline-block text-transparent bg-clip-text">
+							新着セールアイテム
+							<div className="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-[#f087ff]  to-[#6e1fce] mb-2"></div>
+						</h2>
+					</div>
 
 					<div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4 bg-white mt-6">
 						{result.map((data) => (
@@ -315,8 +318,6 @@ export async function getServerSideProps(context) {
 
 	// /dealごとのDynamoDB直クエリ
 	// const dealItemsFromDynamo = await dynamoQueryDeal()
-
-	console.log('SSR index: ', result.Items)
 
 	const bestSellerBooksFromDynamo = await dynamoBestSellerQuery('https://www.amazon.co.jp/gp/bestsellers/books/')
 	const bestSellerVideoGamesFromDynamo = await dynamoBestSellerQuery(
