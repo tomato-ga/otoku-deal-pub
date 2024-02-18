@@ -161,7 +161,7 @@ export default function Home({
 					<div className="relative">
 						<h2 className="text-4xl font-bold pt-3 pr-3 pb-3 pl-1 mt-10 bg-gradient-to-r from-orange-400 via-red-500 to-pink-500 inline-block text-transparent bg-clip-text">
 							割引率が高いアイテム
-							<div className="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-[#f087ff]  to-[#6e1fce] mb-2"></div>
+							<div className="absolute bottom-0 left-0 w-full h-0.5  bg-gradient-to-r from-slate-300 to-slate-200  mb-2"></div>
 						</h2>
 					</div>
 
@@ -210,7 +210,7 @@ export default function Home({
 					<div className="relative">
 						<h2 className="text-4xl font-bold pt-3 pr-3 pb-3 pl-1 mt-10 bg-gradient-to-r from-orange-400 via-red-500 to-pink-500 inline-block text-transparent bg-clip-text">
 							新着セールアイテム
-							<div className="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-[#f087ff]  to-[#6e1fce] mb-2"></div>
+							<div className="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-slate-300 to-slate-200 mb-2"></div>
 						</h2>
 					</div>
 

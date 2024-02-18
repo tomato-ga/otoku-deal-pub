@@ -91,7 +91,7 @@ const LLMItems = ({ LLMItemsfromDynamo }) => {
 						<h2 className="text-4xl font-bold pt-3 pr-3 pb-3 pl-1 mt-10 bg-gradient-to-r from-orange-400 via-red-500 to-pink-500 inline-block text-transparent bg-clip-text">
 							{h1Value}
 						</h2>
-						<div className="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-[#1fcff1] to-[#234cb6] mb-2"></div>
+						<div className="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-slate-300 to-slate-200 mb-2"></div>
 					</div>
 					<div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4 bg-white mt-6">
 						{items.map((item) => (
