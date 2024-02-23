@@ -158,12 +158,12 @@ export default function Home({
 				<div className="w-full md:w-full p-4 bg-white order-1 md:order-2">
 					<LLMItems LLMItemsfromDynamo={llmresult} />
 
-					<div className="relative">
+					{/* <div className="relative">
 						<h2 className="text-4xl font-bold pt-3 pr-3 pb-3 pl-1 mt-10 bg-gradient-to-r from-orange-400 via-red-500 to-pink-500 inline-block text-transparent bg-clip-text">
 							割引率が高いアイテム
 							<div className="absolute bottom-0 left-0 w-full h-0.5  bg-gradient-to-r from-slate-300 to-slate-200  mb-2"></div>
 						</h2>
-					</div>
+					</div> */}
 
 					<div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4 bg-white mt-6">
 						{priceOfflimitItems(priceOffItems)
