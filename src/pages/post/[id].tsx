@@ -20,29 +20,29 @@ interface PostPageProps {
 }
 
 const Post: React.FC<PostPageProps> = ({ post }) => {
-	const [poststate, setPost] = useState<PostContent[]>([])
+	// const [poststate, setPost] = useState<PostContent[]>([])
 
-	console.log('デバッグ', post)
+	// console.log('デバッグ', post)
 
-	useEffect(() => {
-		async function fetchData() {
-			try {
-				const response = await fetch('/api/admin_getpostcontent', {
-					method: 'GET',
-					headers: { 'Content-Type': 'application/json' }
-				})
-				if (response.ok) {
-					const sqldata = await response.json()
-					setPost(sqldata.data)
-				} else {
-					console.error('Failed to fetch data:', response.status)
-				}
-			} catch (error) {
-				console.error('Error fetching data:', error)
-			}
-		}
-		fetchData()
-	})
+	// useEffect(() => {
+	// 	async function fetchData() {
+	// 		try {
+	// 			const response = await fetch('/api/admin_getpostcontent', {
+	// 				method: 'GET',
+	// 				headers: { 'Content-Type': 'application/json' }
+	// 			})
+	// 			if (response.ok) {
+	// 				const sqldata = await response.json()
+	// 				setPost(sqldata.data)
+	// 			} else {
+	// 				console.error('Failed to fetch data:', response.status)
+	// 			}
+	// 		} catch (error) {
+	// 			console.error('Error fetching data:', error)
+	// 		}
+	// 	}
+	// 	fetchData()
+	// })
 
 	const formatDate = (dateString: string) => {
 		const date = new Date(dateString)
