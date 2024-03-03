@@ -3,11 +3,17 @@ import rehypeRaw from 'rehype-raw'
 import rehypeSanitize from 'rehype-sanitize'
 import remarkGfm from 'remark-gfm'
 
-const MarkdownContent = (markdownString) => {
+// propsの型定義を追加
+interface MarkdownContentProps {
+	markdownString: string
+}
+
+// propsオブジェクトを受け取るように修正
+const MarkdownContent: React.FC<MarkdownContentProps> = ({ markdownString }) => {
 	return (
 		<div className="markdown">
 			<ReactMarkdown
-				children={markdownString}
+				children={markdownString} // childrenプロパティにmarkdownStringを渡す
 				rehypePlugins={[rehypeRaw, rehypeSanitize]}
 				remarkPlugins={[remarkGfm]}
 			/>

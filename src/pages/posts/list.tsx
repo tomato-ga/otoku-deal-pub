@@ -6,6 +6,8 @@ import { useRouter } from 'next/router'
 import Link from 'next/link'
 
 import TopHeader from '@/components/TopHeader'
+import Itemspagenavbar from '@/components/ItemsPage3navbar'
+
 
 interface Post {
 	id: string
@@ -50,14 +52,21 @@ const PostsList = () => {
 	return (
 		<>
 			<TopHeader />
+			<Itemspagenavbar />
+
+
 			<div className="postlists">
 				{postLists.map((post) => (
 					<div className="flex items-center justify-center" key={post.id}>
 						<ul>
 							<li className="m-3 text-4xl text-slate-700">
-								<Link href={`/adminu/post/${post.id}`}>
-									{post.title}
-									<div className="text-2xl">{formatDate(post.created_at)}</div>
+								<Link href={`/post/${post.id}`}>
+									<div className="relative">
+										<h2 className="text-4xl font-bold pt-3 pr-3 pb-3 pl-1 mt-10 bg-gradient-to-r from-orange-400 via-red-500 to-pink-500 inline-block text-transparent bg-clip-text">
+											{post.title}
+										</h2>
+									</div>
+									<div className="text-sm">{formatDate(post.created_at)}</div>
 								</Link>
 							</li>
 						</ul>
