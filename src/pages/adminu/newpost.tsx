@@ -3,6 +3,7 @@ import useAuthStore from '@/jotai/authStore'
 import { useRouter } from 'next/router'
 
 import AdminLayout from '@/components/AdminLayout'
+import FileUploadArea from '@/components/drag'
 
 const Editor = () => {
 	const [title, setTitle] = useState('')
@@ -83,6 +84,9 @@ const Editor = () => {
 					placeholder="タグをカンマ区切りで入力"
 					className="border-2 m-2 h-20"
 				/>
+
+				<FileUploadArea />
+
 				<button onClick={handleSave} className="bg-blue-500 text-white p-2 rounded mt-4">
 					保存
 				</button>
