@@ -85,8 +85,9 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 		}
 	}
 
+	const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL
 	// 実際の環境では、外部APIを呼び出すURLや環境変数を適切に設定してください。
-	const res = await fetch(`/api/admin_getpostcontent?id=${id}`)
+	const res = await fetch(`${baseUrl}/api/admin_getpostcontent?id=${id}`)
 	const data = await res.json()
 
 	// APIから取得したデータをpropsとしてページに渡す
