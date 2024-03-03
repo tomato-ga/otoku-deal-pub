@@ -5,12 +5,17 @@ import { useRouter } from 'next/router'
 import AdminLayout from '@/components/AdminLayout'
 import FileUploadArea from '@/components/drag'
 
+interface UploadResponse {
+	urls: string[]
+}
+
 const Editor = () => {
 	const [title, setTitle] = useState('')
 	const [content, setContent] = useState('')
 	const [tags, setTags] = useState('')
 	const author = 'dondonbe'
 
+	const [selectedFiles, setSelectedFiles] = useState<File[]>([])
 	const [toast, setToast] = useState({ show: false, message: '' })
 	const showToast = (message: string) => {
 		// message の型を string に
@@ -25,7 +30,37 @@ const Editor = () => {
 	const handleContentChange = (e: ChangeEvent<HTMLTextAreaElement>) => setContent(e.target.value) // e の型を指定
 	const handleTagsChange = (e: ChangeEvent<HTMLInputElement>) => setTags(e.target.value) // e の型を指定、HTMLInputElement に変更
 
+	const onFileSelected = (files: File[]) => {
+		setSelectedFiles(files)
+	}
+
 	const handleSave = async () => {
+		if (selectedFiles.length > 0) {
+			const formData = new FormData()
+			selectedFiles.forEach((file) => {
+				formData.append('files', file)
+			})
+
+			try {
+				const response = await fetch('/api/admin_s3upload', {
+					method: 'POST',
+					body: formData
+				})
+
+				if (response.ok) {
+					const data: UploadResponse = await response.json() // アップロードされた画像のURLの配列を想定
+					// 本文に画像のURLを挿入
+					let imgTags = data.urls.map((url) => `<img src="${url}" alt="uploaded image">`).join('\n')
+					setContent((prevContent) => prevContent + '\n' + imgTags)
+					showToast('画像がアップロードされ、記事が保存されました')
+				} else {
+					console.error('アップロードに失敗しました。')
+				}
+			} catch (error) {
+				console.error('アップロード中にエラーが発生しました:', error)
+			}
+		}
+
 		const articleData = { title, content, tags, author }
 		const response = await fetch('/api/admin_newarticle', {
 			method: 'POST',
@@ -85,7 +120,7 @@ const Editor = () => {
 					className="border-2 m-2 h-20"
 				/>
 
-				<FileUploadArea />
+				<FileUploadArea onFileSelected={onFileSelected} />
 
 				<button onClick={handleSave} className="bg-blue-500 text-white p-2 rounded mt-4">
 					保存
