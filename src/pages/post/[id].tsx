@@ -20,30 +20,6 @@ interface PostPageProps {
 }
 
 const Post: React.FC<PostPageProps> = ({ post }) => {
-	// const [poststate, setPost] = useState<PostContent[]>([])
-
-	// console.log('デバッグ', post)
-
-	// useEffect(() => {
-	// 	async function fetchData() {
-	// 		try {
-	// 			const response = await fetch('/api/admin_getpostcontent', {
-	// 				method: 'GET',
-	// 				headers: { 'Content-Type': 'application/json' }
-	// 			})
-	// 			if (response.ok) {
-	// 				const sqldata = await response.json()
-	// 				setPost(sqldata.data)
-	// 			} else {
-	// 				console.error('Failed to fetch data:', response.status)
-	// 			}
-	// 		} catch (error) {
-	// 			console.error('Error fetching data:', error)
-	// 		}
-	// 	}
-	// 	fetchData()
-	// })
-
 	const formatDate = (dateString: string) => {
 		const date = new Date(dateString)
 		const year = date.getFullYear()
@@ -61,11 +37,13 @@ const Post: React.FC<PostPageProps> = ({ post }) => {
 			<TopHeader />
 			<Itemspagenavbar />
 
-			<div className="flex justify-center items-center m-12">
-				{/* 画面全体の高さを持つFlexコンテナ */}
-				<h1 className="text-4xl font-bold bg-gradient-to-r from-orange-400 via-red-500 to-pink-500 inline-block text-transparent bg-clip-text">
+			<div className="flex justify-center items-center m-12 text-center">
+				<h1 className="text-8xl font-bold bg-gradient-to-r from-orange-400 via-red-500 to-pink-500 inline-block text-transparent bg-clip-text">
 					{post.title}
 				</h1>
+			</div>
+
+			<div className="m-10">
 				<MarkdownContent markdownString={post.content} />
 			</div>
 		</>

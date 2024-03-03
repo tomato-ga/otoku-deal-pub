@@ -28,8 +28,8 @@
     rgb(var(--background-start-rgb));
 } */
 
-.markdown h1 {
-  font-size: 2em;
+/* .markdown h1 {
+  font-size: 1.5rem;
 }
 
 .markdown h2 {
@@ -38,4 +38,31 @@
 
 .markdown p {
   color: #333;
+} */
+
+.markdown ol {
+  @apply list-decimal pl-10;
+}
+.markdown ul {
+  @apply list-disc pl-10;
+}
+
+.markdown  {
+  @apply text-gray-800;
+}
+
+.markdown h4 {
+  @apply text-lg border-b border-black my-5;
+}
+
+.markdown h1 {
+  @apply text-6xl;
+}
+
+.markdown h2 {
+  @apply text-4xl m-4;
+}
+
+.markdown p {
+  @apply m-2;
 }
