@@ -22,6 +22,8 @@ interface PostPageProps {
 const Post: React.FC<PostPageProps> = ({ post }) => {
 	const [poststate, setPost] = useState<PostContent[]>([])
 
+	console.log('デバッグ', post)
+
 	useEffect(() => {
 		async function fetchData() {
 			try {
