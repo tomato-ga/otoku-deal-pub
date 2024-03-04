@@ -77,6 +77,29 @@ const Editor = () => {
 		}
 	}
 
+	// 画像アップロードの関数
+	const uploadImages = async (files: File[]) => {
+		const formData = new FormData()
+		files.forEach((file) => formData.append('files', file))
+
+		try {
+			const response = await fetch('/api/admin_s3upload', {
+				method: 'POST',
+				body: formData
+			})
+
+			if (!response.ok) throw new Error('アップロード失敗')
+
+			const data: UploadResponse = await response.json()
+			let imgTags = data.urls.map((url) => `<img src="${url}" alt="uploaded image">`).join('\n')
+			setContent((prev) => `${prev}\n${imgTags}`)
+			showToast('画像アップロード成功')
+		} catch (error) {
+			console.error('アップロードエラー', error)
+			showToast('画像アップロードエラー')
+		}
+	}
+
 	useEffect(() => {
 		const token = localStorage.getItem('logintoken')
 		if (!token) {
@@ -120,7 +143,7 @@ const Editor = () => {
 					className="border-2 m-2 h-20"
 				/>
 
-				<FileUploadArea onFileSelected={onFileSelected} />
+				<FileUploadArea onFileSelected={setSelectedFiles} onUpload={uploadImages} />
 
 				<button onClick={handleSave} className="bg-blue-500 text-white p-2 rounded mt-4">
 					保存

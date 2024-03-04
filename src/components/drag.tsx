@@ -1,10 +1,13 @@
+// components/FileUploadArea.tsx
 import React, { useState, DragEvent } from 'react'
 
-// TODO 画像アップロードと、記事DB保存は別の処理にわけるのが適切
+interface FileUploadAreaProps {
+	onFileSelected: (files: File[]) => void
+	onUpload: (files: File[]) => Promise<void> // 画像アップロードのための関数をPropsとして受け取る
+}
 
-const FileUploadArea: React.FC<{ onFileSelected: (files: File[]) => void }> = ({ onFileSelected }) => {
+const FileUploadArea: React.FC<FileUploadAreaProps> = ({ onFileSelected, onUpload }) => {
 	const [dragOver, setDragOver] = useState<boolean>(false)
-	const [selectedFileName, setSelectedFileName] = useState<string>('')
 	const [selectedFiles, setSelectedFiles] = useState<File[]>([])
 
 	const handleDragOver = (e: DragEvent<HTMLDivElement>) => {
@@ -25,6 +28,12 @@ const FileUploadArea: React.FC<{ onFileSelected: (files: File[]) => void }> = ({
 		onFileSelected(files) // 親コンポーネントに選択されたファイルの配列を渡す
 	}
 
+	// 新しい関数: 画像アップロード処理を呼び出す
+	const handleUpload = async () => {
+		await onUpload(selectedFiles)
+		setSelectedFiles([]) // アップロード後、選択されたファイルリストをクリア
+	}
+
 	return (
 		<div
 			className={`drop-area ${dragOver ? 'drag-over' : ''}`}
@@ -32,10 +41,14 @@ const FileUploadArea: React.FC<{ onFileSelected: (files: File[]) => void }> = ({
 			onDragLeave={handleDragLeave}
 			onDrop={handleDrop}
 		>
-			ファイルをここにドロップ
+			<p>ファイルをここにドロップ</p>
 			{selectedFiles.map((file, index) => (
 				<div key={index}>選択されたファイル: {file.name}</div>
 			))}
+			{/* 画像アップロードボタンを追加 */}
+			<button onClick={handleUpload} className="bg-blue-500 text-white p-2 rounded mt-4">
+				画像アップロード
+			</button>
 		</div>
 	)
 }
