@@ -9,7 +9,15 @@ interface UploadResponse {
 	urls: string[]
 }
 
-const Editor = () => {
+interface EditorProps {
+	initialTitle: string
+	initialContent: string
+	initialTags: string
+	postId?: string | null
+	onSave: (data: { title: string; content: string; tags: string; postId?: string | null }) => void
+}
+
+const Editor: React.FC<EditorProps> = () => {
 	const [title, setTitle] = useState('')
 	const [content, setContent] = useState('')
 	const [tags, setTags] = useState('')
