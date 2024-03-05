@@ -1,98 +1,87 @@
-import React, { useEffect, useState } from 'react'
-import Editor from '../newpost'
+import React, { useEffect, useState, ChangeEvent } from 'react'
 import { useRouter } from 'next/router'
+import AdminLayout from '@/components/AdminLayout'
+import Editor from '../newpost' // Editorのパスを適宜調整してください
+import useAuthStore from '@/jotai/authStore'
 
 interface PostData {
-	id: string
-	title: string
-	content: string
-	tags: string[]
+	data: {
+		title: string
+		content: string
+		tags: string[]
+	}
 }
 
-interface EditorProps {
-	initialTitle: string
-	initialContent: string
-	initialTags: string
-	postId?: string | null
-	onSave: (data: { title: string; content: string; tags: string; postId?: string | null }) => void
-}
-
-// TODO fetchして表示できてない
 const PostEditor: React.FC = () => {
 	const router = useRouter()
-	const { postId } = router.query
+	const { id } = router.query
+
+	const isLoggedIn = useAuthStore((state) => state.isLoggedIn)
+	const login = useAuthStore((state) => state.login)
 
 	const [post, setPost] = useState<PostData | null>(null)
 
 	useEffect(() => {
+		if (!isLoggedIn) {
+			router.push('/a-login')
+		} else {
+			login() // Zustandストアのログイン状態を更新
+		}
+	}, [isLoggedIn, login, router])
+
+	useEffect(() => {
 		const fetchPost = async () => {
-			// postIdがstring型で非空であることを確認
-			if (typeof postId === 'string' && postId.trim() !== '') {
+			if (typeof id === 'string') {
 				try {
-					// 正しいAPIエンドポイントを使用
-					const response = await fetch(`/api/admin_postideditor?id=${postId}`)
-					if (!response.ok) throw new Error('データの取得に失敗しました。')
-					const postData = await response.json() // データ構造に注意してアクセス
-					setPost({
-						id: postId,
-						title: postData.data.title,
-						content: postData.data.content,
-						tags: postData.data.tags
-					})
+					const response = await fetch(`/api/admin_postideditor?id=${id}`)
+					if (!response.ok) throw new Error('Failed to fetch post')
+					const postData: PostData = await response.json()
+					setPost(postData)
 				} catch (error) {
-					console.error('エラー:', error)
+					console.error('Error fetching post:', error)
 				}
 			}
 		}
 
 		fetchPost()
-	}, [postId])
+	}, [id])
 
-	const handleSave = async ({
-		title,
-		content,
-		tags,
-		postId
-	}: {
-		title: string
-		content: string
-		tags: string
-		postId?: string | null
-	}) => {
-		const endpoint = postId ? `/api/posts/update/${postId}` : '/api/posts/new'
-		const method = postId ? 'PUT' : 'POST'
+	const handleSave = async (data: { title: string; content: string; tags: string[]; postId?: string | null }) => {
+		const { title, content, tags, postId } = data
+		const articleData = { id: postId, title, content, tags, author: 'dondonbe' }
 
 		try {
-			const response = await fetch(endpoint, {
-				method,
+			const response = await fetch('/api/admin_savearticle', {
+				method: 'POST',
 				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify({ title, content, tags })
+				body: JSON.stringify(articleData)
 			})
 
 			if (response.ok) {
-				console.log('投稿が保存されました')
+				console.log('Article saved successfully')
 			} else {
-				console.error('投稿の保存に失敗しました')
+				console.error('Failed to save article')
 			}
 		} catch (error) {
-			console.error('エラー:', error)
+			console.error('Error saving article:', error)
 		}
 	}
 
 	return (
-		<div>
+		<>
 			{post ? (
 				<Editor
-					initialTitle={post.title}
-					initialContent={post.content}
-					initialTags={post.tags.join(', ')}
-					postId={post.id}
+					initialTitle={post.data.title}
+					initialContent={post.data.content}
+					// `post.data.tags`が配列であることを確認し、そうでない場合は空文字列を使用
+					initialTags={Array.isArray(post.data.tags) ? post.data.tags.join(', ') : ''}
+					postId={typeof id === 'string' ? id : undefined}
 					onSave={handleSave}
 				/>
 			) : (
-				'Loading...'
+				<div>Loading...</div>
 			)}
-		</div>
+		</>
 	)
 }
 

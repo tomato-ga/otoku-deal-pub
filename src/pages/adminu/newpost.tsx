@@ -10,17 +10,23 @@ interface UploadResponse {
 }
 
 interface EditorProps {
-	initialTitle: string
-	initialContent: string
-	initialTags: string
+	initialTitle?: string
+	initialContent?: string
+	initialTags?: string
 	postId?: string | null
-	onSave: (data: { title: string; content: string; tags: string; postId?: string | null }) => void
+	onSave: (data: { title: string; content: string; tags: string[]; postId?: string | null }) => void
 }
 
-const Editor: React.FC<EditorProps> = () => {
-	const [title, setTitle] = useState('')
-	const [content, setContent] = useState('')
-	const [tags, setTags] = useState('')
+const Editor: React.FC<EditorProps> = ({
+	initialTitle = '', // デフォルト値を空文字に設定
+	initialContent = '', // デフォルト値を空文字に設定
+	initialTags = '', // デフォルト値を空文字に設定
+	postId,
+	onSave
+}) => {
+	const [title, setTitle] = useState<string>(initialTitle)
+	const [content, setContent] = useState<string>(initialContent)
+	const [tags, setTags] = useState<string>(initialTags)
 	const author = 'dondonbe'
 
 	const [selectedFiles, setSelectedFiles] = useState<File[]>([])
@@ -42,46 +48,49 @@ const Editor: React.FC<EditorProps> = () => {
 		setSelectedFiles(files)
 	}
 
-	const handleSave = async () => {
-		if (selectedFiles.length > 0) {
-			const formData = new FormData()
-			selectedFiles.forEach((file) => {
-				formData.append('files', file)
-			})
-
-			try {
-				const response = await fetch('/api/admin_s3upload', {
-					method: 'POST',
-					body: formData
-				})
-
-				if (response.ok) {
-					const data: UploadResponse = await response.json() // アップロードされた画像のURLの配列を想定
-					// 本文に画像のURLを挿入
-					let imgTags = data.urls.map((url) => `<img src="${url}" alt="uploaded image">`).join('\n')
-					setContent((prevContent) => prevContent + '\n' + imgTags)
-					showToast('画像がアップロードされ、記事が保存されました')
-				} else {
-					console.error('アップロードに失敗しました。')
-				}
-			} catch (error) {
-				console.error('アップロード中にエラーが発生しました:', error)
-			}
+	const handleNewSave = async () => {
+		// タグがカンマ区切りの文字列として保存されていると仮定し、配列に変換
+		const tagsArray = tags.split(',').map((tag) => tag.trim()) // タグをトリムして余分な空白を削除
+		const articleData = {
+			title,
+			content,
+			tags: tagsArray, // 文字列から配列に変換したタグデータを使用
+			author
 		}
 
-		const articleData = { title, content, tags, author }
-		const response = await fetch('/api/admin_newarticle', {
-			method: 'POST',
-			headers: { 'Content-Type': 'application/json' },
-			body: JSON.stringify(articleData)
-		})
+		try {
+			const response = await fetch(postId ? `/api/admin_updatearticle/${postId}` : '/api/admin_newarticle', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify(articleData)
+			})
 
-		if (response.ok) {
-			console.log('記事がデータベースに保存されました')
-			showToast('記事がデータベースに保存されました')
+			if (response.ok) {
+				showToast('記事がデータベースに保存されました')
+			} else {
+				showToast('記事の保存に失敗しました')
+			}
+		} catch (error) {
+			showToast('保存中にエラーが発生しました')
+		}
+	}
+
+	// TODO 編集更新の場合、タグがDBに保存されない
+	// 保存ボタンクリック時のハンドラ
+	const handleButtonClick = async () => {
+		if (onSave) {
+			try {
+				// onSaveが提供されている場合は、タグを配列に変換する処理を呼び出し側で行う必要がある
+				const tagsArray = tags.split(',').map((tag) => tag.trim())
+				onSave({ title, content, tags: tagsArray, postId })
+				showToast('記事が正常に保存されました。')
+			} catch (error) {
+				showToast('記事の保存中にエラーが発生しました。')
+				console.error(error)
+			}
 		} else {
-			console.error('Failed to save article')
-			// ここに失敗時の処理を記述（任意）
+			// onSaveが提供されていない場合は、ローカルの保存処理を実行
+			await handleNewSave()
 		}
 	}
 
@@ -170,7 +179,7 @@ const Editor: React.FC<EditorProps> = () => {
 
 				<FileUploadArea onFileSelected={setSelectedFiles} onUpload={uploadImages} />
 
-				<button onClick={handleSave} className="bg-blue-500 text-white p-2 rounded mt-4">
+				<button onClick={handleButtonClick} className="bg-blue-500 text-white p-2 rounded mt-4">
 					保存
 				</button>
 				{toast.show && <span className="ml-4 text-green-600">{toast.message}</span>}
