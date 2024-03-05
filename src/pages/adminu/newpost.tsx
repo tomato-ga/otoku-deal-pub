@@ -99,9 +99,16 @@ const Editor = () => {
 				return // ここで処理を中断
 			}
 
-			// アップロード成功時の処理
-			let imgTags = data.urls.map((url: string) => `<img src="${url}" alt="uploaded image">`).join('\n')
-			setContent((prev) => `${prev}\n${imgTags}`)
+			// アップロード成功時の処理（マークダウン形式で画像を表示）
+			let markdownImages = data.urls
+				.map((url: string) => {
+					// URLからファイル名を抽出（'uploads/'以降の部分）
+					const fileName = url.split('/').pop() // URLを'/'で分割し、最後の要素（ファイル名）を取得
+					// マークダウン形式で画像を挿入（ファイル名を代替テキストとして使用）
+					return `![${fileName}](${url})`
+				})
+				.join('\n')
+			setContent((prev) => `${prev}\n${markdownImages}`)
 			showToast('画像アップロード成功')
 		} catch (error) {
 			// ネットワークエラーやレスポンスのJSONパース失敗など
