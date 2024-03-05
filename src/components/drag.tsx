@@ -23,9 +23,9 @@ const FileUploadArea: React.FC<FileUploadAreaProps> = ({ onFileSelected, onUploa
 	const handleDrop = (e: DragEvent<HTMLDivElement>) => {
 		e.preventDefault()
 		setDragOver(false)
-		const files = Array.from(e.dataTransfer.files)
-		setSelectedFiles(files)
-		onFileSelected(files) // 親コンポーネントに選択されたファイルの配列を渡す
+		const files = Array.from(e.dataTransfer.files) // ドロップされたファイルの配列
+		setSelectedFiles((prevFiles) => [...prevFiles, ...files]) // 既存のファイルリストに新しいファイルを追加
+		onFileSelected([...selectedFiles, ...files]) // 親コンポーネントへの通知も、全ファイルを含むように更新
 	}
 
 	// 新しい関数: 画像アップロード処理を呼び出す

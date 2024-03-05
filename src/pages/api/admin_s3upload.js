@@ -1,9 +1,7 @@
-import AWS from 'aws-sdk'
-import { IncomingForm } from 'formidable' // 正しくインポートされています
-import fs from 'fs'
-import { promisify } from 'util'
-
-const readFileAsync = promisify(fs.readFile)
+import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3'
+import { IncomingForm } from 'formidable'
+import { promises as fs } from 'fs'
+require('dotenv').config()
 
 export const config = {
 	api: {
@@ -11,42 +9,55 @@ export const config = {
 	}
 }
 
-const s3 = new AWS.S3({
-	accessKeyId: process.env.AWS_ACCESS_KEY,
-	secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-	region: 'ap-northeast-1'
+const s3Client = new S3Client({
+	region: 'ap-northeast-1',
+	credentials: {
+		accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+		secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
+	}
 })
 
-export default async (req, res) => {
+export default async function handler(req, res) {
 	if (req.method !== 'POST') {
-		return res.status(405).send('Method Not Allowed')
+		res.status(405).json({ error: 'Method Not Allowed' })
+		return
 	}
 
-	const form = new IncomingForm()
-	form.parse(req, async (err, fields, files) => {
-		if (err) {
-			console.error('Formidable parse error:', err)
-			return res.status(500).send('Server Error: Formidable parsing failed.')
+	try {
+		const data = await new Promise((resolve, reject) => {
+			const form = new IncomingForm()
+			form.parse(req, (err, fields, files) => {
+				if (err) {
+					reject(err)
+				} else {
+					resolve(files)
+				}
+			})
+		})
+
+		// デバッグ情報に基づいて、アクセスキーを `files.files` に修正
+		if (!data.files || data.files.length === 0) {
+			res.status(400).json({ error: 'No files uploaded.' })
+			return
 		}
 
-		try {
-			// `files.file`が配列かどうかをチェックし、配列でない場合は配列に変換
-			const fileList = Array.isArray(files.file) ? files.file : [files.file]
-			const uploadPromises = fileList.map(async (file) => {
-				const data = await readFileAsync(file.filepath)
-				const params = {
-					Bucket: process.env.AWS_S3_BUCKET_NAME,
-					Key: `uploads/${Date.now()}_${file.originalFilename}`,
-					Body: data
-				}
-				return s3.upload(params).promise() // Promiseを返す
-			})
-			const results = await Promise.all(uploadPromises)
-			const urls = results.map((result) => result.Location) // URLの配列を作成
-			res.status(200).json({ urls }) // URLの配列をレスポンスとして返す
-		} catch (error) {
-			console.error('Upload or ReadFile error:', error)
-			res.status(500).send('Server Error: Upload or ReadFile failed.')
-		}
-	})
+		const uploadedFiles = data.files
+		const uploadPromises = uploadedFiles.map(async (file) => {
+			const fileStream = await fs.readFile(file.filepath)
+			const uploadParams = {
+				Bucket: process.env.AWS_S3_BUCKET_NAME ?? '',
+				Key: `uploads/${Date.now()}_${file.originalFilename}`,
+				Body: fileStream
+			}
+
+			await s3Client.send(new PutObjectCommand(uploadParams))
+			return `https://otokudealarticle.s3.ap-northeast-1.amazonaws.com/${uploadParams.Key}`
+		})
+
+		const urls = await Promise.all(uploadPromises)
+		res.status(200).json({ urls })
+	} catch (error) {
+		console.error('Error:', error)
+		res.status(500).json({ error: 'Server Error: Unable to process the request.' })
+	}
 }

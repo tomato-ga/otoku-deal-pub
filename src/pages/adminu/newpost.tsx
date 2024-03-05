@@ -88,15 +88,25 @@ const Editor = () => {
 				body: formData
 			})
 
-			if (!response.ok) throw new Error('アップロード失敗')
+			const data = await response.json() // 常に最初にレスポンスのJSONをパースする
+			console.log('アップロードしたdata構造確認', data.urls)
 
-			const data: UploadResponse = await response.json()
-			let imgTags = data.urls.map((url) => `<img src="${url}" alt="uploaded image">`).join('\n')
+			if (!response.ok) {
+				// APIからのエラーメッセージを取得して表示
+				const errorMessage = data.error || 'アップロード失敗'
+				console.error('アップロードエラー:', errorMessage)
+				showToast(`画像アップロードエラー: ${errorMessage}`)
+				return // ここで処理を中断
+			}
+
+			// アップロード成功時の処理
+			let imgTags = data.urls.map((url: string) => `<img src="${url}" alt="uploaded image">`).join('\n')
 			setContent((prev) => `${prev}\n${imgTags}`)
 			showToast('画像アップロード成功')
 		} catch (error) {
-			console.error('アップロードエラー', error)
-			showToast('画像アップロードエラー')
+			// ネットワークエラーやレスポンスのJSONパース失敗など
+			console.error('アップロード中にエラーが発生しました:', error)
+			showToast('画像アップロード中にエラーが発生しました')
 		}
 	}
 
