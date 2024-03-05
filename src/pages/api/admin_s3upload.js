@@ -45,7 +45,7 @@ export default async function handler(req, res) {
 		const uploadPromises = uploadedFiles.map(async (file) => {
 			const fileStream = await fs.readFile(file.filepath)
 			const uploadParams = {
-				Bucket: process.env.AWS_S3_BUCKET_NAME ?? '',
+				Bucket: 'otokudealarticle',
 				Key: `uploads/${Date.now()}_${file.originalFilename}`,
 				Body: fileStream
 			}
