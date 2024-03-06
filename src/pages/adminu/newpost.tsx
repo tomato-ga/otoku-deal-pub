@@ -4,6 +4,7 @@ import { useRouter } from 'next/router'
 
 import AdminLayout from '@/components/AdminLayout'
 import FileUploadArea from '@/components/drag'
+import Preview from './preview'
 
 interface UploadResponse {
 	urls: string[]
@@ -28,6 +29,7 @@ const Editor: React.FC<EditorProps> = ({
 	const [content, setContent] = useState<string>(initialContent)
 	const [tags, setTags] = useState<string>(initialTags)
 	const author = 'dondonbe'
+	const [showPreview, setShowPreview] = useState(false)
 
 	const [selectedFiles, setSelectedFiles] = useState<File[]>([])
 	const [toast, setToast] = useState({ show: false, message: '' })
@@ -134,6 +136,10 @@ const Editor: React.FC<EditorProps> = ({
 		}
 	}
 
+	const togglePreview = () => {
+		setShowPreview(!showPreview)
+	}
+
 	useEffect(() => {
 		const token = localStorage.getItem('logintoken')
 		if (!token) {
@@ -189,6 +195,17 @@ const Editor: React.FC<EditorProps> = ({
 						{toast.message}
 					</div>
 				)}
+
+				<div>
+					{showPreview ? (
+						<Preview title={title} content={content} tags={tags} />
+					) : (
+						// 編集画面のコンポーネント
+						<>
+							<button onClick={togglePreview}>Preview</button>
+						</>
+					)}
+				</div>
 			</div>
 		</AdminLayout>
 	)
