@@ -70,6 +70,8 @@ const PostEditor: React.FC = () => {
 		}
 	}
 
+	const formattedTags = Array.isArray(post?.data.tags) ? post.data.tags.join(', ') : post?.data.tags
+
 	return (
 		<>
 			{post ? (
@@ -77,7 +79,7 @@ const PostEditor: React.FC = () => {
 					initialTitle={post.data.title}
 					initialContent={post.data.content}
 					// `post.data.tags`が配列であることを確認し、そうでない場合は空文字列を使用
-					initialTags={Array.isArray(post.data.tags) ? post.data.tags.join(', ') : ''}
+					initialTags={formattedTags}
 					postId={typeof id === 'string' ? id : undefined}
 					onSave={handleSave}
 				/>

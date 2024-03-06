@@ -4,14 +4,16 @@ export default async function handler(req, res) {
 	if (req.method === 'POST') {
 		const { id, title, content, tags, author } = req.body
 
-		// tags 配列をカンマ区切りの文字列に変換
-		const tagsString = tags.join(',')
+		// tags が配列でない場合に配列に変換する
+		const tagsArray = Array.isArray(tags) ? tags : tags.split(',').map((tag) => tag.trim())
 
 		try {
 			// データベースの記事を更新
 			const result = await sql`
                 UPDATE blog_posts
-                SET title = ${title}, content = ${content}, tags = ${tagsString}, author = ${author}, updated_at = CURRENT_TIMESTAMP
+                SET title = ${title}, content = ${content}, tags = ${tagsArray.join(
+				','
+			)}, author = ${author}, updated_at = CURRENT_TIMESTAMP
                 WHERE id = ${id};
             `
 
