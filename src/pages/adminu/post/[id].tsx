@@ -48,7 +48,9 @@ const PostEditor: React.FC = () => {
 
 	const handleSave = async (data: { title: string; content: string; tags: string[]; postId?: string | null }) => {
 		const { title, content, tags, postId } = data
-		const articleData = { id: postId, title, content, tags, author: 'dondonbe' }
+		// tags 配列をカンマ区切りの文字列に変換
+		const tagsString = tags.join(',')
+		const articleData = { id: postId, title, content, tags: tagsString, author: 'dondonbe' }
 
 		try {
 			const response = await fetch('/api/admin_savearticle', {
@@ -59,6 +61,7 @@ const PostEditor: React.FC = () => {
 
 			if (response.ok) {
 				console.log('Article saved successfully')
+				// 保存に成功した場合は、ユーザーにフィードバックを与えるか、適切なページにリダイレクトする
 			} else {
 				console.error('Failed to save article')
 			}

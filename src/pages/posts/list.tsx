@@ -1,4 +1,4 @@
-// TODO SQLからデータを撮りだしてMarkdownコンポーネントにstringを渡す
+
 // MEMO postsの個別ページ
 
 import { useEffect, useState } from 'react'
