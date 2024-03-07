@@ -38,7 +38,7 @@ const Post: React.FC<PostPageProps> = ({ post }) => {
 			<Itemspagenavbar />
 
 			<div className="flex justify-center items-center m-12 text-center">
-				<h1 className="text-8xl font-bold bg-gradient-to-r from-orange-400 via-red-500 to-pink-500 inline-block text-transparent bg-clip-text">
+				<h1 className="text-6xl font-bold bg-gradient-to-r from-orange-400 via-red-500 to-pink-500 inline-block text-transparent bg-clip-text">
 					{post.title}
 				</h1>
 			</div>
