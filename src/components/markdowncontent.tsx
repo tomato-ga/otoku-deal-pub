@@ -13,7 +13,7 @@ const MarkdownContent: React.FC<MarkdownContentProps> = ({ markdownString }) => 
 	const customLink = (props: React.AnchorHTMLAttributes<HTMLAnchorElement>) => {
 		// アマゾン.co.jpへのリンクにのみ特別なスタイルを適用し、
 		// すべてのリンクを新しいタブで開くようにする
-		const isAmazonJPLink = props.href?.includes('amazon.co.jp')
+		const isAmazonJPLink = props.href?.includes('amazon.co.jp') || props.href?.includes('amzn.to')
 		const className = isAmazonJPLink ? 'markdown-amazon-button' : ''
 
 		return (
