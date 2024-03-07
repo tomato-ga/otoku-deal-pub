@@ -38,6 +38,8 @@ const Editor: React.FC<EditorProps> = ({
 	const showToast = (message: string) => {
 		// message の型を string に
 		setToast({ show: true, message })
+
+		setTimeout(() => setToast({ show: false, message: '' }), 5000)
 	}
 
 	const isLoggedIn = useAuthStore((state) => state.isLoggedIn)
