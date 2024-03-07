@@ -27,7 +27,9 @@ const Editor: React.FC<EditorProps> = ({
 }) => {
 	const [title, setTitle] = useState<string>(initialTitle)
 	const [content, setContent] = useState<string>(initialContent)
-	const [tags, setTags] = useState<string>(initialTags)
+	// タグの状態を文字列の配列で管理するように変更
+	const [tags, setTags] = useState<string[]>(initialTags.split(',').map((tag) => tag.trim()))
+
 	const author = 'dondonbe'
 	const [showPreview, setShowPreview] = useState(false)
 
@@ -44,7 +46,12 @@ const Editor: React.FC<EditorProps> = ({
 
 	const handleTitleChange = (e: ChangeEvent<HTMLTextAreaElement>) => setTitle(e.target.value) // e の型を指定
 	const handleContentChange = (e: ChangeEvent<HTMLTextAreaElement>) => setContent(e.target.value) // e の型を指定
-	const handleTagsChange = (e: ChangeEvent<HTMLInputElement>) => setTags(e.target.value) // e の型を指定、HTMLInputElement に変更
+
+	// タグ入力フィールドの変更ハンドラーを更新
+	const handleTagsChange = (e: ChangeEvent<HTMLInputElement>) => {
+		const newTags = e.target.value.split(',').map((tag) => tag.trim())
+		setTags(newTags)
+	}
 
 	const onFileSelected = (files: File[]) => {
 		setSelectedFiles(files)
