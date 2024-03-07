@@ -204,7 +204,8 @@ const Editor: React.FC<EditorProps> = ({
 					</div>
 				)}
 
-				<div>
+				{/* プレビューは後回し */}
+				{/* <div>
 					{showPreview ? (
 						<Preview title={title} content={content} tags={tagsArray} />
 					) : (
@@ -213,7 +214,7 @@ const Editor: React.FC<EditorProps> = ({
 							<button onClick={togglePreview}>Preview</button>
 						</>
 					)}
-				</div>
+				</div> */}
 			</div>
 		</AdminLayout>
 	)
