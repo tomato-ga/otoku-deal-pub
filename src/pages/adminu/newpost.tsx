@@ -28,7 +28,7 @@ const Editor: React.FC<EditorProps> = ({
 	const [title, setTitle] = useState<string>(initialTitle)
 	const [content, setContent] = useState<string>(initialContent)
 	// タグの状態を文字列の配列で管理するように変更
-	const [tags, setTags] = useState<string[]>(initialTags.split(',').map((tag) => tag.trim()))
+	const [tags, setTags] = useState<string>(initialTags) // initialTags はカンマ区切りの文字列とする
 
 	const author = 'dondonbe'
 	const [showPreview, setShowPreview] = useState(false)
@@ -49,8 +49,7 @@ const Editor: React.FC<EditorProps> = ({
 
 	// タグ入力フィールドの変更ハンドラーを更新
 	const handleTagsChange = (e: ChangeEvent<HTMLInputElement>) => {
-		const newTags = e.target.value.split(',').map((tag) => tag.trim())
-		setTags(newTags)
+		setTags(e.target.value) // ユーザー入力を直接設定
 	}
 
 	const onFileSelected = (files: File[]) => {
@@ -59,7 +58,7 @@ const Editor: React.FC<EditorProps> = ({
 
 	const handleNewSave = async () => {
 		// タグがカンマ区切りの文字列として保存されていると仮定し、配列に変換
-		const tagsArray = tags.split(',').map((tag) => tag.trim()) // タグをトリムして余分な空白を削除
+		const tagsArray = tags.split(',').map((tag) => tag.trim())
 		const articleData = {
 			title,
 			content,
@@ -102,6 +101,8 @@ const Editor: React.FC<EditorProps> = ({
 			await handleNewSave()
 		}
 	}
+
+	const tagsArray = tags.split(',').map((tag) => tag.trim())
 
 	// 画像アップロードの関数
 	const uploadImages = async (files: File[]) => {
@@ -205,7 +206,7 @@ const Editor: React.FC<EditorProps> = ({
 
 				<div>
 					{showPreview ? (
-						<Preview title={title} content={content} tags={tags} />
+						<Preview title={title} content={content} tags={tagsArray} />
 					) : (
 						// 編集画面のコンポーネント
 						<>
