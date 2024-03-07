@@ -4,7 +4,7 @@ import { useRouter } from 'next/router'
 
 import AdminLayout from '@/components/AdminLayout'
 import FileUploadArea from '@/components/drag'
-import Preview from './preview'
+// import Preview from './preview'
 
 interface UploadResponse {
 	urls: string[]
