@@ -1,6 +1,5 @@
 // pages/server-sitemap-index.xml/index.tsx
 import { getServerSideSitemapIndexLegacy } from 'next-sitemap'
-import { GetServerSideProps } from 'next'
 import { dynamoSitemapIndexQuery } from '@/funcs/sitemapGenerate'
 
 export const getServerSideProps = async (ctx) => {
