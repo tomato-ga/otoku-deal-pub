@@ -175,9 +175,9 @@ export default function Home({
 		<>
 			<TopHeader />
 
-			<div className="flex flex-wrap justify-center">
+			<div className="flex flex-wrap md:flex-row md:justify-center">
 				{postLists.slice(0, 2).map((item) => (
-					<Link href={`/post/${item.id}`} passHref key={item.id} className="w-1/2 p-2 relative">
+					<Link href={`/post/${item.id}`} passHref key={item.id} className="w-full md:w-1/2 p-2 relative">
 						<div className="relative w-full">
 							<img src={item.thumb_url} alt={item.title} className="w-full" />
 							<div className="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 text-white p-2">
