@@ -4,9 +4,16 @@ import React, { useState, DragEvent } from 'react'
 interface FileUploadAreaProps {
 	onFileSelected: (files: File[]) => void
 	onUpload: (files: File[]) => Promise<void> // 画像アップロードのための関数をPropsとして受け取る
+	onUploadSuccess: () => void
+	onUploadFailure: (error: string) => void
 }
 
-const FileUploadArea: React.FC<FileUploadAreaProps> = ({ onFileSelected, onUpload }) => {
+const FileUploadArea: React.FC<FileUploadAreaProps> = ({
+	onFileSelected,
+	onUpload,
+	onUploadSuccess,
+	onUploadFailure
+}) => {
 	const [dragOver, setDragOver] = useState<boolean>(false)
 	const [selectedFiles, setSelectedFiles] = useState<File[]>([])
 
@@ -30,8 +37,13 @@ const FileUploadArea: React.FC<FileUploadAreaProps> = ({ onFileSelected, onUploa
 
 	// 新しい関数: 画像アップロード処理を呼び出す
 	const handleUpload = async () => {
-		await onUpload(selectedFiles)
-		setSelectedFiles([]) // アップロード後、選択されたファイルリストをクリア
+		try {
+			await onUpload(selectedFiles)
+			onUploadSuccess()
+			setSelectedFiles([]) // アップロード後、選択されたファイルリストをクリア
+		} catch (error) {
+			onUploadFailure(error instanceof Error ? error.message : String(error))
+		}
 	}
 
 	return (

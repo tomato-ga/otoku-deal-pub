@@ -1,7 +1,7 @@
 import React, { useEffect, useState, ChangeEvent } from 'react'
 import { useRouter } from 'next/router'
 import AdminLayout from '@/components/AdminLayout'
-import Editor from '../newpost' // Editorのパスを適宜調整してください
+import Editor from '../newpost'
 import useAuthStore from '@/jotai/authStore'
 
 interface PostData {
@@ -68,8 +68,6 @@ const PostEditor: React.FC = () => {
 			console.error('Error saving article:', error)
 		}
 	}
-
-	
 
 	const formattedTags = Array.isArray(post?.data.tags) ? post.data.tags.join(', ') : post?.data.tags
 

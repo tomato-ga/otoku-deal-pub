@@ -26,6 +26,8 @@ const Editor: React.FC<EditorProps> = ({
 	postId,
 	onSave
 }) => {
+	console.log('postId: ', postId)
+
 	const [title, setTitle] = useState<string>(initialTitle)
 	const [content, setContent] = useState<string>(initialContent)
 	// タグの状態を文字列の配列で管理するように変更
@@ -102,28 +104,6 @@ const Editor: React.FC<EditorProps> = ({
 		} else {
 			// onSaveが提供されていない場合は、ローカルの保存処理を実行
 			await handleNewSave()
-		}
-	}
-
-	const handleThumbnailUpload = async (thumbUrl: string) => {
-		try {
-			const response = await fetch('/api/admin_savethumburl', {
-				method: 'POST',
-				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify({ thumbUrl, postId })
-			})
-
-			const data = await response.json()
-
-			if (response.ok) {
-				showToast(data.message)
-				handleButtonClick() // サムネイルアップロード後、記事保存処理を実行
-			} else {
-				showToast(data.error)
-			}
-		} catch (error) {
-			console.error('Error saving thumbnail URL:', error)
-			showToast('サムネイルURLの保存中にエラーが発生しました')
 		}
 	}
 
@@ -216,9 +196,20 @@ const Editor: React.FC<EditorProps> = ({
 					className="border-2 m-2 h-20"
 				/>
 
-				<FileUploadArea onFileSelected={setSelectedFiles} onUpload={uploadImages} />
+				<FileUploadArea
+					onFileSelected={setSelectedFiles}
+					onUpload={uploadImages}
+					onUploadSuccess={() => showToast('ファイルが正常にアップロードされました')}
+					onUploadFailure={(error) => showToast(`ファイルアップロード失敗: ${error}`)}
+				/>
 
-				{postId && <ThumbnailUploader onUpload={handleThumbnailUpload} postId={postId} />}
+				{postId && (
+					<ThumbnailUploader
+						postId={postId}
+						onUploadSuccess={() => showToast('サムネイルSQLが正常にアップデートされました')}
+						onUploadFailure={(error) => showToast(`サムネイルSQLアップデート失敗: ${error}`)}
+					/>
+				)}
 
 				<button onClick={handleButtonClick} className="bg-blue-500 text-white p-2 rounded mt-4">
 					保存

@@ -1,11 +1,12 @@
 import React, { useState, DragEvent } from 'react'
 
 interface ThumbnailUploaderProps {
-	onUpload: (thumbUrl: string, postId: string) => void
 	postId: string
+	onUploadSuccess: () => void
+	onUploadFailure: (error: string) => void
 }
 
-const ThumbnailUploader: React.FC<ThumbnailUploaderProps> = ({ onUpload, postId }) => {
+const ThumbnailUploader: React.FC<ThumbnailUploaderProps> = ({ postId, onUploadSuccess, onUploadFailure }) => {
 	const [dragOver, setDragOver] = useState<boolean>(false)
 	const [selectedFile, setSelectedFile] = useState<File | null>(null)
 
@@ -35,17 +36,36 @@ const ThumbnailUploader: React.FC<ThumbnailUploaderProps> = ({ onUpload, postId 
 	const handleUpload = async () => {
 		if (!selectedFile) return
 
+		const formData = new FormData()
+		formData.append('files', selectedFile)
+
 		try {
 			const response = await fetch('/api/admin_s3upload', {
 				method: 'POST',
-				body: selectedFile
+				body: formData // 更新部分
 			})
-
 			const data = await response.json()
 
+			const handleThumbnailSQLUpdate = async (thumbUrl: string) => {
+				try {
+					const response = await fetch('/api/admin_savethumburl', {
+						method: 'POST',
+						headers: { 'Content-Type': 'application/json' },
+						body: JSON.stringify({ thumbUrl, postId })
+					})
+
+					await response.json()
+					onUploadSuccess()
+				} catch (err) {
+					console.log(err)
+					onUploadFailure(err instanceof Error ? err.message : String(err))
+				}
+			}
+
 			if (response.ok) {
-				const thumbUrl = data.urls[0] // 最初のURLをサムネイルとして使用
-				onUpload(thumbUrl, postId)
+				const thumbUrl = data.urls[0]
+				console.log(thumbUrl) // returnでAWS S3のアップロードURLが返ってきている
+				handleThumbnailSQLUpdate(thumbUrl)
 			} else {
 				console.error('Image upload failed:', data.error)
 				alert(`Image upload failed: ${data.error}`) // ユーザーにエラーメッセージを表示
