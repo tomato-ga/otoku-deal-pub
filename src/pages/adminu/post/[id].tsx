@@ -42,7 +42,6 @@ const PostEditor: React.FC = () => {
 				}
 			}
 		}
-
 		fetchPost()
 	}, [id])
 
@@ -69,6 +68,8 @@ const PostEditor: React.FC = () => {
 			console.error('Error saving article:', error)
 		}
 	}
+
+	
 
 	const formattedTags = Array.isArray(post?.data.tags) ? post.data.tags.join(', ') : post?.data.tags
 

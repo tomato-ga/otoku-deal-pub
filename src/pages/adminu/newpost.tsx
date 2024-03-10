@@ -4,6 +4,7 @@ import { useRouter } from 'next/router'
 
 import AdminLayout from '@/components/AdminLayout'
 import FileUploadArea from '@/components/drag'
+import ThumbnailUploader from '@/components/ThumbnailUploader'
 // import Preview from './preview'
 
 interface UploadResponse {
@@ -104,6 +105,28 @@ const Editor: React.FC<EditorProps> = ({
 		}
 	}
 
+	const handleThumbnailUpload = async (thumbUrl: string) => {
+		try {
+			const response = await fetch('/api/admin_savethumburl', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({ thumbUrl, postId })
+			})
+
+			const data = await response.json()
+
+			if (response.ok) {
+				showToast(data.message)
+				handleButtonClick() // サムネイルアップロード後、記事保存処理を実行
+			} else {
+				showToast(data.error)
+			}
+		} catch (error) {
+			console.error('Error saving thumbnail URL:', error)
+			showToast('サムネイルURLの保存中にエラーが発生しました')
+		}
+	}
+
 	const tagsArray = tags.split(',').map((tag) => tag.trim())
 
 	// 画像アップロードの関数
@@ -194,6 +217,8 @@ const Editor: React.FC<EditorProps> = ({
 				/>
 
 				<FileUploadArea onFileSelected={setSelectedFiles} onUpload={uploadImages} />
+
+				{postId && <ThumbnailUploader onUpload={handleThumbnailUpload} postId={postId} />}
 
 				<button onClick={handleButtonClick} className="bg-blue-500 text-white p-2 rounded mt-4">
 					保存
