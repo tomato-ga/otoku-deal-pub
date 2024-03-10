@@ -28,7 +28,6 @@ export default function Home({
 	lastEvaluatedKey,
 	llmresult,
 	pageNumber,
-	// dealItemsFromDynamo,
 	bestSellerBooksFromDynamo,
 	bestSellerVideoGamesFromDynamo,
 	bestSellerPCFromDynamo,
@@ -89,6 +88,29 @@ export default function Home({
 			setLastKeyList(pageNumber, lastEvaluatedKey)
 		}
 	}, [lastEvaluatedKey, pageNumber])
+
+	// MEMO オリジナルコンテンツ取得API
+	const [postLists, setPostLists] = useState([])
+
+	useEffect(() => {
+		async function fetchData() {
+			try {
+				const response = await fetch('/api/admin_originContentFromSQL', {
+					method: 'GET',
+					headers: { 'Content-Type': 'application/json' }
+				})
+				if (response.ok) {
+					const sqldata = await response.json()
+					setPostLists(sqldata.data)
+				} else {
+					console.error('Failed to fetch data:', response.status)
+				}
+			} catch (error) {
+				console.error('Error fetching data:', error)
+			}
+		}
+		fetchData()
+	}, [])
 
 	// const sidebarOpen = useSidebarStore((state) => state.sidebarOpen)
 	// const toggleSidebar = useSidebarStore((state) => state.toggleSidebar)
@@ -152,6 +174,19 @@ export default function Home({
 	return (
 		<>
 			<TopHeader />
+
+			<div className="flex flex-wrap justify-center">
+				{postLists.slice(0, 2).map((item) => (
+					<Link href={`/post/${item.id}`} passHref key={item.id} className="w-1/2 p-2 relative">
+						<div className="relative w-full">
+							<img src={item.thumb_url} alt={item.title} className="w-full" />
+							<div className="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 text-white p-2">
+								<div className="truncate">{item.title}</div>
+							</div>
+						</div>
+					</Link>
+				))}
+			</div>
 
 			<div className="mx-auto flex flex-col md:flex-row justify-between md:justify-start min-h-screen bg-white">
 				{/* Main content */}

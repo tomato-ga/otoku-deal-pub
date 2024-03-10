@@ -1,13 +1,10 @@
-
 // MEMO postsの個別ページ
 
 import { useEffect, useState } from 'react'
-import { useRouter } from 'next/router'
 import Link from 'next/link'
 
 import TopHeader from '@/components/TopHeader'
 import Itemspagenavbar from '@/components/ItemsPage3navbar'
-
 
 interface Post {
 	id: string
@@ -36,7 +33,7 @@ const PostsList = () => {
 			}
 		}
 		fetchData()
-	})
+	}, [])
 
 	const formatDate = (dateString: string) => {
 		const date = new Date(dateString)
@@ -53,7 +50,6 @@ const PostsList = () => {
 		<>
 			<TopHeader />
 			<Itemspagenavbar />
-
 
 			<div className="postlists">
 				{postLists.map((post) => (

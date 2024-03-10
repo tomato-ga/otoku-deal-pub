@@ -107,7 +107,6 @@ const Editor: React.FC<EditorProps> = ({
 		}
 	}
 
-	const tagsArray = tags.split(',').map((tag) => tag.trim())
 
 	// 画像アップロードの関数
 	const uploadImages = async (files: File[]) => {
