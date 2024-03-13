@@ -176,8 +176,15 @@ export default function ItemsPage({
 		return price / (1 - discount)
 	}
 
+	function removeYenMark(priceString) {
+		// "￥"マークとカンマ","を空文字で置換して削除
+		return priceString.replace('￥', '').replace(/,/g, '')
+	}
+
 	const priceNumber = parseFloat(ProductasinFetchFromDynamo.price.S.replace('￥', '').replace(',', ''))
 	const originalPrice = calculateOriginalPrice(priceNumber, ProductasinFetchFromDynamo.priceOff.S)
+
+	const priceString = removeYenMark(ProductasinFetchFromDynamo.price.S)
 
 	const extractAsin = (value) => {
 		if (!value) {
@@ -276,7 +283,10 @@ export default function ItemsPage({
 									{!isNaN(originalPrice) && (
 										<div className="flex items-center">
 											<p className="text-sm font-light text-gray-700 px-2">過去価格:</p>
-											<span className="ml-2 text-gray-500 line-through">¥{originalPrice.toFixed(0)}</span>
+											<span className="flex items-center text-gray-500 line-through">
+												<span className="text">¥</span>
+												{originalPrice.toFixed(0)}
+											</span>
 										</div>
 									)}
 								</div>
@@ -289,6 +299,19 @@ export default function ItemsPage({
 									</button>
 								</div>
 							</Link>
+
+							<div className="defaulttext">
+								アマゾンで{ProductasinFetchFromDynamo.productName?.S}がお買い得価格になっています。
+								<br />
+								<br />
+								通常価格{originalPrice.toFixed(0)}円のところ、{ProductasinFetchFromDynamo.priceOff.S}割引で
+								{priceString}円になっています。
+								<br />
+								<br />
+								投稿時点の価格なのでご注意ください。
+								<br />
+								<br />
+							</div>
 
 							<div className="recommendtext">
 								{llmContent} {/* llmContentを追加 */}
