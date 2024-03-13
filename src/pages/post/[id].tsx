@@ -6,6 +6,7 @@ import Link from 'next/link'
 import TopHeader from '@/components/TopHeader'
 import Itemspagenavbar from '@/components/ItemsPage3navbar'
 import MarkdownContent from '@/components/markdowncontent'
+import Footer from '@/components/Footer'
 
 interface PostContent {
 	id: string
@@ -46,6 +47,7 @@ const Post: React.FC<PostPageProps> = ({ post }) => {
 			<div className="m-10">
 				<MarkdownContent markdownString={post.content} />
 			</div>
+			<Footer />
 		</>
 	)
 }
