@@ -38,13 +38,13 @@ const Post: React.FC<PostPageProps> = ({ post }) => {
 			<TopHeader />
 			<Itemspagenavbar />
 
-			<div className="flex justify-center items-center m-12 text-center">
-				<h1 className="text-6xl font-bold bg-gradient-to-r from-orange-400 via-red-500 to-pink-500 inline-block text-transparent bg-clip-text">
+			<div className="flex justify-center items-center m-6 text-center">
+				<h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold bg-gradient-to-r from-orange-400 via-red-500 to-pink-500 inline-block text-transparent bg-clip-text">
 					{post.title}
 				</h1>
 			</div>
 
-			<div className="m-10">
+			<div className="m-6">
 				<MarkdownContent markdownString={post.content} />
 			</div>
 			<Footer />
