@@ -22,6 +22,7 @@ import useLLMStore from '@/jotai/LLMStore'
 import { dynamoPriceoffQuery } from '@/funcs/NewPriceoffItemsDynamodb'
 import { dynamoQueryLlmflagTrue } from '@/funcs/LLMflagindexDynamodb'
 import LLMItems from '../components/LLMItemIndex'
+import PostsGrid from '@/components/PostGrid'
 
 export default function Home({
 	result,
@@ -181,36 +182,27 @@ export default function Home({
 		return `${year}/${month}/${day} ${hours}:${minutes}`
 	}
 
+	console.log('priceOffItems', priceOffItems)
+
 	return (
 		<>
 			<TopHeader />
 
-			<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 p-8">
-				{postLists.slice(0, 3).map((post) => (
-					<div key={post.id} className="bg-gray-800 rounded-lg shadow-md overflow-hidden transition ">
-						<Link href={`/post/${post.id}`}>
-							<div className="relative">
-								<img src={post.thumb_url} alt={post.title} className="w-full object-cover" />
-								<div className="absolute inset-0 "></div>
-							</div>
-							<div className="p-4">
-								<span className="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded">
-									{post.tags}
-								</span>
-								<h2 className="text-xl font-bold text-white mt-2">{post.title}</h2>
-								<p className="text-gray-400 text-sm mt-2 mb-4">{formatDate(post.updated_at)}</p>
-								<span className="inline-block bg-gradient-to-r from-orange-400 via-red-500 to-pink-500 text-transparent bg-clip-text font-bold hover:underline">
-									続きを読む
-								</span>
-							</div>
-						</Link>
-					</div>
-				))}
-			</div>
+			{/* オリジナルコンテンツ */}
 
+			<PostsGrid postLists={postLists.slice(0,3)} />
+
+
+			{/* 最新セール情報 */}
 			<div className="mx-auto flex flex-col md:flex-row justify-between md:justify-start min-h-screen bg-white">
 				{/* Main content */}
 				<div className="w-full md:w-full p-4 bg-white order-1 md:order-2">
+					<div className="flex justify-center relative">
+						<div className="content-center font-extrabold text-6xl bg-gradient-to-r from-pink-400 to-violet-900 bg-clip-text text-transparent">
+							最新セール情報
+						</div>
+					</div>
+
 					<LLMItems LLMItemsfromDynamo={llmresult} />
 
 					{/* <div className="relative">
