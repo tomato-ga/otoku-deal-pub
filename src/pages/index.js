@@ -31,8 +31,8 @@ export default function Home({
 	pageNumber,
 	bestSellerBooksFromDynamo,
 	bestSellerVideoGamesFromDynamo,
-	bestSellerPCFromDynamo,
-	priceOffItems
+	bestSellerPCFromDynamo
+	// priceOffItems
 }) {
 	const { lastKeyList, setLastKeyList } = useIndexStore()
 	const { deallastKeyList, dealsetLastKeyList } = useDealStore()
@@ -148,23 +148,23 @@ export default function Home({
 	}
 
 	// MEMO 割引率が一桁のアイテムは除外する
-	const priceOfflimitItems = (priceOffItemList) => {
-		let priceOfflimitOnItems = []
+	// const priceOfflimitItems = (priceOffItemList) => {
+	// 	let priceOfflimitOnItems = []
 
-		priceOffItemList.forEach((item) => {
-			if (item.priceOff && typeof item.priceOff.S === 'string') {
-				const priceOffValue = parseInt(item.priceOff.S.replace('%', '').replace('-', ''), 10)
+	// 	priceOffItemList.forEach((item) => {
+	// 		if (item.priceOff && typeof item.priceOff.S === 'string') {
+	// 			const priceOffValue = parseInt(item.priceOff.S.replace('%', '').replace('-', ''), 10)
 
-				if (!isNaN(priceOffValue) && priceOffValue >= 5) {
-					priceOfflimitOnItems.push({ ...item, priceOffValue })
-				}
-			}
-		})
-		// 割引率の高い順に並べ替える
-		priceOfflimitOnItems.sort((a, b) => b.priceOffValue - a.priceOffValue)
-
-		return priceOfflimitOnItems
-	}
+	// 			// ここでの条件を確認してください
+	// 			if (!isNaN(priceOffValue) && priceOffValue >= 10) {
+	// 				priceOfflimitOnItems.push({ ...item, priceOffValue })
+	// 			}
+	// 		}
+	// 	})
+	// 	// 割引率の高い順に並べ替える
+	// 	priceOfflimitOnItems.sort((a, b) => b.priceOffValue - a.priceOffValue)
+	// 	return priceOfflimitOnItems
+	// }
 
 	const handleNextPage = () => {
 		if (lastEvaluatedKey) {
@@ -182,7 +182,16 @@ export default function Home({
 		return `${year}/${month}/${day} ${hours}:${minutes}`
 	}
 
-	console.log('priceOffItems', priceOffItems)
+	// console.log('priceOfflimitItems', priceOffItems)
+	// console.log('priceOfflimitItems', priceOfflimitItems(priceOffItems))
+
+	const today = new Date()
+	const formattedToday =
+		today.getFullYear() +
+		'-' +
+		(today.getMonth() + 1).toString().padStart(2, '0') +
+		'-' +
+		today.getDate().toString().padStart(2, '0')
 
 	return (
 		<>
@@ -204,12 +213,13 @@ export default function Home({
 
 					<LLMItems LLMItemsfromDynamo={llmresult} />
 
+					{/* 割引率の表示を一時停止 / 2024/03/15 */}
 					{/* <div className="relative">
 						<h2 className="text-4xl font-bold pt-3 pr-3 pb-3 pl-1 mt-10 bg-gradient-to-r from-orange-400 via-red-500 to-pink-500 inline-block text-transparent bg-clip-text">
 							割引率が高いアイテム
 							<div className="absolute bottom-0 left-0 w-full h-0.5  bg-gradient-to-r from-slate-300 to-slate-200  mb-2"></div>
 						</h2>
-					</div> */}
+					</div>
 
 					<div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4 bg-white mt-6">
 						{priceOfflimitItems(priceOffItems)
@@ -251,7 +261,7 @@ export default function Home({
 									</div>
 								</Link>
 							))}
-					</div>
+					</div> */}
 
 					<div className="relative">
 						<h2 className="text-4xl font-bold pt-3 pr-3 pb-3 pl-1 mt-10 bg-gradient-to-r from-orange-400 via-red-500 to-pink-500 inline-block text-transparent bg-clip-text">
@@ -262,41 +272,48 @@ export default function Home({
 
 					<div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4 bg-white mt-6">
 						{result.map((data) => (
-							<Link
-								href={`/items/${data.date.S}/${extractAsin(data.asin.S)}`}
-								key={data.asin.S}
-								prefetch={false}
-								onClick={() => trackClick(data)}
-							>
-								<div className="border p-2 bg-white flex flex-col h-full cursor-pointer">
-									<div className="flex-grow flex justify-center items-center mb-4 h-[270px] w-full">
-										<img
-											src={data.imageUrl?.S}
-											alt={data.productName?.S}
-											className="w-full max-h-[270px] object-contain"
-										/>
+							<div className="size-40 relative overflow-hidden rounded-lg">
+								{data.date.S === formattedToday && (
+									<div className="absolute w-full top-0 -left-1/2 pt-4 origin-top -rotate-45">
+										<div className="grid place-content-center text-sm bg-red-400 text-white py-1">NEW</div>
 									</div>
-									<h2 className="text-md font-semibold mb-1 text-gray-800 px-2 overflow-hidden">
-										{truncateString(data.productName?.S, 50)}
-									</h2>
-									<div className="mt-auto">
-										<div className="flex">
-											{data.priceOff.S && (
-												<p className="text-lg md:text-2xl font-bold text-red-600 px-2">{data.priceOff.S}</p>
-											)}
-											<p className="text-lg md:text-2xl font-bold text-gray-700 px-2">{data.price.S}</p>
+								)}
+								<Link
+									href={`/items/${data.date.S}/${extractAsin(data.asin.S)}`}
+									key={data.asin.S}
+									prefetch={false}
+									onClick={() => trackClick(data)}
+								>
+									<div className="border p-2 bg-white flex flex-col h-full cursor-pointer">
+										<div className="flex-grow flex justify-center items-center mb-4 h-[270px] w-full">
+											<img
+												src={data.imageUrl?.S}
+												alt={data.productName?.S}
+												className="w-full max-h-[270px] object-contain"
+											/>
 										</div>
-										{data.priceOff && (
-											<div className="flex ">
-												<p className="text-sm font-light text-gray-700 px-2">過去価格:</p>
-												<p className="text-sm font-light text-gray-700 px-2 line-through">
-													{calculateOriginalPrice(data.price.S, data.priceOff.S)}
-												</p>
+										<h2 className="text-md font-semibold mb-1 text-gray-800 px-2 overflow-hidden">
+											{truncateString(data.productName?.S, 50)}
+										</h2>
+										<div className="mt-auto">
+											<div className="flex">
+												{data.priceOff.S && (
+													<p className="text-lg md:text-2xl font-bold text-red-600 px-2">{data.priceOff.S}</p>
+												)}
+												<p className="text-lg md:text-2xl font-bold text-gray-700 px-2">{data.price.S}</p>
 											</div>
-										)}
+											{data.priceOff && (
+												<div className="flex ">
+													<p className="text-sm font-light text-gray-700 px-2">過去価格:</p>
+													<p className="text-sm font-light text-gray-700 px-2 line-through">
+														{calculateOriginalPrice(data.price.S, data.priceOff.S)}
+													</p>
+												</div>
+											)}
+										</div>
 									</div>
-								</div>
-							</Link>
+								</Link>
+							</div>
 						))}
 					</div>
 
@@ -370,7 +387,7 @@ export async function getServerSideProps(context) {
 		'https://www.amazon.co.jp/gp/bestsellers/videogames/'
 	)
 	const bestSellerPCFromDynamo = await dynamoBestSellerQuery('https://www.amazon.co.jp/gp/bestsellers/computers/')
-	const newpriceOffitems = await dynamoPriceoffQuery()
+	// const newpriceOffitems = await dynamoPriceoffQuery()
 
 	return {
 		props: {
@@ -381,8 +398,8 @@ export async function getServerSideProps(context) {
 			// dealItemsFromDynamo: dealItemsFromDynamo.Items || [],
 			bestSellerBooksFromDynamo,
 			bestSellerVideoGamesFromDynamo,
-			bestSellerPCFromDynamo,
-			priceOffItems: newpriceOffitems || []
+			bestSellerPCFromDynamo
+			// priceOffItems: newpriceOffitems || []
 		}
 	}
 }

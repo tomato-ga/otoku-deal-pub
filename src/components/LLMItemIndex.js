@@ -28,30 +28,45 @@ const LLMItem = ({ data }) => {
 		return `￥${Math.round(parsedPrice / (1 - discountRate)).toLocaleString()}`
 	}
 
+	const today = new Date()
+	const formattedToday =
+		today.getFullYear() +
+		'-' +
+		(today.getMonth() + 1).toString().padStart(2, '0') +
+		'-' +
+		today.getDate().toString().padStart(2, '0')
+
 	return (
 		<div className="border p-2 bg-white flex flex-col h-full">
-			<Link href={`/items/${data.date}/${extractAsin(data.asin)}`}>
-				<div className="flex-grow flex justify-center items-center mb-4 h-[270px] w-full">
-					<img src={data.imageUrl} alt={data.productName} className="w-full max-h-[270px] object-contain" />
-				</div>
-				<h2 className="text-md font-semibold mb-1 text-gray-800 px-2 overflow-hidden">
-					{truncateString(data.llmtitle, 50)}
-				</h2>
-				<div className="mt-auto">
-					<div className="flex">
-						{data.priceOff && <p className="text-lg md:text-2xl font-bold text-red-600 px-2">{data.priceOff}</p>}
-						<p className="text-lg md:text-2xl font-bold text-gray-700 px-2">{data.price}</p>
+			<div className="size-40 relative overflow-hidden rounded-lg">
+				{data.date === formattedToday && (
+					<div className="absolute w-full top-0 -left-1/2 pt-4 origin-top -rotate-45">
+						<div className="grid place-content-center text-sm bg-red-400 text-white py-1">NEW</div>
 					</div>
-					{data.priceOff && (
+				)}
+				<Link href={`/items/${data.date}/${extractAsin(data.asin)}`}>
+					<div className="flex-grow flex justify-center items-center mb-4 h-[270px] w-full">
+						<img src={data.imageUrl} alt={data.productName} className="w-full max-h-[270px] object-contain" />
+					</div>
+					<h2 className="text-md font-semibold mb-1 text-gray-800 px-2 overflow-hidden">
+						{truncateString(data.llmtitle, 50)}
+					</h2>
+					<div className="mt-auto">
 						<div className="flex">
-							<p className="text-sm font-light text-gray-700 px-2">過去価格:</p>
-							<p className="text-sm font-light text-gray-700 px-2 line-through">
-								{calculateOriginalPrice(data.price, data.priceOff)}
-							</p>
+							{data.priceOff && <p className="text-lg md:text-2xl font-bold text-red-600 px-2">{data.priceOff}</p>}
+							<p className="text-lg md:text-2xl font-bold text-gray-700 px-2">{data.price}</p>
 						</div>
-					)}
-				</div>
-			</Link>
+						{data.priceOff && (
+							<div className="flex">
+								<p className="text-sm font-light text-gray-700 px-2">過去価格:</p>
+								<p className="text-sm font-light text-gray-700 px-2 line-through">
+									{calculateOriginalPrice(data.price, data.priceOff)}
+								</p>
+							</div>
+						)}
+					</div>
+				</Link>
+			</div>
 		</div>
 	)
 }
