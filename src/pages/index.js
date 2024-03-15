@@ -190,15 +190,14 @@ export default function Home({
 
 			{/* オリジナルコンテンツ */}
 
-			<PostsGrid postLists={postLists.slice(0,3)} />
-
+			<PostsGrid postLists={postLists.slice(0, 3)} />
 
 			{/* 最新セール情報 */}
 			<div className="mx-auto flex flex-col md:flex-row justify-between md:justify-start min-h-screen bg-white">
 				{/* Main content */}
 				<div className="w-full md:w-full p-4 bg-white order-1 md:order-2">
 					<div className="flex justify-center relative">
-						<div className="content-center font-extrabold text-6xl bg-gradient-to-r from-pink-400 to-violet-900 bg-clip-text text-transparent">
+						<div className="content-center font-extrabold text-4xl bg-gradient-to-r from-pink-400 to-violet-900 bg-clip-text text-transparent">
 							最新セール情報
 						</div>
 					</div>
