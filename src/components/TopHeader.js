@@ -62,11 +62,18 @@ const TopHeader = (props) => {
 				<div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-3">
 					{/* Links for all screen sizes */}
 					<div className="flex space-x-2 lg:space-x-4">
+						<Link href="/posts/list">
+							<span className="text-white hover:text-yellow-400 px-2 py-1 rounded-md cursor-pointer font-semibold">
+								ブログ
+							</span>
+						</Link>
+
 						<Link href="/group/page/1">
 							<span className="text-white hover:text-yellow-400 px-2 py-1 rounded-md cursor-pointer font-semibold">
 								グループセール
 							</span>
 						</Link>
+
 						<Link href="/rireki">
 							<span className="text-white hover:text-yellow-400 px-2 py-1 rounded-md cursor-pointer font-semibold">
 								閲覧履歴

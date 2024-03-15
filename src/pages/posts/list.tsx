@@ -10,6 +10,9 @@ interface Post {
 	id: string
 	title: string
 	created_at: string
+	updated_at: string
+	thumb_url: string
+	tags: string
 }
 
 const PostsList = () => {
@@ -45,27 +48,33 @@ const PostsList = () => {
 		return `${year}/${month}/${day} ${hours}:${minutes}`
 	}
 
+	console.log(postLists)
+
 	// TODO CSS調整
 	return (
 		<>
 			<TopHeader />
 			<Itemspagenavbar />
 
-			<div className="postlists">
+			<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 p-8">
 				{postLists.map((post) => (
-					<div className="flex items-center justify-center" key={post.id}>
-						<ul>
-							<li className="m-3 text-4xl text-slate-700">
-								<Link href={`/post/${post.id}`}>
-									<div className="relative">
-										<h2 className="text-4xl font-bold pt-3 pr-3 pb-3 pl-1 mt-10 bg-gradient-to-r from-orange-400 via-red-500 to-pink-500 inline-block text-transparent bg-clip-text">
-											{post.title}
-										</h2>
-									</div>
-									<div className="text-sm">{formatDate(post.created_at)}</div>
-								</Link>
-							</li>
-						</ul>
+					<div key={post.id} className="bg-gray-800 rounded-lg shadow-md overflow-hidden transition ">
+						<Link href={`/post/${post.id}`}>
+							<div className="relative">
+								<img src={post.thumb_url} alt={post.title} className="w-full object-cover" />
+								<div className="absolute inset-0 "></div>
+							</div>
+							<div className="p-4">
+								<span className="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded">
+									{post.tags}
+								</span>
+								<h2 className="text-xl font-bold text-white mt-2">{post.title}</h2>
+								<p className="text-gray-400 text-sm mt-2 mb-4">{formatDate(post.updated_at)}</p>
+								<span className="inline-block bg-gradient-to-r from-orange-400 via-red-500 to-pink-500 text-transparent bg-clip-text font-bold hover:underline">
+									続きを読む
+								</span>
+							</div>
+						</Link>
 					</div>
 				))}
 			</div>
@@ -74,3 +83,25 @@ const PostsList = () => {
 }
 
 export default PostsList
+
+{
+	/* <div className="postlists">
+{postLists.map((post) => (
+	<div className="flex items-center justify-center" key={post.id}>
+		<ul>
+			<li className="m-3 text-4xl text-slate-700">
+				<Link href={`/post/${post.id}`}>
+					<div className="relative">
+						<h2 className="text-4xl font-bold pt-3 pr-3 pb-3 pl-1 mt-10 bg-gradient-to-r from-orange-400 via-red-500 to-pink-500 inline-block text-transparent bg-clip-text">
+							{post.title}
+						</h2>
+						<img src={post.thumb_url} />
+					</div>
+					<div className="text-sm">{formatDate(post.updated_at)}</div>
+				</Link>
+			</li>
+		</ul>
+	</div>
+))}
+</div> */
+}
