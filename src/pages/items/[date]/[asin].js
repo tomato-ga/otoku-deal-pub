@@ -212,7 +212,6 @@ export default function ItemsPage({
 		if (!value) {
 			return ''
 		}
-
 		return value.replace('ASIN#', '')
 	}
 
