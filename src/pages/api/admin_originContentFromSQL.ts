@@ -7,7 +7,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 			// データベースからランダムに最新の投稿を取得する
 			const result = await sql`
                 SELECT * FROM (
-                SELECT id, title, thumb_url, updated_at 
+                SELECT id, title, thumb_url, updated_at, tags 
                 FROM blog_posts 
                 ORDER BY updated_at DESC 
                 LIMIT 50
