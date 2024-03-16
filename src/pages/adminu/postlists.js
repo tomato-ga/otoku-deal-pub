@@ -61,7 +61,8 @@ const AdminPostLists = () => {
 							<li className="m-3 text-4xl text-slate-700">
 								<Link href={`/adminu/post/${post.id}`}>
 									{post.title}
-									<div className="text-2xl">{formatDate(post.created_at)}</div>
+									<div className="text-2xl">更新日時：{formatDate(post.updated_at)}</div>
+									<div className="text-2xl">公開日時：{formatDate(post.created_at)}</div>
 								</Link>
 							</li>
 						</ul>

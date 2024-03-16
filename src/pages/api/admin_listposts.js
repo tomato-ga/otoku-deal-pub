@@ -9,7 +9,7 @@ export default async function handler(req, res) {
 
 			// データベースから記事一覧をページネーションで取得する
 			const result = await sql`
-			SELECT id, title, updated_at, thumb_url, tags
+			SELECT id, title, created_at, updated_at, thumb_url, tags
 			FROM blog_posts
 			ORDER BY updated_at DESC
 			LIMIT ${limit} OFFSET ${offset};

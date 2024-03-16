@@ -31,7 +31,7 @@ const Editor: React.FC<EditorProps> = ({
 	const [title, setTitle] = useState<string>(initialTitle)
 	const [content, setContent] = useState<string>(initialContent)
 	// タグの状態を文字列の配列で管理するように変更
-	const [tags, setTags] = useState<string>(initialTags) // initialTags はカンマ区切りの文字列とする
+	const [tags, setTags] = useState<string>(initialTags)
 
 	const author = 'dondonbe'
 	const [showPreview, setShowPreview] = useState(false)
@@ -54,7 +54,7 @@ const Editor: React.FC<EditorProps> = ({
 
 	// タグ入力フィールドの変更ハンドラーを更新
 	const handleTagsChange = (e: ChangeEvent<HTMLInputElement>) => {
-		setTags(e.target.value) // ユーザー入力を直接設定
+		setTags(e.target.value) // ユーザーの入力を直接状態にセット
 	}
 
 	const onFileSelected = (files: File[]) => {
@@ -91,11 +91,14 @@ const Editor: React.FC<EditorProps> = ({
 	// TODO 編集更新の場合、タグがDBに保存されない
 	// 保存ボタンクリック時のハンドラ
 	const handleButtonClick = async () => {
+		const tagsArray = tags
+			.split(',')
+			.map((tag) => tag.trim())
+			.filter((tag) => tag !== '')
+
 		if (onSave) {
 			try {
-				// onSaveが提供されている場合は、タグを配列に変換する処理を呼び出し側で行う必要がある
-				const tagsArray = tags.split(',').map((tag) => tag.trim())
-				onSave({ title, content, tags: tagsArray, postId })
+				onSave({ title, content, tags: tagsArray, postId }) // tagsを配列として渡す
 				showToast('記事が正常に保存されました。')
 			} catch (error) {
 				showToast('記事の保存中にエラーが発生しました。')
@@ -106,7 +109,6 @@ const Editor: React.FC<EditorProps> = ({
 			await handleNewSave()
 		}
 	}
-
 
 	// 画像アップロードの関数
 	const uploadImages = async (files: File[]) => {
