@@ -41,7 +41,6 @@ const PostsList = () => {
 
 	console.log(postLists)
 
-	// TODO CSS調整
 	return (
 		<>
 			<TopHeader />

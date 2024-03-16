@@ -5,6 +5,7 @@ import { useRouter } from 'next/router'
 import AdminLayout from '@/components/AdminLayout'
 import Link from 'next/link'
 
+// TODO 記事ステータスを下書きできるようにする
 const AdminPostLists = () => {
 	const isLoggedIn = useAuthStore((state) => state.isLoggedIn)
 	const login = useAuthStore((state) => state.login)

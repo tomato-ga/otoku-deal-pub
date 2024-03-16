@@ -88,7 +88,6 @@ const Editor: React.FC<EditorProps> = ({
 		}
 	}
 
-	// TODO 編集更新の場合、タグがDBに保存されない
 	// 保存ボタンクリック時のハンドラ
 	const handleButtonClick = async () => {
 		const tagsArray = tags

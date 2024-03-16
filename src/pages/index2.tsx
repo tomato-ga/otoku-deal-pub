@@ -25,8 +25,6 @@ import { dynamoPriceoffQuery } from '@/funcs/NewPriceoffItemsDynamodb'
 import { dynamoQueryLlmflagTrue } from '@/funcs/LLMflagindexDynamodb'
 import LLMItems from '../components/LLMItemIndex'
 
-// TODO 日別でページを作成できるかPartiQLで確認する
-
 interface Item {
 	productName: string
 	price: number
