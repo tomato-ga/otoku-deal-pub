@@ -45,7 +45,8 @@ const MarkdownContent: React.FC<MarkdownContentProps> = ({ markdownString }) => 
 				remarkPlugins={[remarkGfm]}
 				components={{
 					// Apply the custom link component
-					a: CustomLink
+					a: CustomLink,
+					p: ({ children }) => <p style={{ marginBottom: '1em' }}>{children}</p>
 				}}
 			/>
 		</div>
