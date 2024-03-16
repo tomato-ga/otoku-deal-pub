@@ -33,11 +33,10 @@
   @apply text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mt-4 mb-4;
 }
 
-/* .markdown p {
-  @apply text-xl m-2 text-gray-600;
-} */
 
-
+.markdown a {
+  @apply text-blue-600 dark:text-blue-500 hover:underline;
+}
 
 .markdown p {
   font-size: 16px;
@@ -50,22 +49,27 @@
 }
 
 .markdown-amazon-button-wrapper {
-  display: block; /* インライン要素をブロックレベル要素に変更 */
-  text-align: center; /* テキストやインライン要素（例えばアンカータグ）を中央揃えに */
+  display: block;
+  text-align: center;
   margin-left: auto;
   margin-right: auto;
-  margin-top: 10px; 
+  margin-top: 10px;
   margin-bottom: 0;
 }
 
 .markdown-amazon-button {
   display: inline-block;
   background-color: #f0c14b;
-  color: #615353;
+  color: #615353 !important;
   padding: 8px 12px;
   font-size: 20px;
   text-align: center;
   text-decoration: none;
   border-radius: 4px;
   font-weight: bold;
+}
+
+.markdown-amazon-button a {
+  color: #615353; /* 明示的に<a>タグに色を適用 */
+  text-decoration: none; /* リンクの下線を削除（必要に応じて） */
 }
