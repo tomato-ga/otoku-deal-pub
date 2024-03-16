@@ -9,20 +9,31 @@ interface MarkdownContentProps {
 }
 
 const MarkdownContent: React.FC<MarkdownContentProps> = ({ markdownString }) => {
-	// nodeプロパティを削除して、propsのみを使用
-	const customLink = (props: React.AnchorHTMLAttributes<HTMLAnchorElement>) => {
-		// アマゾン.co.jpへのリンクにのみ特別なスタイルを適用し、
-		// すべてのリンクを新しいタブで開くようにする
-		const isAmazonJPLink = props.href?.includes('amazon.co.jp') || props.href?.includes('amzn.to')
-		const className = isAmazonJPLink ? 'markdown-amazon-button' : ''
+	// Custom link component for ReactMarkdown
+	const CustomLink = ({
+		href,
+		children,
+		...props
+	}: React.AnchorHTMLAttributes<HTMLAnchorElement> & { children?: React.ReactNode }) => {
+		const isAmazonJPLink = href?.includes('amazon.co.jp') || href?.includes('amzn.to')
+		const linkClassName = isAmazonJPLink ? 'markdown-amazon-button' : ''
 
+		// Using div for Amazon links to apply additional styling
+		if (isAmazonJPLink) {
+			return (
+				<span className="markdown-amazon-button-wrapper">
+					<a href={href} {...props} className={linkClassName} target="_blank" rel="noopener noreferrer">
+						{children}
+					</a>
+				</span>
+			)
+		}
+
+		// Standard link rendering
 		return (
-			<a
-				{...props}
-				className={className + (props.className ? ' ' + props.className : '')}
-				target="_blank" // 新しいタブでリンクを開く
-				rel="noopener noreferrer" // セキュリティ対策
-			/>
+			<a href={href} {...props} target="_blank" rel="noopener noreferrer">
+				{children}
+			</a>
 		)
 	}
 
@@ -33,7 +44,8 @@ const MarkdownContent: React.FC<MarkdownContentProps> = ({ markdownString }) => 
 				rehypePlugins={[rehypeRaw, rehypeSanitize]}
 				remarkPlugins={[remarkGfm]}
 				components={{
-					a: customLink // リンクにカスタムコンポーネントを適用
+					// Apply the custom link component
+					a: CustomLink
 				}}
 			/>
 		</div>

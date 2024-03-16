@@ -9,7 +9,6 @@ import MarkdownContent from '@/components/markdowncontent'
 import Footer from '@/components/Footer'
 import { dynamoQueryIndex } from '@/funcs/DpIndexDynamodb'
 
-import { QueryCommandOutput } from '@aws-sdk/lib-dynamodb'
 
 interface PostContent {
 	id: string
@@ -70,8 +69,10 @@ const Post: React.FC<PostPageProps> = ({ post, latestsale }) => {
 			<TopHeader />
 			<Itemspagenavbar />
 
+
+			<div className='max-w-screen-md mx-auto'>		
 			<div className="flex justify-center items-center m-6 text-center">
-				<h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold bg-gradient-to-r from-orange-400 via-red-500 to-pink-500 inline-block text-transparent bg-clip-text">
+				<h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold bg-gradient-to-r from-orange-400 via-red-500 to-pink-500 inline-block text-transparent bg-clip-text border-solid border-b border-gray-200 pb-4">
 					{post.title}
 				</h1>
 			</div>
@@ -79,6 +80,7 @@ const Post: React.FC<PostPageProps> = ({ post, latestsale }) => {
 			<div className="m-6">
 				<MarkdownContent markdownString={post.content} />
 			</div>
+			
 
 			{/* インデックスの最新情報 */}
 			<h2 className="text-gray-500 mt-3 mb-3 text-center text-2xl font-bold">最新セール情報</h2>
@@ -103,6 +105,7 @@ const Post: React.FC<PostPageProps> = ({ post, latestsale }) => {
 						</div>
 					))}
 				</div>
+			</div>
 			</div>
 			<Footer />
 		</>
