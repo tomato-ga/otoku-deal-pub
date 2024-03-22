@@ -16,6 +16,10 @@
 - AWS DynamoDB
 - AWS Lambda
 - VPS スクレイピング実行環境
+- PlanetScale
+  - SEO対策管理用のGoogle IndexingAPI用のテーブル
+  - Xポスト管理用のテーブル
+  - Search Consoleでのサイトマップ管理用のテーブル
 
 ## スクレイピング対象ページ
 - タイムセールページ内
