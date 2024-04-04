@@ -9,6 +9,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 SELECT * FROM (
                 SELECT id, title, thumb_url, updated_at, tags 
                 FROM blog_posts 
+				WHERE id NOT IN (24, 26)
                 ORDER BY updated_at DESC 
                 LIMIT 50
                 ) AS latest_posts
