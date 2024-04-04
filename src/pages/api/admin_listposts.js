@@ -7,10 +7,11 @@ export default async function handler(req, res) {
 			const limit = 50
 			const offset = (page - 1) * limit
 
-			// データベースから記事一覧をページネーションで取得する
+			// データベースから記事一覧をページネーションで取得する id 24,26は除外
 			const result = await sql`
 			SELECT id, title, created_at, updated_at, thumb_url, tags
 			FROM blog_posts
+			WHERE id NOT IN (24, 26) 
 			ORDER BY updated_at DESC
 			LIMIT ${limit} OFFSET ${offset};
 		`
